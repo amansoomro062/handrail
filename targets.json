@@ -50,11 +50,13 @@
       "vendor": "MUI",
       "framework": "react",
       "packages": [
-        "@mui/material"
+        "@mui/material",
+        "@mui/lab"
       ],
       "homepage": "https://mui.com/",
       "role": "subject",
-      "status": "planned"
+      "status": "draft",
+      "notes": "Mounted with library exports only and no hand-written ARIA. MUI documents several ARIA attributes as the developer’s responsibility; see the adapter notes carried on every result."
     },
     {
       "id": "chakra",
