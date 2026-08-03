@@ -1,19 +1,22 @@
 export * from "./protocol.js";
 export * from "./types.js";
 export { dialogSpec } from "./components/dialog.js";
+export { comboboxSpec } from "./components/combobox.js";
 
 import type { ComponentSpec } from "./types.js";
 import { dialogSpec } from "./components/dialog.js";
+import { comboboxSpec } from "./components/combobox.js";
 
 /**
  * Every implemented spec, keyed by harness route id.
  *
- * Combobox, menu, tabs and accordion land in Phase 2 — see docs/PLAN.md.
- * Each one is run against the React Spectrum calibration control before it is
- * pointed at any subject library.
+ * Menu, tabs and accordion land later in Phase 2 — see docs/PLAN.md. Each one is
+ * run against the React Spectrum calibration control before it is pointed at
+ * any subject library.
  */
 export const specs: Record<string, ComponentSpec> = {
   [dialogSpec.id]: dialogSpec,
+  [comboboxSpec.id]: comboboxSpec,
 };
 
 export function getSpec(id: string): ComponentSpec {
