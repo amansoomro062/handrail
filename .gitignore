@@ -1,0 +1,19 @@
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+
+# Runner output
+results/
+test-results/
+playwright-report/
+traces/
+
+# Env
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/

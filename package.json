@@ -1,0 +1,24 @@
+{
+  "name": "curbcut",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Continuous, public accessibility conformance testing for UI component libraries.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "packageManager": "pnpm@10.12.4",
+  "scripts": {
+    "build": "pnpm -r --filter \"./packages/**\" run build",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm --filter @curbcut/runner run test",
+    "curbcut": "pnpm --filter @curbcut/runner run cli --",
+    "adapter:radix": "pnpm --filter @curbcut/adapter-radix run dev",
+    "fixture:broken": "pnpm --filter @curbcut/fixture-broken run dev",
+    "calibrate": "pnpm curbcut run --target _fixture-broken --component dialog --base-url http://localhost:5199 --expect adapters/_fixture-broken/expected.json",
+    "clean": "rm -rf packages/*/dist adapters/*/dist node_modules/.cache results"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

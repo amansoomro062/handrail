@@ -1,0 +1,18 @@
+{
+  "$comment": "The catalogue of defects. The runner must detect exactly these and no others. A mismatch in either direction is a bug in the engine, not in a library — a false negative means we would miss a real defect, a false positive means we would accuse a library wrongly. The second is the one that would end this project.",
+  "component": "dialog",
+  "expected": {
+    "dialog.trigger-has-accessible-name": "pass",
+    "dialog.trigger-is-focusable": "pass",
+    "dialog.opens-on-enter": "pass",
+    "dialog.has-dialog-role": "pass",
+    "dialog.has-accessible-name": "fail",
+    "dialog.focus-moves-in": "fail",
+    "dialog.focus-trapped-forward": "fail",
+    "dialog.focus-trapped-backward": "fail",
+    "dialog.escape-closes": "fail",
+    "dialog.focus-restored-on-close": "fail",
+    "dialog.background-inert": "fail",
+    "dialog.close-has-accessible-name": "fail"
+  }
+}

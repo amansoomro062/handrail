@@ -1,0 +1,79 @@
+{
+  "$comment": "The registry of libraries under test. `status` is the state of the ADAPTER, not the library's accessibility. Never publish a score for a target whose adapter has not been reviewed.",
+  "schemaVersion": 1,
+  "targets": [
+    {
+      "id": "react-spectrum",
+      "name": "React Spectrum",
+      "vendor": "Adobe",
+      "framework": "react",
+      "packages": ["@adobe/react-spectrum"],
+      "homepage": "https://react-spectrum.adobe.com/",
+      "role": "control",
+      "status": "planned",
+      "notes": "Calibration control. Widely regarded as the accessibility gold standard. If the harness does not score this near-perfect, the harness is wrong. Must be implemented and passing before ANY result is published."
+    },
+    {
+      "id": "radix",
+      "name": "Radix UI",
+      "vendor": "WorkOS",
+      "framework": "react",
+      "packages": ["@radix-ui/react-dialog", "@radix-ui/react-tabs", "@radix-ui/react-accordion", "@radix-ui/react-dropdown-menu"],
+      "homepage": "https://www.radix-ui.com/",
+      "role": "subject",
+      "status": "reference",
+      "notes": "Reference adapter implementation. Read this one first when writing a new adapter."
+    },
+    {
+      "id": "shadcn",
+      "name": "shadcn/ui",
+      "vendor": "shadcn",
+      "framework": "react",
+      "packages": ["shadcn"],
+      "homepage": "https://ui.shadcn.com/",
+      "role": "subject",
+      "status": "planned",
+      "notes": "Copy-paste distribution built on Radix. The open question is whether the copy-paste model preserves or degrades the upstream behaviour. Pin the CLI version and the date the components were generated, not just a package version."
+    },
+    {
+      "id": "mui",
+      "name": "MUI",
+      "vendor": "MUI",
+      "framework": "react",
+      "packages": ["@mui/material"],
+      "homepage": "https://mui.com/",
+      "role": "subject",
+      "status": "planned"
+    },
+    {
+      "id": "chakra",
+      "name": "Chakra UI",
+      "vendor": "Chakra",
+      "framework": "react",
+      "packages": ["@chakra-ui/react"],
+      "homepage": "https://chakra-ui.com/",
+      "role": "subject",
+      "status": "planned"
+    },
+    {
+      "id": "antd",
+      "name": "Ant Design",
+      "vendor": "Ant Group",
+      "framework": "react",
+      "packages": ["antd"],
+      "homepage": "https://ant.design/",
+      "role": "subject",
+      "status": "planned"
+    },
+    {
+      "id": "headlessui",
+      "name": "Headless UI",
+      "vendor": "Tailwind Labs",
+      "framework": "react",
+      "packages": ["@headlessui/react"],
+      "homepage": "https://headlessui.com/",
+      "role": "subject",
+      "status": "planned"
+    }
+  ]
+}
