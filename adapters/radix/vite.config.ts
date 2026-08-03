@@ -26,6 +26,7 @@ function resolvedVersion(pkg: string): string {
 
 const LIBRARY_VERSIONS = {
   "@radix-ui/react-dialog": resolvedVersion("@radix-ui/react-dialog"),
+  "@radix-ui/react-dropdown-menu": resolvedVersion("@radix-ui/react-dropdown-menu"),
 };
 
 export default defineConfig({

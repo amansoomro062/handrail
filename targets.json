@@ -7,7 +7,9 @@
       "name": "React Spectrum",
       "vendor": "Adobe",
       "framework": "react",
-      "packages": ["@adobe/react-spectrum"],
+      "packages": [
+        "@adobe/react-spectrum"
+      ],
       "homepage": "https://react-spectrum.adobe.com/",
       "role": "control",
       "status": "calibrated",
@@ -18,7 +20,10 @@
       "name": "Radix UI",
       "vendor": "WorkOS",
       "framework": "react",
-      "packages": ["@radix-ui/react-dialog", "@radix-ui/react-tabs", "@radix-ui/react-accordion", "@radix-ui/react-dropdown-menu"],
+      "packages": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu"
+      ],
       "homepage": "https://www.radix-ui.com/",
       "role": "subject",
       "status": "reference",
@@ -29,7 +34,9 @@
       "name": "shadcn/ui",
       "vendor": "shadcn",
       "framework": "react",
-      "packages": ["shadcn"],
+      "packages": [
+        "shadcn"
+      ],
       "homepage": "https://ui.shadcn.com/",
       "role": "subject",
       "status": "planned",
@@ -40,7 +47,9 @@
       "name": "MUI",
       "vendor": "MUI",
       "framework": "react",
-      "packages": ["@mui/material"],
+      "packages": [
+        "@mui/material"
+      ],
       "homepage": "https://mui.com/",
       "role": "subject",
       "status": "planned"
@@ -50,7 +59,9 @@
       "name": "Chakra UI",
       "vendor": "Chakra",
       "framework": "react",
-      "packages": ["@chakra-ui/react"],
+      "packages": [
+        "@chakra-ui/react"
+      ],
       "homepage": "https://chakra-ui.com/",
       "role": "subject",
       "status": "planned"
@@ -60,7 +71,9 @@
       "name": "Ant Design",
       "vendor": "Ant Group",
       "framework": "react",
-      "packages": ["antd"],
+      "packages": [
+        "antd"
+      ],
       "homepage": "https://ant.design/",
       "role": "subject",
       "status": "planned"
@@ -70,7 +83,9 @@
       "name": "Headless UI",
       "vendor": "Tailwind Labs",
       "framework": "react",
-      "packages": ["@headlessui/react"],
+      "packages": [
+        "@headlessui/react"
+      ],
       "homepage": "https://headlessui.com/",
       "role": "subject",
       "status": "planned"

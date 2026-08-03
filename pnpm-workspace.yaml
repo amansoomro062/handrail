@@ -39,3 +39,4 @@ catalogs:
   subjects:
     "@adobe/react-spectrum": 3.47.3
     "@radix-ui/react-dialog": 1.1.23
+    "@radix-ui/react-dropdown-menu": 2.1.19

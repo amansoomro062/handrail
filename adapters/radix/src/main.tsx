@@ -1,6 +1,7 @@
 import { announceReady, mountHarness } from "@handrail/harness-kit/react";
 import { metaFor } from "./meta.js";
 import { DialogHarness } from "./harnesses/dialog.js";
+import { MenuHarness } from "./harnesses/menu.js";
 
 /**
  * The route is the component id: /harness/dialog mounts the dialog harness.
@@ -8,6 +9,7 @@ import { DialogHarness } from "./harnesses/dialog.js";
  */
 const harnesses: Record<string, () => JSX.Element> = {
   dialog: DialogHarness,
+  menu: MenuHarness,
 };
 
 /**
