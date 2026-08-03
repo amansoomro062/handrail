@@ -106,7 +106,11 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
   The accordion failure is genuine and follows from the library's design: Headless UI ships no accordion, only Disclosure, and a disclosure button has no heading wrapper. Confirmed against the DOM rather than taken on the assertion's word.
 
   It also produced decision **014**. Its dialog scored 100% twice and 94% three times in a row — an intermittent result caused by reading the accessible name before DialogTitle had registered itself. `--repeat` now makes instability measurable, and immediately found a second one in the accordion relationship assertion. All 20 pairs are stable.
-- [ ] Chakra UI
+- [x] Chakra UI — dialog, combobox, menu and tabs 100%; accordion 97%
+
+  Chakra v3 is built on Ark UI and scores like it. The accordion failure is the same one MUI and Headless UI have: section headers are not real headings.
+
+  It produced decision **015**, the most consequential one so far. Chakra's combobox failed `escape-closes` about half the time, and it was genuinely real — but only when Escape arrived within 50ms of the popup opening, which no human can do. The index now interacts at human speed and treats sub-60ms races as out of scope. Publishing that would have been technically accurate and completely irrelevant to any actual user.
 - [ ] Ant Design
 
 Run each new spec against React Spectrum first, as in Phase 1, before pointing it at anyone else.

@@ -61,6 +61,33 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 015 — We test at human speed, and a race no person could hit is not a finding
+*3 August 2026*
+
+**Decision.** Setup helpers call `harness.settle()` after a component opens: two animation frames plus a 60ms floor. Sub-60ms interaction sequences are not tested, and any race that only appears within that window is not published as a finding.
+
+**Reasoning.** Chakra's combobox failed `escape-closes` intermittently — roughly half the time. It reproduced cleanly, and it was real: focus was correctly on the input, Escape was correctly delivered, and the popup stayed open.
+
+Measuring it settled the question:
+
+| Delay between opening and pressing Escape | Failures |
+| --- | --- |
+| 0ms | 6 / 12 |
+| 50ms | 0 / 12 |
+| 100ms and above | 0 / 12 |
+
+A sub-50ms race. **No person can press two keys that fast**, and the sequence in question — open a list and instantly dismiss it — is not one a human would produce at all. There is a genuine race in Chakra's state machine, and it has no bearing on whether anyone can use the component.
+
+Publishing it would have been indefensible in a specific and damaging way: technically accurate, reproducible on demand, and *completely irrelevant to the people this project exists for*. A maintainer would have been asked to answer for a defect no user can experience, in an index that claims to describe user experience.
+
+**Consequence.** This draws a boundary the project needed and did not have: **the index measures what a person could encounter.** Faster than that, we are inspecting internals, and internals are not our subject.
+
+It also generalises the lesson from 007 in the other direction. Decision 007 says *do not read state before the library has produced it*. This says *do not act on a component before it is ready to be acted on*. Both are the same underlying error — treating "visible" as "finished" — and it has now cost us four false findings across both directions.
+
+One honest loose end: Chakra's tabs reported unstable once and did not reproduce across 24 subsequent runs. Not chased further, and recorded here rather than quietly forgotten, because a rare instability is exactly the kind of thing that becomes obvious in hindsight after it embarrasses you.
+
+---
+
 ## 014 — An intermittent result is not publishable, and instability must be measurable
 *3 August 2026*
 
