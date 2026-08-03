@@ -88,7 +88,11 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
   The first spec written with the decision-007 audit applied up front rather than discovered afterwards, and the first to pass the control on the first attempt. Three specs of evidence that waiting is the default, not the fix.
 
   Accepts both activation models the APG permits — automatic (arrows select as they move) and manual (arrows move, Enter or Space commits). A spec recognising only one would fail correct libraries for a choice the specification deliberately leaves open.
-- [ ] Accordion / Disclosure
+- [x] Accordion / Disclosure — 11 assertions. React Spectrum 11/11, Radix 11/11, broken fixture 2/11 exactly as predicted
+
+  Deliberately the mirror of tabs: accordion headers are *each* a tab stop, and arrow keys are optional rather than required. Asserting tab-like behaviour here would fail correct implementations.
+
+  Started as 12 assertions. `panel-labelled-by-header` failed the control, and on checking the APG lists role=region and aria-labelledby for accordion panels under *Optional* — so it was our preference dressed as conformance, and it was removed. See decision 011.
 
 **Adapters:**
 - [ ] shadcn/ui — pin both the CLI version and the generation date

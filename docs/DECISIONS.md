@@ -61,6 +61,21 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 011 — An APG "Optional" clause is not a requirement
+*3 August 2026*
+
+**Decision.** `accordion.panel-labelled-by-header` — asserting that an accordion panel has `role="region"` and takes its name from its header — has been removed. Assertions may only cite clauses the APG states as requirements.
+
+**Reasoning.** It failed the React Spectrum control, which uses `role="group"` and no `aria-labelledby`. Under decision 003 that makes our assertion the suspect, and on checking, the APG lists both properties for this pattern under **Optional** — and explicitly warns against `role="region"` where it would proliferate landmarks in an accordion with many panels. Spectrum's choice is a correct reading of the specification.
+
+The assertion was therefore our preference wearing the costume of a conformance result, which is exactly what decision 001 exists to prevent. Had it shipped, every library making the same legitimate choice would have carried a public failure for it.
+
+**Consequence.** Accordion has 11 assertions rather than 12. More usefully, a rule for spec authors: when reading an APG pattern, the words *Optional*, *recommended* and *may* mark the boundary of what is publishable. Only *must*, *is* and *has* are assertable.
+
+This is the first time the calibration control caught a defect in an assertion's *premise* rather than in its timing. The three earlier catches were all races; this one was a misreading of the specification, which no amount of waiting would have fixed.
+
+---
+
 ## 010 — Anything that can change a result is pinned exactly
 *3 August 2026*
 
