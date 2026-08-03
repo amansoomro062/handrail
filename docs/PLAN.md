@@ -74,7 +74,12 @@ Note also that Phase 1 finished early because there were no React Spectrum failu
 Widen along both axes. Specs first, then adapters, because a spec bug found after six adapters exist costs six times as much.
 
 **Specs** (in this order — most commonly broken first):
-- [ ] Combobox — the hardest and most frequently wrong pattern in the industry
+- [x] Combobox — 14 assertions. React Spectrum 14/14; broken fixture 4/14 exactly as catalogued
+
+  Two pieces of infrastructure fell out of it, both now in the protocol. **Stamping** (`stampTestIds`) — libraries will not let you place `data-testid` on the element carrying the semantics, so ids are attached by structural selector; without it, any library with an inconvenient DOM would have been quietly excluded. **Unsupported components** (`supported: false`) — Radix has no combobox, and scoring that as zero would have said something false about Radix rather than about its scope.
+
+  It also surfaced a runner bug worth remembering: `waitForSelector` defaults to waiting for *visible*, so an adapter that renders nothing had a zero-size `<body>` and was reported as never signalling readiness. Any adapter declaring a component unsupported would have been blamed for a fault in the runner.
+
 - [ ] Menu (menu button + menu)
 - [ ] Tabs
 - [ ] Accordion / Disclosure

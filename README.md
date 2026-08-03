@@ -80,14 +80,15 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 
 | Milestone                                              | State       |
 | ------------------------------------------------------ | ----------- |
-| Harness protocol + runner engine                        | Working     |
-| Dialog spec (12 assertions)                             | Implemented |
-| React Spectrum calibration control                      | 12/12 pass  |
-| Radix reference adapter                                 | 12/12 pass  |
-| Broken fixture — false positives/negatives measured     | Calibrated  |
-| Remaining four specs (Combobox, Tabs, Menu, Accordion)  | Not started |
-| Remaining five adapters                                 | Not started |
-| Public site + badges                                    | Not started |
+| Harness protocol + runner engine                        | Working             |
+| Dialog spec (12 assertions)                             | Implemented         |
+| Combobox spec (14 assertions)                           | Implemented         |
+| React Spectrum calibration control                      | 12/12 · 14/14       |
+| Radix reference adapter                                 | 12/12 · combobox n/a |
+| Broken fixture — false positives/negatives measured     | Calibrated on both  |
+| Remaining three specs (Tabs, Menu, Accordion)           | Not started         |
+| Remaining five adapters                                 | Not started         |
+| Public site + badges                                    | Not started         |
 
 Read [`docs/PLAN.md`](docs/PLAN.md) for the route from here to launch.
 

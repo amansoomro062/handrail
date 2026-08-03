@@ -101,7 +101,77 @@ That last point matters. The focus-trap assertions count Tab presses, so a libra
 
 ---
 
-## Components: `combobox`, `menu`, `tabs`, `accordion`
+## Component: `combobox`
+
+APG pattern: <https://www.w3.org/WAI/ARIA/apg/patterns/combobox/>
+
+An editable combobox with a listbox popup.
+
+### Required elements
+
+| `data-testid`  | What it must be                                                          |
+| -------------- | ------------------------------------------------------------------------ |
+| `hr-before`    | A focusable `<button>` before the combobox                                |
+| `hr-combobox`  | The **input element itself** — the one carrying `role="combobox"`         |
+| `hr-after`     | A focusable `<button>` after the combobox                                 |
+| `hr-listbox`   | The popup listbox (need not exist until opened)                           |
+| `hr-option-1`  | First option, `Apple`                                                     |
+| `hr-option-2`  | Second option, `Banana`                                                   |
+| `hr-option-3`  | Third option, `Cherry`                                                    |
+
+`hr-combobox` must be the input, **not** a wrapper around it. Assertions read its role, `aria-expanded`, `aria-activedescendant`, `aria-controls` and value. Most libraries will not let you place an attribute there directly — use `stampTestIds` (below).
+
+### Required content and state
+
+- The combobox is labelled `Choose a fruit`
+- Exactly three options, in the order above — distinct initial letters, so typeahead cannot make traversal ambiguous, and already alphabetical, so sorting cannot reorder them
+- The popup is **closed** on load
+- The combobox is **empty** on load, so a selection assertion can tell that something was committed
+
+### Do not
+
+- Do not pre-select an option
+- Do not filter, sort or transform the option list
+- Do not add key handlers. The spec opens the popup with Down Arrow, per APG — if that does nothing, that *is* the finding
+
+---
+
+## Stamping test ids onto elements you do not control
+
+Most libraries do not let you place an attribute on the element carrying the semantics. React Spectrum's `ComboBox` forwards `data-testid` to a wrapper rather than to the `input[role="combobox"]` inside it, and popups are portalled in only when opened.
+
+`stampTestIds` from `@handrail/harness-kit` attaches ids by structural selector, and keeps doing so via a `MutationObserver` as the DOM changes:
+
+```ts
+stampTestIds({
+  "hr-combobox": 'input[role="combobox"]',
+  "hr-listbox": '[role="listbox"]',
+  "hr-option-1": { selector: '[role="option"]', index: 0 },
+});
+```
+
+**It places a marker and nothing else.** Never use it to add ARIA attributes, roles, labels or handlers — that is forging a pass, and it is the one thing that would make this project worthless.
+
+Prefer structural selectors (`input[role="combobox"]`) over cosmetic ones (`.css-1x2y3z`). If the library stops producing that element, a structural selector fails loudly as a missing required element, whereas a class-based one may silently match the wrong node and measure something that is not the component.
+
+---
+
+## Declaring a component unsupported
+
+When a library genuinely does not ship a component, the adapter announces readiness with `supported: false` instead of rendering a harness:
+
+```ts
+announceReady({ ...metaFor(component), supported: false,
+  unsupportedReason: "Radix UI does not ship a combobox primitive." });
+```
+
+Every assertion is then recorded as `not-applicable` and the target scores `n/a` rather than zero. Not shipping a component is a scope decision, not an accessibility failure, and the index must not imply otherwise.
+
+Do **not** use this to skip a component the library does ship but implements badly.
+
+---
+
+## Components: `menu`, `tabs`, `accordion`
 
 Specifications pending — see [`PLAN.md`](PLAN.md) Phase 2. Element tables will be added here before the specs are written, so adapter authors can work ahead.
 

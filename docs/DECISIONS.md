@@ -61,6 +61,28 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 009 — Not shipping a component scores `n/a`, never zero
+*3 August 2026*
+
+**Decision.** An adapter may announce `supported: false` for a component its library does not provide. Every assertion is then recorded as `not-applicable`, excluded from the denominator, and the target scores `n/a`.
+
+**Reasoning.** Radix has no combobox primitive. Its Select implements the APG *select-only* pattern, which has different requirements — running the combobox spec against it would measure the wrong thing, and scoring a zero would say something false about Radix's accessibility. Choosing not to ship a component is a scope decision.
+
+**Consequence.** The index has gaps, and gaps are honest. The guard against abuse is that this may not be used for a component the library does ship but implements badly; adapter review is where that is caught.
+
+---
+
+## 008 — Harness ids may be stamped onto elements the adapter does not control
+*3 August 2026*
+
+**Decision.** `stampTestIds` attaches `data-testid` attributes by structural selector, maintained by a `MutationObserver`. It may place markers only — never ARIA attributes, roles, labels or event handlers.
+
+**Reasoning.** Forced by React Spectrum's combobox: `data-testid` lands on a wrapper rather than the `input[role="combobox"]` the spec must address, and the listbox and options are portalled in only when the popup opens. Without stamping, whole categories of library are untestable, and "we could not adapt it" would quietly become "we only test libraries with convenient DOM".
+
+**Consequence.** This is the sharpest tool in the project for producing a dishonest pass, so adapters using it get the closest review, and selectors must be structural rather than class-based. A structural selector fails loudly if the library stops producing that element; a cosmetic one may silently match the wrong node and measure something that is not the component at all.
+
+---
+
 ## 007 — Focus assertions wait; they never sample once
 *3 August 2026*
 
@@ -71,6 +93,10 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 Had that shipped, we would have published a false accusation against a well-built library in our first result set, which is precisely the failure mode this project cannot survive.
 
 **Consequence.** Assertions take marginally longer. Irrelevant. The generalised lesson is broader than focus: **any assertion about state following an interaction must wait for it.** Libraries are entitled to be asynchronous, and a test that assumes otherwise is measuring its own impatience.
+
+**Recurrence, same day.** The combobox spec reproduced this exactly: `combobox.enter-selects-active-option` failed against React Spectrum because the input's value was read the instant Enter was released, before selection had committed. React Spectrum was correct; the runner was impatient again. Fixed with `waitForValue`.
+
+Twice in one day, in the same shape, in code written by someone who had already written this entry. Treat "read state immediately after a keypress" as a defect on sight during review, not as something to catch by testing.
 
 ---
 
