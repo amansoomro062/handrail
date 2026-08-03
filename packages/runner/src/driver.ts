@@ -159,6 +159,13 @@ export function createKeyboardTools(page: Page, cdp: Cdp): KeyboardTools {
         return false;
       }
     },
+    async isFocusWithin(ancestorTestId) {
+      return page.evaluate((id) => {
+        const ancestor = document.querySelector(`[data-testid="${id}"]`);
+        const active = document.activeElement;
+        return Boolean(ancestor && active && (ancestor === active || ancestor.contains(active)));
+      }, ancestorTestId);
+    },
     async waitForFocusWithin(ancestorTestId, timeoutMs = 2000) {
       try {
         await page.waitForFunction(

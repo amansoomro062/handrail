@@ -133,6 +133,15 @@ export interface KeyboardTools {
   waitForFocus(testId: string, timeoutMs?: number): Promise<boolean>;
   /** As `waitForFocus`, but satisfied by any element inside the ancestor. */
   waitForFocusWithin(ancestorTestId: string, timeoutMs?: number): Promise<boolean>;
+  /**
+   * Is focus currently inside this element? Asked of the DOM, not of test ids.
+   *
+   * Libraries inject their own focusable elements — shadcn/ui's generated dialog
+   * ships a close button of its own. Judging containment by test id treats every
+   * such element as "outside" and reports a focus trap as broken when it is
+   * working perfectly. See docs/DECISIONS.md 017.
+   */
+  isFocusWithin(ancestorTestId: string): Promise<boolean>;
 }
 
 /* ------------------------------------------------------------------ *

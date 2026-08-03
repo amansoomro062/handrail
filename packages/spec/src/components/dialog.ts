@@ -207,10 +207,14 @@ const assertions: Assertion[] = [
     async run(ctx) {
       if (!(await openDialog(ctx))) return fail("The dialog did not open, so the focus trap could not be checked.");
       // Three focusable elements inside; six presses cycles twice.
-      const walk = await ctx.keyboard.walk(6);
-      for (const [i, step] of walk.entries()) {
-        const inside = step.testId ? await ctx.harness.isWithin(step.testId, "hr-dialog") : false;
-        if (!inside && step.testId !== "hr-dialog") {
+      // Six presses, checking containment after each. Containment is asked of the
+      // DOM rather than of test ids, because a library may inject focusable
+      // elements of its own that the harness never labelled.
+      for (let i = 0; i < 6; i++) {
+        await ctx.keyboard.press("Tab");
+        const inside = await ctx.keyboard.isFocusWithin("hr-dialog");
+        const step = await ctx.keyboard.focused();
+        if (!inside) {
           return fail(
             step.isBody
               ? `Focus landed on <body> after ${i + 1} Tab press${i === 0 ? "" : "es"}, leaving the dialog for a step. It did not reach background content, but the tab stop is wasted and the APG requires focus to remain within the dialog.`
@@ -233,10 +237,11 @@ const assertions: Assertion[] = [
     refs: { apg: APG_KEYBOARD, ...WCAG.focusOrder },
     async run(ctx) {
       if (!(await openDialog(ctx))) return fail("The dialog did not open, so the focus trap could not be checked.");
-      const walk = await ctx.keyboard.walk(6, { backwards: true });
-      for (const [i, step] of walk.entries()) {
-        const inside = step.testId ? await ctx.harness.isWithin(step.testId, "hr-dialog") : false;
-        if (!inside && step.testId !== "hr-dialog") {
+      for (let i = 0; i < 6; i++) {
+        await ctx.keyboard.press("Shift+Tab");
+        const inside = await ctx.keyboard.isFocusWithin("hr-dialog");
+        const step = await ctx.keyboard.focused();
+        if (!inside) {
           return fail(
             `Focus left the dialog after ${i + 1} Shift+Tab press${i === 0 ? "" : "es"}.`,
             "focus remains within the dialog",
