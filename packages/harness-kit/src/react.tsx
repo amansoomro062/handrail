@@ -3,6 +3,9 @@ import { createRoot } from "react-dom/client";
 import type { HarnessMeta } from "@handrail/spec";
 import { announceReady } from "./index.js";
 
+// Re-exported so a React adapter needs only one import path.
+export { announceReady, stampTestIds, TEXT, type StampTarget } from "./index.js";
+
 /**
  * Mount a React harness and announce readiness.
  *
