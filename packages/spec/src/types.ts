@@ -63,6 +63,14 @@ export interface A11yTools {
   tree(): Promise<AxNode[]>;
   /** Computed node for a harness test id, or null if not in the tree. */
   nodeFor(testId: string): Promise<AxNode | null>;
+  /**
+   * Computed node for an arbitrary selector.
+   *
+   * Needed for assertions that follow an ARIA relationship to an element the
+   * harness does not name — `aria-activedescendant` points at an id the library
+   * generated, not at one of our test ids.
+   */
+  nodeForSelector(selector: string): Promise<AxNode | null>;
   /** Computed accessible name, or null if the element is absent or ignored. */
   nameFor(testId: string): Promise<string | null>;
   /** Computed role, or null if the element is absent or ignored. */
@@ -133,6 +141,21 @@ export interface HarnessHandle {
   isWithin(testId: string, ancestorTestId: string): Promise<boolean>;
   click(testId: string): Promise<void>;
   text(testId: string): Promise<string>;
+  /** Raw DOM attribute. For ARIA relationships and states the AX tree flattens. */
+  attr(testId: string, name: string): Promise<string | null>;
+  /** Current value of an input element. */
+  value(testId: string): Promise<string>;
+  /**
+   * Wait for an input's value to become non-empty, then return it. Returns
+   * whatever is there on timeout, so the assertion reports the real state.
+   *
+   * Selection commonly commits a tick or two after the keypress. Reading the
+   * value immediately fails libraries that are behaving correctly — see
+   * docs/DECISIONS.md 007.
+   */
+  waitForValue(testId: string, timeoutMs?: number): Promise<string>;
+  /** Whether any element matches an arbitrary selector. */
+  matches(selector: string): Promise<boolean>;
 }
 
 /* ------------------------------------------------------------------ *

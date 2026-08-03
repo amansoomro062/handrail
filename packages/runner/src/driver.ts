@@ -35,15 +35,20 @@ export class HarnessError extends Error {
 import type { Cdp } from "./cdp.js";
 
 export function createA11yTools(cdp: Cdp): A11yTools {
-  async function nodeFor(testId: string): Promise<AxNode | null> {
-    const backendNodeId = await cdp.backendNodeIdForSelector(testIdSelector(testId));
+  async function nodeForSelector(selector: string): Promise<AxNode | null> {
+    const backendNodeId = await cdp.backendNodeIdForSelector(selector);
     if (backendNodeId === null) return null;
     return cdp.axNode(backendNodeId);
+  }
+
+  async function nodeFor(testId: string): Promise<AxNode | null> {
+    return nodeForSelector(testIdSelector(testId));
   }
 
   return {
     tree: () => cdp.fullTree(),
     nodeFor,
+    nodeForSelector,
     /**
      * Null when the element is absent OR ignored. An ignored element is not
      * announced, so "what name does assistive technology hear" is correctly
@@ -180,7 +185,12 @@ export async function createHarness(
   async function load(): Promise<void> {
     await page.goto(url, { waitUntil: "domcontentloaded" });
     try {
+      // `attached`, not the default `visible`. The ready signal is about the
+      // attribute existing, and an adapter that renders nothing — one declaring
+      // the component unsupported — has a zero-size <body> that Playwright would
+      // never call visible, producing a bogus "adapter never signalled" error.
       await page.waitForSelector(`body[${READY_ATTRIBUTE}="true"]`, {
+        state: "attached",
         timeout: readyTimeoutMs,
       });
     } catch {
@@ -232,6 +242,26 @@ export async function createHarness(
     click: (testId) => page.locator(testIdSelector(testId)).click(),
     async text(testId) {
       return (await page.locator(testIdSelector(testId)).innerText()).trim();
+    },
+    attr: (testId, name) => page.locator(testIdSelector(testId)).getAttribute(name),
+    value: (testId) => page.locator(testIdSelector(testId)).inputValue(),
+    async waitForValue(testId, timeoutMs = 2000) {
+      await page
+        .waitForFunction(
+          (id) => {
+            const element = document.querySelector(`[data-testid="${id}"]`);
+            return element instanceof HTMLInputElement && element.value !== "";
+          },
+          testId,
+          { timeout: timeoutMs },
+        )
+        // Swallowed on purpose: report the value that is actually there rather
+        // than a timeout, so the failure message says what happened.
+        .catch(() => {});
+      return page.locator(testIdSelector(testId)).inputValue();
+    },
+    async matches(selector) {
+      return (await page.locator(selector).count()) > 0;
     },
   };
 }
