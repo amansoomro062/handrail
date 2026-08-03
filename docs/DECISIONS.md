@@ -61,6 +61,39 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 013 — Adapters use only what the library exports, with no hand-written ARIA
+*3 August 2026*
+
+**Decision.** An adapter may use any component, prop or configuration the library exports. It may not hand-write ARIA attributes, ids or relationships, even when the library's own documentation instructs the developer to.
+
+**Reasoning.** Forced by MUI. Its documented examples have the developer write `aria-labelledby` onto `Dialog`, and `aria-haspopup` / `aria-controls` / `aria-expanded` onto a menu's trigger `Button`. If we transcribe those, the score measures how faithfully we copied MUI's documentation, and every library would eventually score 100% because a sufficiently diligent developer can bolt correct ARIA onto anything.
+
+The question the index answers is *what do you get from the library*. Radix and React Spectrum wire these relationships for you; MUI leaves several to the developer. That difference is real, it is the kind of thing someone choosing a library would want to know, and it disappears entirely if the adapter fills the gap.
+
+**Consequence.** MUI's menu scores 78% and its accordion 97%, with most of the failures being absent ARIA that MUI documents as the developer's job. That is a *defensible* result but an easily *misread* one, so:
+
+- every result carries adapter `notes` stating exactly this, and
+- it is the first finding to raise with the maintainer in Phase 4, because "we deliberately did not write the ARIA your docs tell people to write" is a position they are entitled to argue with.
+
+A library that documents the fix is genuinely better than one that does not. If MUI makes that case, the honest response is to publish it beside the score, not to change the adapter.
+
+---
+
+## 012 — A shared setup helper must not fail for the reason an assertion is testing
+*3 August 2026*
+
+**Decision.** Helpers that put a component into a state — `openMenu`, `openPopup`, `expandFirst` — try every route the APG permits. Only the assertion whose *subject* is a particular key pins that key.
+
+**Reasoning.** MUI's menu scored **19%** on its first run. The actual defect was singular: its trigger does not open the menu on Down Arrow. But `openMenu` used Down Arrow, so nine further assertions failed with "the menu did not open" — none of them measuring what they claimed. Role, focus management, arrow navigation, Escape and focus restoration are all correct in MUI, and all were reported as failures.
+
+With the fix, the same library scores **78%** and the four remaining failures are all real.
+
+A 19% would have been catastrophically unfair, and nothing about it looked wrong: every failure message was specific and every one was, narrowly, true — the menu really had not opened.
+
+**Consequence.** The same flaw existed in the combobox and accordion specs and was fixed in both before it produced a result. The general rule for spec authors: **if an assertion can fail because of setup rather than its subject, it is not measuring what its id says it measures.** Assertions must be independent, and shared helpers are where that independence quietly breaks.
+
+---
+
 ## 011 — An APG "Optional" clause is not a requirement
 *3 August 2026*
 

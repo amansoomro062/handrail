@@ -96,7 +96,11 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
 
 **Adapters:**
 - [ ] shadcn/ui — pin both the CLI version and the generation date
-- [ ] MUI
+- [x] MUI — first subject library with a real spread: dialog, combobox and tabs 100%; menu 78%; accordion 97%
+
+  **The instrument discriminates.** Ten runs against Radix and React Spectrum had all landed at 100%, leaving open whether these specs were too coarse. MUI answers it. The failures are concentrated and coherent, and all point at one thing: MUI ships the behaviour and leaves the ARIA wiring to the developer. Its menu trigger carries no aria-haspopup or aria-expanded, and its accordion summary no aria-controls, because the documentation has you write those yourself.
+
+  Two decisions came out of it. **012** — MUI first scored 19%, because openMenu opened with Down Arrow, which MUI does not support, so nine unrelated assertions failed with "the menu did not open". The same flaw existed in combobox and accordion and was fixed in both before it produced a result. **013** — adapters use only what the library exports and never hand-write ARIA, even where the library's own docs instruct it.
 - [ ] Headless UI
 - [ ] Chakra UI
 - [ ] Ant Design

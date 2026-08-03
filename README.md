@@ -88,8 +88,9 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | Accordion spec (11 assertions)                          | Implemented         |
 | React Spectrum calibration control                      | 5 specs, all green  |
 | Radix reference adapter                                 | 4 green, combobox n/a |
+| MUI adapter                                             | 3 green, menu 78%, accordion 97% |
 | Broken fixture — false positives/negatives measured     | Calibrated on both  |
-| Remaining five adapters                                 | Not started         |
+| Remaining four adapters                                 | Not started         |
 | Public site + badges                                    | Not started         |
 
 Read [`docs/PLAN.md`](docs/PLAN.md) for the route from here to launch.
