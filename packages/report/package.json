@@ -17,6 +17,6 @@
     "@handrail/spec": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.6.3"
+    "typescript": "catalog:"
   }
 }

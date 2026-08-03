@@ -2,3 +2,40 @@ packages:
   - "packages/*"
   - "adapters/*"
   - "site"
+
+# ---------------------------------------------------------------------------
+# Version policy — see docs/VERSIONING.md
+#
+# Anything that can change a measured result is pinned EXACTLY. Everything else
+# takes a caret range.
+#
+# The distinction is not fussiness. A published score names a version, and a
+# reader must be able to install that exact version and reproduce the number. It
+# also keeps comparisons fair: every adapter renders on the same React and is
+# measured by the same browser, so a difference between two libraries is a
+# difference between the libraries.
+# ---------------------------------------------------------------------------
+catalog:
+  # Exact — affects measured behaviour.
+  react: 18.3.1
+  react-dom: 18.3.1
+  playwright: 1.62.1
+  playwright-core: 1.62.1
+
+  # Ranged — build and type tooling, cannot reach a result.
+  "@types/node": ^20.19.0
+  "@types/react": ^18.3.0
+  "@types/react-dom": ^18.3.0
+  "@vitejs/plugin-react": ^4.7.0
+  tsx: ^4.23.5
+  typescript: ^5.9.3
+  vite: ^5.4.21
+  yaml: ^2.6.0
+
+# The libraries under test. This is the single declaration of what the index
+# measures — every entry must be an exact version, enforced by `pnpm
+# check:versions`.
+catalogs:
+  subjects:
+    "@adobe/react-spectrum": 3.47.3
+    "@radix-ui/react-dialog": 1.1.23

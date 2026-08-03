@@ -16,9 +16,11 @@
     "adapter:radix": "pnpm --filter @handrail/adapter-radix run dev",
     "fixture:broken": "pnpm --filter @handrail/fixture-broken run dev",
     "calibrate": "pnpm handrail run --target _fixture-broken --component dialog --base-url http://localhost:5199 --expect adapters/_fixture-broken/expected.json",
-    "clean": "rm -rf packages/*/dist adapters/*/dist node_modules/.cache results"
+    "clean": "rm -rf packages/*/dist adapters/*/dist node_modules/.cache results",
+    "check:versions": "node scripts/check-versions.mjs"
   },
   "devDependencies": {
-    "typescript": "^5.6.3"
+    "typescript": "catalog:",
+    "yaml": "catalog:"
   }
 }

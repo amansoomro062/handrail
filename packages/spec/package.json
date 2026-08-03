@@ -14,9 +14,9 @@
     "build": "tsc --emitDeclarationOnly --declarationDir dist"
   },
   "dependencies": {
-    "playwright-core": "^1.48.0"
+    "playwright-core": "catalog:"
   },
   "devDependencies": {
-    "typescript": "^5.6.3"
+    "typescript": "catalog:"
   }
 }
