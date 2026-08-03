@@ -15,8 +15,19 @@ export {
 
 import { META_GLOBAL, READY_ATTRIBUTE, TEST_ID_ATTRIBUTE, type HarnessMeta } from "@handrail/spec";
 
-/** A DOM target to stamp: a selector, or the nth match of one. */
-export type StampTarget = string | { selector: string; index: number };
+/**
+ * A DOM target to stamp: a selector, the nth match of one, or the match whose
+ * text identifies it.
+ *
+ * `textIncludes` exists for components that render one element at a time and
+ * reuse the same DOM node — React Spectrum's tab panels, for example. Index is
+ * meaningless there because there is only ever one match, so the only way to
+ * know *which* logical panel is on screen is its content.
+ */
+export type StampTarget =
+  | string
+  | { selector: string; index: number }
+  | { selector: string; textIncludes: string };
 
 /**
  * Attach harness test ids to elements the adapter cannot put attributes on.
@@ -39,11 +50,27 @@ export type StampTarget = string | { selector: string; index: number };
  * See docs/DECISIONS.md 008.
  */
 export function stampTestIds(map: Record<string, StampTarget>): () => void {
+  const resolve = (target: StampTarget): Element | undefined => {
+    if (typeof target === "string") return document.querySelector(target) ?? undefined;
+    const matches = [...document.querySelectorAll(target.selector)];
+    if ("textIncludes" in target) {
+      return matches.find((element) => (element.textContent ?? "").includes(target.textIncludes));
+    }
+    return matches[target.index];
+  };
+
   const apply = (): void => {
     for (const [testId, target] of Object.entries(map)) {
-      const selector = typeof target === "string" ? target : target.selector;
-      const index = typeof target === "string" ? 0 : target.index;
-      const element = document.querySelectorAll(selector)[index];
+      const element = resolve(target);
+
+      // Clear the id from anything that is no longer the match. Without this, a
+      // component that reuses one DOM node for different content — a tab panel,
+      // say — would keep an id describing what used to be there, and the runner
+      // would confidently measure the wrong element.
+      for (const stale of document.querySelectorAll(`[${TEST_ID_ATTRIBUTE}="${testId}"]`)) {
+        if (stale !== element) stale.removeAttribute(TEST_ID_ATTRIBUTE);
+      }
+
       if (element && element.getAttribute(TEST_ID_ATTRIBUTE) !== testId) {
         element.setAttribute(TEST_ID_ATTRIBUTE, testId);
       }

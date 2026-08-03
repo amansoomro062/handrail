@@ -22,7 +22,8 @@
       "framework": "react",
       "packages": [
         "@radix-ui/react-dialog",
-        "@radix-ui/react-dropdown-menu"
+        "@radix-ui/react-dropdown-menu",
+        "@radix-ui/react-tabs"
       ],
       "homepage": "https://www.radix-ui.com/",
       "role": "subject",
