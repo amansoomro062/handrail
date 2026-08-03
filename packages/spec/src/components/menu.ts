@@ -49,16 +49,31 @@ function attrSelector(name: string, value: string): string {
   return `[${name}="${value.replace(/"/g, '\\"')}"]`;
 }
 
-/** Open with a key, per APG. Never by click — this pattern breaks for keyboards. */
-async function openMenu(ctx: RunContext, key = "ArrowDown"): Promise<boolean> {
+/**
+ * Open the menu from the keyboard.
+ *
+ * With an explicit key, tests exactly that key — used by the two assertions
+ * whose subject *is* the opening key. With no key, tries every route the APG
+ * permits and reports success if any works.
+ *
+ * That distinction matters more than it looks. This helper originally opened
+ * with Down Arrow only, so against a library whose trigger ignores Down Arrow,
+ * nine unrelated assertions failed with "the menu did not open" and the target
+ * scored 19% off a single defect. A shared setup helper must never fail for the
+ * reason a dedicated assertion is testing — see docs/DECISIONS.md 012.
+ */
+async function openMenu(ctx: RunContext, key?: string): Promise<boolean> {
   await ctx.keyboard.focus("hr-trigger");
-  await ctx.keyboard.press(key);
-  try {
-    await ctx.harness.el("hr-menu").waitFor({ state: "visible", timeout: 2000 });
-    return true;
-  } catch {
-    return false;
+  for (const attempt of key ? [key] : ["ArrowDown", "Enter", " "]) {
+    await ctx.keyboard.press(attempt);
+    try {
+      await ctx.harness.el("hr-menu").waitFor({ state: "visible", timeout: 1000 });
+      return true;
+    } catch {
+      // Try the next route.
+    }
   }
+  return false;
 }
 
 /**

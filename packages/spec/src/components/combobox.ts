@@ -58,11 +58,24 @@ function attrSelector(name: string, value: string): string {
  * Deliberately keyboard rather than mouse: this pattern is most often broken
  * for keyboard users specifically, and opening by click would hide that.
  */
-async function openPopup(ctx: RunContext): Promise<boolean> {
+async function openPopup(ctx: RunContext, key?: string): Promise<boolean> {
   await ctx.keyboard.focus("hr-combobox");
-  await ctx.keyboard.press("ArrowDown");
+  // With no key, try each route in turn. A shared setup helper must not fail
+  // for the reason a dedicated assertion is testing, or one defect cascades
+  // into a dozen unrelated failures — see docs/DECISIONS.md 012.
+  for (const attempt of key ? [key] : ["ArrowDown", "Alt+ArrowDown"]) {
+    await ctx.keyboard.press(attempt);
+    try {
+      await ctx.harness.el("hr-listbox").waitFor({ state: "visible", timeout: 1000 });
+      return true;
+    } catch {
+      // Try the next route.
+    }
+  }
+  // Last resort so downstream assertions can still measure the open popup.
   try {
-    await ctx.harness.el("hr-listbox").waitFor({ state: "visible", timeout: 2000 });
+    await ctx.harness.click("hr-combobox");
+    await ctx.harness.el("hr-listbox").waitFor({ state: "visible", timeout: 1000 });
     return true;
   } catch {
     return false;
@@ -173,7 +186,7 @@ const assertions: Assertion[] = [
     severity: "blocker",
     refs: { apg: APG_KEYBOARD, ...WCAG.keyboard },
     async run(ctx) {
-      return (await openPopup(ctx))
+      return (await openPopup(ctx, "ArrowDown"))
         ? pass()
         : fail(
             "The popup did not open when Down Arrow was pressed on the focused combobox.",

@@ -59,11 +59,21 @@ function attrSelector(name: string, value: string): string {
   return `[${name}="${value.replace(/"/g, '\\"')}"]`;
 }
 
-/** Expand the first section with a key, waiting for the state to settle. */
-async function expandFirst(ctx: RunContext, key: string): Promise<boolean> {
+/**
+ * Expand the first section, waiting for the state to settle.
+ *
+ * With an explicit key, tests exactly that key. With none, tries each documented
+ * activation route — a shared setup helper must not fail for the reason a
+ * dedicated assertion is testing, or one defect cascades into many unrelated
+ * failures. See docs/DECISIONS.md 012.
+ */
+async function expandFirst(ctx: RunContext, key?: string): Promise<boolean> {
   await ctx.keyboard.focus("hr-header-1");
-  await ctx.keyboard.press(key);
-  return ctx.harness.waitForAttr("hr-header-1", "aria-expanded", "true", 2000);
+  for (const attempt of key ? [key] : ["Enter", " "]) {
+    await ctx.keyboard.press(attempt);
+    if (await ctx.harness.waitForAttr("hr-header-1", "aria-expanded", "true", 1000)) return true;
+  }
+  return false;
 }
 
 const assertions: Assertion[] = [
@@ -170,7 +180,7 @@ const assertions: Assertion[] = [
     async run(ctx) {
       // Checked while expanded: many libraries only render the panel then, and
       // a reference to a non-existent element is a different defect.
-      if (!(await expandFirst(ctx, "Enter")))
+      if (!(await expandFirst(ctx)))
         return fail("The first section did not expand, so the relationship could not be checked.");
       const controls = await ctx.harness.attr("hr-header-1", "aria-controls");
       if (!controls) {
@@ -271,7 +281,7 @@ const assertions: Assertion[] = [
     severity: "blocker",
     refs: { apg: APG_ROLES, ...WCAG.nameRoleValue },
     async run(ctx) {
-      if (!(await expandFirst(ctx, "Enter")))
+      if (!(await expandFirst(ctx)))
         return fail("The first section did not expand, so its panel could not be checked.");
       if (!(await ctx.harness.exists("hr-panel-1"))) {
         return fail(
@@ -335,7 +345,7 @@ const assertions: Assertion[] = [
     severity: "serious",
     refs: { apg: APG_KEYBOARD, ...WCAG.keyboard },
     async run(ctx) {
-      if (!(await expandFirst(ctx, "Enter")))
+      if (!(await expandFirst(ctx)))
         return fail("The first section did not expand, so collapsing could not be checked.");
       await ctx.keyboard.press("Enter");
       const collapsed = await ctx.harness.waitForAttr("hr-header-1", "aria-expanded", "false", 2000);
