@@ -95,7 +95,13 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
   Started as 12 assertions. `panel-labelled-by-header` failed the control, and on checking the APG lists role=region and aria-labelledby for accordion panels under *Optional* — so it was our preference dressed as conformance, and it was removed. See decision 011.
 
 **Adapters:**
-- [ ] shadcn/ui — pin both the CLI version and the generation date
+- [x] shadcn/ui — dialog, menu, tabs and accordion 100%; combobox 85%
+
+  Generated with shadcn@4.16.1 on 4 August 2026, not installed, so the result is identified by CLI version and generation date rather than a package version.
+
+  **The copy-paste model preserves the upstream behaviour.** Menu, tabs, accordion and dialog all match Radix exactly. That was the project's most interesting open question and the answer is reassuring.
+
+  Two things worth knowing that only this exercise surfaced. shadcn is no longer a single upstream: dialog, menu, tabs and accordion are Radix, but the combobox is Base UI. And its generated dialog ships a close button of its own, which is what produced decision **017** after a false 76%.
 - [x] MUI — first subject library with a real spread: dialog, combobox and tabs 100%; menu 78%; accordion 97%
 
   **The instrument discriminates.** Ten runs against Radix and React Spectrum had all landed at 100%, leaving open whether these specs were too coarse. MUI answers it. The failures are concentrated and coherent, and all point at one thing: MUI ships the behaviour and leaves the ARIA wiring to the developer. Its menu trigger carries no aria-haspopup or aria-expanded, and its accordion summary no aria-controls, because the documentation has you write those yourself.

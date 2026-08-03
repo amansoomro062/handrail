@@ -61,6 +61,23 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 017 — Focus containment is a DOM question, not a test-id question
+*4 August 2026*
+
+**Decision.** The focus-trap assertions ask the DOM whether the focused element is inside the dialog. They no longer infer it from whether the element carries a harness test id.
+
+**Reasoning.** shadcn/ui's generated dialog scored 76% with two blocker failures. Radix, which it is built on, scored 100%. That looked like the answer to the project's most interesting open question: whether copying component source preserves the original's behaviour.
+
+It did not. shadcn's generated DialogContent ships a close button of its own, so the dialog holds four focusable elements rather than the three the protocol describes. Focus never left the dialog. The assertion judged containment by test id, treated the library's own unlabelled button as "outside", and reported a working focus trap as broken.
+
+**Consequence.** shadcn's dialog is 100%, and so is every other library's. Ant Design moved from 70% to 82% on the same fix, because its dialog also contains an unlabelled control of its own.
+
+The lesson is narrower than decision 007 and worth stating separately: **an assertion must not assume the harness knows about every element on the page.** Adapters label the elements a spec needs to address; libraries are free to add their own, and a spec that treats anything unlabelled as foreign will misreport exactly the libraries that do the most work for you.
+
+It also means the protocol's "exactly three focusable elements" is a description of what the harness provides, not a constraint the library is obliged to honour. Adapters should record when a library adds its own.
+
+---
+
 ## 016 — A first run against a new library is an adapter draft, not a result
 *4 August 2026*
 
