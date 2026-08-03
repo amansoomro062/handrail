@@ -55,6 +55,14 @@ export const TEXT = {
   panel1: "Overview panel content",
   panel2: "Billing panel content",
   panel3: "Settings panel content",
+
+  /** Accordion content. All sections start collapsed. */
+  accordionHeader1: "Shipping",
+  accordionHeader2: "Payment",
+  accordionHeader3: "Review",
+  accordionPanel1: "Shipping section content",
+  accordionPanel2: "Payment section content",
+  accordionPanel3: "Review section content",
 } as const;
 
 /** Metadata an adapter must expose on `window.__HANDRAIL__`. */
