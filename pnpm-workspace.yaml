@@ -37,6 +37,7 @@ catalog:
 # check:versions`.
 catalogs:
   subjects:
+    "@headlessui/react": 2.2.10
     "@emotion/react": 11.14.0
     "@emotion/styled": 11.14.1
     "@mui/lab": 9.0.0-beta.6
