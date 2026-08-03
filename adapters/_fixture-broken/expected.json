@@ -1,18 +1,37 @@
 {
   "$comment": "The catalogue of defects. The runner must detect exactly these and no others. A mismatch in either direction is a bug in the engine, not in a library — a false negative means we would miss a real defect, a false positive means we would accuse a library wrongly. The second is the one that would end this project.",
-  "component": "dialog",
-  "expected": {
-    "dialog.trigger-has-accessible-name": "pass",
-    "dialog.trigger-is-focusable": "pass",
-    "dialog.opens-on-enter": "pass",
-    "dialog.has-dialog-role": "pass",
-    "dialog.has-accessible-name": "fail",
-    "dialog.focus-moves-in": "fail",
-    "dialog.focus-trapped-forward": "fail",
-    "dialog.focus-trapped-backward": "fail",
-    "dialog.escape-closes": "fail",
-    "dialog.focus-restored-on-close": "fail",
-    "dialog.background-inert": "fail",
-    "dialog.close-has-accessible-name": "fail"
-  }
+  "components": {
+    "dialog": {
+      "dialog.trigger-has-accessible-name": "pass",
+      "dialog.trigger-is-focusable": "pass",
+      "dialog.opens-on-enter": "pass",
+      "dialog.has-dialog-role": "pass",
+      "dialog.has-accessible-name": "fail",
+      "dialog.focus-moves-in": "fail",
+      "dialog.focus-trapped-forward": "fail",
+      "dialog.focus-trapped-backward": "fail",
+      "dialog.escape-closes": "fail",
+      "dialog.focus-restored-on-close": "fail",
+      "dialog.background-inert": "fail",
+      "dialog.close-has-accessible-name": "fail"
+    },
+    "combobox": {
+      "combobox.has-accessible-name": "pass",
+      "combobox.is-focusable": "pass",
+      "combobox.opens-on-down-arrow": "pass",
+      "combobox.focus-remains-on-combobox": "pass",
+
+      "combobox.has-combobox-role": "fail",
+      "combobox.collapsed-by-default": "fail",
+      "combobox.expanded-state-communicated": "fail",
+      "combobox.popup-has-listbox-role": "fail",
+      "combobox.controls-popup": "fail",
+      "combobox.options-have-option-role": "fail",
+      "combobox.arrow-moves-active-option": "fail",
+      "combobox.active-option-communicated": "fail",
+      "combobox.enter-selects-active-option": "fail",
+      "combobox.escape-closes": "fail"
+    }
+  },
+  "$note": "combobox.focus-remains-on-combobox passes here honestly: the naive implementation never moves focus, because its 'listbox' is a div nobody can focus. It gets that one right by doing nothing, which is a useful reminder that a passing assertion is not evidence of care."
 }

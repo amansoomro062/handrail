@@ -17,8 +17,7 @@ interface Args {
 }
 
 interface ExpectationFile {
-  component: string;
-  expected: Record<string, string>;
+  components: Record<string, Record<string, string>>;
 }
 
 /**
@@ -41,15 +40,24 @@ function fromInvocationDir(path: string): string {
  * accuse a maintainer of something that is not true.
  */
 function compareToExpectations(
-  result: { assertions: Array<{ id: string; status: string }> },
-  expectations: ExpectationFile,
+  result: { component: string; assertions: Array<{ id: string; status: string }> },
+  file: ExpectationFile,
 ): { ok: boolean; lines: string[] } {
   const lines: string[] = [];
   const seen = new Set<string>();
+  const expected = file.components[result.component];
+
+  if (!expected) {
+    const known = Object.keys(file.components).join(", ") || "none";
+    return {
+      ok: false,
+      lines: [`  No catalogue for component "${result.component}". Catalogued: ${known}.`],
+    };
+  }
 
   for (const assertion of result.assertions) {
     seen.add(assertion.id);
-    const want = expectations.expected[assertion.id];
+    const want = expected[assertion.id];
     if (want === undefined) {
       lines.push(`  UNCATALOGUED  ${assertion.id} — got ${assertion.status}, no expectation recorded`);
       continue;
@@ -65,7 +73,7 @@ function compareToExpectations(
     }
   }
 
-  for (const id of Object.keys(expectations.expected)) {
+  for (const id of Object.keys(expected)) {
     if (!seen.has(id)) lines.push(`  MISSING  ${id} — expected but never ran`);
   }
 
