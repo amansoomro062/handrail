@@ -20,7 +20,6 @@
       "combobox.is-focusable": "pass",
       "combobox.opens-on-down-arrow": "pass",
       "combobox.focus-remains-on-combobox": "pass",
-
       "combobox.has-combobox-role": "fail",
       "combobox.collapsed-by-default": "fail",
       "combobox.expanded-state-communicated": "fail",
@@ -31,6 +30,21 @@
       "combobox.active-option-communicated": "fail",
       "combobox.enter-selects-active-option": "fail",
       "combobox.escape-closes": "fail"
+    },
+    "menu": {
+      "menu.trigger-has-accessible-name": "pass",
+      "menu.opens-on-enter": "pass",
+      "menu.opens-on-down-arrow": "pass",
+      "menu.focus-restored-on-close": "pass",
+      "menu.trigger-has-haspopup": "fail",
+      "menu.trigger-collapsed-by-default": "fail",
+      "menu.expanded-state-communicated": "fail",
+      "menu.has-menu-role": "fail",
+      "menu.items-have-menuitem-role": "fail",
+      "menu.focus-enters-menu-on-open": "fail",
+      "menu.arrow-moves-between-items": "fail",
+      "menu.escape-closes": "fail",
+      "menu.item-has-accessible-name": "fail"
     }
   },
   "$note": "combobox.focus-remains-on-combobox passes here honestly: the naive implementation never moves focus, because its 'listbox' is a div nobody can focus. It gets that one right by doing nothing, which is a useful reminder that a passing assertion is not evidence of care."

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Handrail — deliberately broken menu</title>
+  </head>
+  <body>
+    <!--
+      A dropdown pretending to be a menu: a button that reveals a div of
+      clickable rows. This is the single most common way menus are built, and it
+      is why the pattern is worth testing — it looks and behaves correctly with a
+      mouse, and a keyboard user can open it but never enter it.
+    -->
+    <button data-testid="hr-before" type="button">Before</button>
+
+    <!-- DEFECT: no aria-haspopup, no aria-expanded. -->
+    <button data-testid="hr-trigger" type="button">Open menu</button>
+
+    <!-- DEFECT: no role=menu, no role=menuitem, nothing focusable. -->
+    <div data-testid="hr-menu" hidden>
+      <div data-testid="hr-item-1">Cut</div>
+      <div data-testid="hr-item-2">Duplicate</div>
+      <div data-testid="hr-item-3">Paste</div>
+    </div>
+
+    <button data-testid="hr-after" type="button">After</button>
+
+    <script type="module">
+      const trigger = document.querySelector('[data-testid="hr-trigger"]');
+      const menu = document.querySelector('[data-testid="hr-menu"]');
+
+      // DEFECT: reveals the menu and nothing else. Focus is never moved into it,
+      // arrows do nothing, Escape does nothing, and no state is communicated.
+      const open = () => {
+        menu.hidden = false;
+      };
+      trigger.addEventListener("click", open);
+      trigger.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") open();
+      });
+
+      for (const item of menu.children) {
+        item.addEventListener("click", () => {
+          menu.hidden = true;
+        });
+      }
+
+      window.__HANDRAIL__ = {
+        protocolVersion: 1,
+        library: "_fixture-broken",
+        libraryVersions: { "_fixture-broken": "0.1.0" },
+        adapterVersion: "0.1.0",
+        component: "menu",
+        notes: "Deliberately broken calibration fixture. Never publish results for this target.",
+      };
+
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => document.body.setAttribute("data-handrail-ready", "true")),
+      );
+    </script>
+  </body>
+</html>

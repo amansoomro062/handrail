@@ -36,6 +36,7 @@ export default defineConfig({
       input: {
         dialog: "harness/dialog/index.html",
         combobox: "harness/combobox/index.html",
+        menu: "harness/menu/index.html",
       },
     },
   },
