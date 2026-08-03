@@ -244,6 +244,19 @@ export async function createHarness(
       return (await page.locator(testIdSelector(testId)).innerText()).trim();
     },
     attr: (testId, name) => page.locator(testIdSelector(testId)).getAttribute(name),
+    async waitForAttr(testId, name, value, timeoutMs = 2000) {
+      try {
+        await page.waitForFunction(
+          ({ id, attribute, expected }) =>
+            document.querySelector(`[data-testid="${id}"]`)?.getAttribute(attribute) === expected,
+          { id: testId, attribute: name, expected: value },
+          { timeout: timeoutMs },
+        );
+        return true;
+      } catch {
+        return false;
+      }
+    },
     value: (testId) => page.locator(testIdSelector(testId)).inputValue(),
     async waitForValue(testId, timeoutMs = 2000) {
       await page

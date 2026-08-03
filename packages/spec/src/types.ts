@@ -143,6 +143,15 @@ export interface HarnessHandle {
   text(testId: string): Promise<string>;
   /** Raw DOM attribute. For ARIA relationships and states the AX tree flattens. */
   attr(testId: string, name: string): Promise<string | null>;
+  /**
+   * Wait for an attribute to take a value, returning false on timeout.
+   *
+   * The general form of the mistake in docs/DECISIONS.md 007, which has now
+   * appeared three times: ARIA state is frequently updated in an effect rather
+   * than synchronously with the interaction that caused it. Any assertion
+   * reading state after a keypress must wait for it.
+   */
+  waitForAttr(testId: string, name: string, value: string, timeoutMs?: number): Promise<boolean>;
   /** Current value of an input element. */
   value(testId: string): Promise<string>;
   /**
