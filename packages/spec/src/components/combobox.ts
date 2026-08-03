@@ -58,6 +58,23 @@ function attrSelector(name: string, value: string): string {
  * Deliberately keyboard rather than mouse: this pattern is most often broken
  * for keyboard users specifically, and opening by click would hide that.
  */
+/**
+ * Is the popup open, as assistive technology would see it?
+ *
+ * CSS visibility is the wrong measure. Ant Design renders role=listbox on a
+ * zero-height virtual-scroll container, which Playwright calls invisible while a
+ * screen reader reaches it perfectly well. Falling back to accessibility-tree
+ * exposure keeps this consistent with decision 002 — the tree is what we measure.
+ */
+async function popupIsOpen(ctx: RunContext, timeoutMs: number): Promise<boolean> {
+  try {
+    await ctx.harness.el("hr-listbox").waitFor({ state: "visible", timeout: timeoutMs });
+    return true;
+  } catch {
+    return ctx.a11y.isExposed("hr-listbox");
+  }
+}
+
 async function openPopup(ctx: RunContext, key?: string): Promise<boolean> {
   await ctx.keyboard.focus("hr-combobox");
   // With no key, try each route in turn. A shared setup helper must not fail
@@ -65,25 +82,17 @@ async function openPopup(ctx: RunContext, key?: string): Promise<boolean> {
   // into a dozen unrelated failures — see docs/DECISIONS.md 012.
   for (const attempt of key ? [key] : ["ArrowDown", "Alt+ArrowDown"]) {
     await ctx.keyboard.press(attempt);
-    try {
-      await ctx.harness.el("hr-listbox").waitFor({ state: "visible", timeout: 1000 });
+    if (await popupIsOpen(ctx, 1000)) {
       // A combobox keeps focus on the input, so settle on the expanded state
       // instead. Best-effort: expanded-state-communicated must stay free to fail.
       await ctx.harness.waitForAttr("hr-combobox", "aria-expanded", "true", 700);
       await ctx.harness.settle();
       return true;
-    } catch {
-      // Try the next route.
     }
   }
   // Last resort so downstream assertions can still measure the open popup.
-  try {
-    await ctx.harness.click("hr-combobox");
-    await ctx.harness.el("hr-listbox").waitFor({ state: "visible", timeout: 1000 });
-    return true;
-  } catch {
-    return false;
-  }
+  await ctx.harness.click("hr-combobox");
+  return popupIsOpen(ctx, 1000);
 }
 
 /**
@@ -442,9 +451,11 @@ const assertions: Assertion[] = [
       if (!(await openPopup(ctx)))
         return fail("The popup did not open, so Escape could not be checked.");
       await ctx.keyboard.press("Escape");
-      try {
-        await ctx.harness.el("hr-listbox").waitFor({ state: "hidden", timeout: 2000 });
-      } catch {
+      const stillOpen = await popupIsOpen(ctx, 200);
+      if (stillOpen) {
+        await ctx.harness.el("hr-listbox").waitFor({ state: "hidden", timeout: 1800 }).catch(() => {});
+      }
+      if (await popupIsOpen(ctx, 200)) {
         return fail(
           "The popup was still visible after pressing Escape.",
           "listbox closed",

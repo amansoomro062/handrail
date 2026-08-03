@@ -50,6 +50,11 @@ const WCAG = {
 
 const HEADER_IDS = ["hr-header-1", "hr-header-2", "hr-header-3"] as const;
 
+function nameContains(actual: string | null, expected: string): boolean {
+  if (!actual) return false;
+  return actual.trim().replace(/\s+/g, " ").toLowerCase().includes(expected.toLowerCase());
+}
+
 function nameMatches(actual: string | null, expected: string): boolean {
   if (!actual) return false;
   return actual.trim().replace(/\s+/g, " ").toLowerCase() === expected.toLowerCase();
@@ -135,7 +140,10 @@ const assertions: Assertion[] = [
       for (const [index, testId] of HEADER_IDS.entries()) {
         const name = await ctx.a11y.nameFor(testId);
         const want = expected[index] as string;
-        if (!nameMatches(name, want)) {
+        // Containment, not equality. Some libraries fold state into the name
+        // ("collapsed Shipping"), which is redundant but does identify the
+        // section — and identifying it is what the APG requires.
+        if (!nameContains(name, want)) {
           wrong.push(`${testId}: expected "${want}", got ${name === null ? "no name" : `"${name}"`}`);
         }
       }

@@ -212,7 +212,9 @@ const assertions: Assertion[] = [
         const inside = step.testId ? await ctx.harness.isWithin(step.testId, "hr-dialog") : false;
         if (!inside && step.testId !== "hr-dialog") {
           return fail(
-            `Focus left the dialog after ${i + 1} Tab press${i === 0 ? "" : "es"}.`,
+            step.isBody
+              ? `Focus landed on <body> after ${i + 1} Tab press${i === 0 ? "" : "es"}, leaving the dialog for a step. It did not reach background content, but the tab stop is wasted and the APG requires focus to remain within the dialog.`
+              : `Focus left the dialog after ${i + 1} Tab press${i === 0 ? "" : "es"}.`,
             "focus remains within the dialog",
             describeFocus(step),
           );
