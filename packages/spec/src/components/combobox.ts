@@ -250,7 +250,7 @@ const assertions: Assertion[] = [
         return fail("The popup did not open, so the relationship could not be checked.");
       // APG permits either property for this relationship.
       const controls =
-        (await ctx.harness.attr("hr-combobox", "aria-controls")) ??
+        (await ctx.harness.waitForAttrPresent("hr-combobox", "aria-controls")) ??
         (await ctx.harness.attr("hr-combobox", "aria-owns"));
       if (!controls) {
         return fail(

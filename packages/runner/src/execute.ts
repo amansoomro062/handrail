@@ -125,7 +125,7 @@ export async function runSpec(options: RunOptions): Promise<RunResult> {
       );
     }
 
-    const a11y = createA11yTools(cdp);
+    const a11y = createA11yTools(cdp, page);
     const keyboard = createKeyboardTools(page, cdp);
     const assertions: AssertionResult[] = [];
 

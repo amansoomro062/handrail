@@ -182,7 +182,7 @@ const assertions: Assertion[] = [
       // a reference to a non-existent element is a different defect.
       if (!(await expandFirst(ctx)))
         return fail("The first section did not expand, so the relationship could not be checked.");
-      const controls = await ctx.harness.attr("hr-header-1", "aria-controls");
+      const controls = await ctx.harness.waitForAttrPresent("hr-header-1", "aria-controls");
       if (!controls) {
         return fail(
           "The header control does not reference its panel.",

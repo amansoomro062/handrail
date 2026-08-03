@@ -73,6 +73,17 @@ export interface A11yTools {
   nodeForSelector(selector: string): Promise<AxNode | null>;
   /** Computed accessible name, or null if the element is absent or ignored. */
   nameFor(testId: string): Promise<string | null>;
+  /**
+   * Poll until the accessible name matches, then return it. Returns whatever is
+   * there on timeout, so the assertion reports the real state.
+   *
+   * An accessible name is often assembled after the element exists: a title
+   * subcomponent registers its id into the container's `aria-labelledby` on
+   * mount, which lands a tick after the container becomes visible. Reading the
+   * name the instant something opens produces an *intermittent* failure, which
+   * is worse than a consistent one — see docs/DECISIONS.md 014.
+   */
+  waitForName(testId: string, expected: string, timeoutMs?: number): Promise<string | null>;
   /** Computed role, or null if the element is absent or ignored. */
   roleFor(testId: string): Promise<string | null>;
   /**
@@ -152,6 +163,14 @@ export interface HarnessHandle {
    * reading state after a keypress must wait for it.
    */
   waitForAttr(testId: string, name: string, value: string, timeoutMs?: number): Promise<boolean>;
+  /**
+   * Wait for an attribute to exist at all, then return it.
+   *
+   * ARIA *relationships* land as late as ARIA state: Headless UI sets
+   * aria-controls a tick after aria-expanded, so reading it immediately is a
+   * coin flip. That produced an intermittent failure, which is the worst kind.
+   */
+  waitForAttrPresent(testId: string, name: string, timeoutMs?: number): Promise<string | null>;
   /** Current value of an input element. */
   value(testId: string): Promise<string>;
   /**

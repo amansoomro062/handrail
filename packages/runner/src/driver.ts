@@ -34,7 +34,7 @@ export class HarnessError extends Error {
 
 import type { Cdp } from "./cdp.js";
 
-export function createA11yTools(cdp: Cdp): A11yTools {
+export function createA11yTools(cdp: Cdp, page: Page): A11yTools {
   async function nodeForSelector(selector: string): Promise<AxNode | null> {
     const backendNodeId = await cdp.backendNodeIdForSelector(selector);
     if (backendNodeId === null) return null;
@@ -58,6 +58,19 @@ export function createA11yTools(cdp: Cdp): A11yTools {
       const node = await nodeFor(testId);
       if (!node || node.ignored) return null;
       return node.name;
+    },
+    async waitForName(testId, expected, timeoutMs = 2000) {
+      const normalise = (value: string | null) =>
+        value === null ? null : value.trim().replace(/\s+/g, " ").toLowerCase();
+      const target = normalise(expected);
+      const deadline = Date.now() + timeoutMs;
+      let name: string | null = null;
+      for (;;) {
+        const node = await nodeFor(testId);
+        name = !node || node.ignored ? null : node.name;
+        if (normalise(name) === target || Date.now() >= deadline) return name;
+        await page.waitForTimeout(25);
+      }
     },
     async roleFor(testId) {
       const node = await nodeFor(testId);
@@ -244,6 +257,19 @@ export async function createHarness(
       return (await page.locator(testIdSelector(testId)).innerText()).trim();
     },
     attr: (testId, name) => page.locator(testIdSelector(testId)).getAttribute(name),
+    async waitForAttrPresent(testId, name, timeoutMs = 2000) {
+      await page
+        .waitForFunction(
+          ({ id, attribute }) => {
+            const value = document.querySelector(`[data-testid="${id}"]`)?.getAttribute(attribute);
+            return typeof value === "string" && value.length > 0;
+          },
+          { id: testId, attribute: name },
+          { timeout: timeoutMs },
+        )
+        .catch(() => {});
+      return page.locator(testIdSelector(testId)).getAttribute(name);
+    },
     async waitForAttr(testId, name, value, timeoutMs = 2000) {
       try {
         await page.waitForFunction(

@@ -154,7 +154,7 @@ const assertions: Assertion[] = [
     refs: { apg: APG, ...WCAG.nameRoleValue },
     async run(ctx) {
       if (!(await openDialog(ctx))) return fail("The dialog did not open, so its name could not be checked.");
-      const name = await ctx.a11y.nameFor("hr-dialog");
+      const name = await ctx.a11y.waitForName("hr-dialog", TEXT.dialogTitle);
       return nameMatches(name, TEXT.dialogTitle)
         ? pass(`Accessible name is "${name}"`)
         : fail(
@@ -315,7 +315,7 @@ const assertions: Assertion[] = [
     refs: { apg: APG, ...WCAG.nameRoleValue },
     async run(ctx) {
       if (!(await openDialog(ctx))) return fail("The dialog did not open, so the close control could not be checked.");
-      const name = await ctx.a11y.nameFor("hr-close");
+      const name = await ctx.a11y.waitForName("hr-close", TEXT.close);
       return nameMatches(name, TEXT.close)
         ? pass(`Accessible name is "${name}"`)
         : fail(

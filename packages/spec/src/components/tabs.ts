@@ -221,7 +221,7 @@ const assertions: Assertion[] = [
     severity: "moderate",
     refs: { apg: APG_ROLES, ...WCAG.infoRelationships },
     async run(ctx) {
-      const controls = await ctx.harness.attr("hr-tab-1", "aria-controls");
+      const controls = await ctx.harness.waitForAttrPresent("hr-tab-1", "aria-controls");
       if (!controls) {
         return fail(
           "The selected tab does not reference its panel.",

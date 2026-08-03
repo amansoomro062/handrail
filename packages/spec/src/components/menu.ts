@@ -407,8 +407,8 @@ const assertions: Assertion[] = [
       const expected = [TEXT.menuItem1, TEXT.menuItem2, TEXT.menuItem3];
       const wrong: string[] = [];
       for (const [index, testId] of ITEM_IDS.entries()) {
-        const name = await ctx.a11y.nameFor(testId);
         const want = expected[index] as string;
+        const name = await ctx.a11y.waitForName(testId, want);
         if (!nameMatches(name, want)) {
           wrong.push(`${testId}: expected "${want}", got ${name === null ? "no name" : `"${name}"`}`);
         }
