@@ -80,7 +80,8 @@
       ],
       "homepage": "https://ant.design/",
       "role": "subject",
-      "status": "planned"
+      "status": "draft",
+      "notes": "NOT PUBLISHABLE. First-run scores were dominated by adapter bugs of ours: combobox moved 27% -> 94% and accordion 42% -> 85% after correcting a visibility check and a v5 class name. Remaining failures are unverified — see docs/DECISIONS.md 016 for exactly which are confirmed and which are still open."
     },
     {
       "id": "headlessui",

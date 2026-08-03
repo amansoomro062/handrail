@@ -91,8 +91,9 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | MUI adapter                                             | 3 green, menu 78%, accordion 97% |
 | Headless UI adapter                                     | 4 green, accordion 97% |
 | Chakra UI adapter                                       | 4 green, accordion 97% |
+| Ant Design adapter                                      | draft — not publishable |
 | Broken fixture — false positives/negatives measured     | Calibrated on both  |
-| Remaining two adapters                                  | Not started         |
+| Remaining adapter (shadcn/ui)                           | Not started         |
 | Public site + badges                                    | Not started         |
 
 Read [`docs/PLAN.md`](docs/PLAN.md) for the route from here to launch.

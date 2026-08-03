@@ -111,7 +111,11 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
   Chakra v3 is built on Ark UI and scores like it. The accordion failure is the same one MUI and Headless UI have: section headers are not real headings.
 
   It produced decision **015**, the most consequential one so far. Chakra's combobox failed `escape-closes` about half the time, and it was genuinely real — but only when Escape arrived within 50ms of the popup opening, which no human can do. The index now interacts at human speed and treats sub-60ms races as out of scope. Publishing that would have been technically accurate and completely irrelevant to any actual user.
-- [ ] Ant Design
+- [~] Ant Design — **draft, not publishable.** tabs 100%; combobox 94%; accordion 85%; dialog 70%; menu 52%
+
+  The first run produced the worst scores in the index, and investigating them moved combobox from 27% to 94% and accordion from 42% to 85% — every point of it our adapter's fault. A 27% would have been the headline finding of the whole project. It was a selector.
+
+  Confirmed by hand: the dialog does not hide background content from assistive technology, and the accordion header has no aria-controls and is not a heading. Everything else stays unverified. See decision **016**.
 
 Run each new spec against React Spectrum first, as in Phase 1, before pointing it at anyone else.
 

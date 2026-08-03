@@ -61,6 +61,34 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 016 — A first run against a new library is an adapter draft, not a result
+*4 August 2026*
+
+**Decision.** Ant Design is marked `draft` and none of its scores may be published until each remaining failure has been confirmed against the DOM by hand. No library's first run is publishable.
+
+**Reasoning.** Ant Design's first run produced the worst scores in the index by a wide margin. Investigating each one moved two components enormously, and every point of movement was **our** fault:
+
+| Component | First run | After correcting the adapter | What was wrong |
+| --- | --- | --- | --- |
+| Combobox | 27% | 94% | We required the listbox to be CSS-visible. Ant Design puts `role=listbox` on a zero-height virtual-scroll node that a screen reader reaches perfectly well. |
+| Accordion | 42% | 85% | We stamped `.ant-collapse-content`, which is the v5 class name. v6 renamed it to `.ant-collapse-panel`. |
+
+A 27% would have been the headline finding of the entire index. It was a selector.
+
+Two spec corrections came out of it as well. "Is the popup open" is now answered from the accessibility tree rather than CSS visibility — consistent with decision 002, and the more honest question. And an accessible name now only has to *contain* the label rather than equal it: Ant Design's is `"collapsed Shipping"`, which folds state into the name. Redundant, but it identifies the section, and identifying it is what the APG requires. Demanding equality was our preference.
+
+**Consequence.** The rule that adapters are reviewed harder than test code is now evidenced rather than asserted. A first run tells you your adapter is wrong; the second tells you something about the library.
+
+**Still unresolved for Ant Design**, and the reason it stays unpublishable:
+
+- `combobox.options-have-option-role` — only one option is in the DOM at a time under virtualisation. Virtualised lists are legitimate when they carry `aria-setsize` and `aria-posinset`, which this spec does not yet check. This is most likely **our** limitation, not a defect.
+- `menu` at 52% — six failures, none yet confirmed by hand. Plausible, given Ant Design's Dropdown is built around pointer interaction, but plausible is not verified.
+- `dialog.focus-trapped-*` — focus passes through `<body>` for one Tab before returning. Real, but materially less serious than reaching background content, and the severity should probably distinguish the two.
+
+**Confirmed by direct DOM inspection** and safe to carry forward: the dialog does not hide background content from assistive technology, the accordion header carries no `aria-controls`, and the accordion header is not a heading.
+
+---
+
 ## 015 — We test at human speed, and a race no person could hit is not a finding
 *3 August 2026*
 
