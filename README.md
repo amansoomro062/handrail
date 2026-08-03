@@ -112,6 +112,14 @@ pnpm handrail run --target radix --component dialog --base-url http://localhost:
 
 Results are written to `results/` as JSON, with a human-readable summary on stdout.
 
+Every version this index measures is pinned exactly, in one place, and cross-checked:
+
+```bash
+pnpm check:versions
+```
+
+That verifies the catalog, `node_modules`, `targets.json` and any existing results all name the same versions — including catching a **stale result**, a plausible-looking score describing a version nobody can install any more. See [`docs/VERSIONING.md`](docs/VERSIONING.md).
+
 To check the runner itself rather than a library:
 
 ```bash

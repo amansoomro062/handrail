@@ -61,6 +61,19 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 010 — Anything that can change a result is pinned exactly
+*3 August 2026*
+
+**Decision.** Every library under test, plus `react`, `react-dom` and `playwright`, is pinned to an exact version in a pnpm catalog. Build and type tooling may use ranges. `pnpm check:versions` enforces it and must pass before publication.
+
+**Reasoning.** The project had been running on caret ranges, and the drift was already large: `^1.1.4` was resolving to `1.1.23`, `^3.38.0` to `3.47.3`. Results were being written naming exact versions against a repository declaring ranges — so a clone a month later would install something different and produce a different score for what appeared to be the same commit. "Reproducible" was in the README as a claim rather than a property.
+
+React and Playwright are on the exact list for the same reason as the subject libraries. Focus behaviour differs across React versions, and the accessibility tree is computed by the bundled browser. If two adapters ran different Reacts, a difference between two libraries would no longer be attributable to the libraries — which is the only thing the index is for.
+
+**Consequence.** Upgrades become deliberate: bump the pin, re-run every affected spec, commit the results with the bump. The check specifically catches a **stale result** — a plausible-looking number describing a version nobody can install any more — which is the failure a human reviewer would never spot.
+
+---
+
 ## 009 — Not shipping a component scores `n/a`, never zero
 *3 August 2026*
 
