@@ -256,6 +256,14 @@ export async function createHarness(
     async text(testId) {
       return (await page.locator(testIdSelector(testId)).innerText()).trim();
     },
+    async settle(ms = 60) {
+      // Two frames lets a transition commit; the floor keeps interaction at a
+      // speed a person could actually produce.
+      await page.evaluate(
+        () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => r(null)))),
+      );
+      await page.waitForTimeout(ms);
+    },
     attr: (testId, name) => page.locator(testIdSelector(testId)).getAttribute(name),
     async waitForAttrPresent(testId, name, timeoutMs = 2000) {
       await page

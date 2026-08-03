@@ -68,6 +68,10 @@ async function openMenu(ctx: RunContext, key?: string): Promise<boolean> {
     await ctx.keyboard.press(attempt);
     try {
       await ctx.harness.el("hr-menu").waitFor({ state: "visible", timeout: 1000 });
+      // Visible is not ready — wait, best-effort, for focus to enter the menu
+      // before the caller interacts with it.
+      await ctx.keyboard.waitForFocusWithin("hr-menu", 700);
+      await ctx.harness.settle();
       return true;
     } catch {
       // Try the next route.

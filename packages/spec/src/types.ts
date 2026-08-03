@@ -152,6 +152,15 @@ export interface HarnessHandle {
   isWithin(testId: string, ancestorTestId: string): Promise<boolean>;
   click(testId: string): Promise<void>;
   text(testId: string): Promise<string>;
+  /**
+   * Pause until the component has settled, at human speed.
+   *
+   * A person cannot press two keys inside 60ms. A test that does is measuring a
+   * library's internal state machine rather than anything a user could
+   * encounter, and any race it finds there is not an accessibility finding —
+   * see docs/DECISIONS.md 015.
+   */
+  settle(ms?: number): Promise<void>;
   /** Raw DOM attribute. For ARIA relationships and states the AX tree flattens. */
   attr(testId: string, name: string): Promise<string | null>;
   /**

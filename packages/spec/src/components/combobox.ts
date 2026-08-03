@@ -67,6 +67,10 @@ async function openPopup(ctx: RunContext, key?: string): Promise<boolean> {
     await ctx.keyboard.press(attempt);
     try {
       await ctx.harness.el("hr-listbox").waitFor({ state: "visible", timeout: 1000 });
+      // A combobox keeps focus on the input, so settle on the expanded state
+      // instead. Best-effort: expanded-state-communicated must stay free to fail.
+      await ctx.harness.waitForAttr("hr-combobox", "aria-expanded", "true", 700);
+      await ctx.harness.settle();
       return true;
     } catch {
       // Try the next route.
@@ -447,6 +451,9 @@ const assertions: Assertion[] = [
           "listbox still visible after 2000ms",
         );
       }
+      // The attribute is cleared a beat after the popup hides, so this waits
+      // rather than reading it the instant the element disappears.
+      await ctx.harness.waitForAttr("hr-combobox", "aria-expanded", "false", 1000);
       const expanded = await ctx.harness.attr("hr-combobox", "aria-expanded");
       return expanded === "false" || expanded === null
         ? pass()

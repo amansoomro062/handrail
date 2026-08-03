@@ -55,10 +55,19 @@ async function openDialog(ctx: RunContext): Promise<boolean> {
   await ctx.harness.click("hr-trigger");
   try {
     await ctx.harness.el("hr-dialog").waitFor({ state: "visible", timeout: 2000 });
-    return true;
   } catch {
     return false;
   }
+  // Visible is not the same as ready. Libraries with an entry transition attach
+  // their key handling and move focus after the element appears, so a key
+  // pressed at "visible" can land on nothing and be silently dropped.
+  //
+  // Best-effort on purpose: this must never *require* focus to arrive, because
+  // dialog.focus-moves-in is a separate assertion that has to be able to fail on
+  // its own terms. See docs/DECISIONS.md 012.
+  await ctx.keyboard.waitForFocusWithin("hr-dialog", 700);
+  await ctx.harness.settle();
+  return true;
 }
 
 const assertions: Assertion[] = [
