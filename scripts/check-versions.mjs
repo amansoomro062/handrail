@@ -190,6 +190,36 @@ if (existsSync(resultsDir)) {
 }
 
 /* ------------------------------------------------------------------ *
+ * 7. Results name every subject library their adapter depends on
+ * ------------------------------------------------------------------ */
+
+// The adapter reports its versions from one place, so a result that omits a
+// package the adapter depends on means that reporting has gone stale. This
+// happened twice with a hand-maintained list, and it is undetectable
+// downstream: the result looks complete and simply names the wrong library.
+if (existsSync(resultsDir)) {
+  for (const file of readdirSync(resultsDir).filter((f) => f.endsWith(".json"))) {
+    const result = JSON.parse(readFileSync(join(resultsDir, file), "utf8"));
+    const targetId = result.target?.id;
+    const adapterManifest = join(root, "adapters", targetId ?? "", "package.json");
+    if (!targetId || !existsSync(adapterManifest)) continue;
+    if (result.harnessError) continue;
+
+    const manifest = JSON.parse(readFileSync(adapterManifest, "utf8"));
+    const expected = Object.keys(manifest.dependencies ?? {}).filter((name) => name in subjects);
+    const reported = Object.keys(result.target?.versions ?? {});
+    const missing = expected.filter((name) => !reported.includes(name));
+
+    if (missing.length > 0) {
+      fail(
+        `results/${file}: does not report ${missing.join(", ")}, which adapters/${targetId} depends on.\n` +
+          `      Version reporting has gone stale — the result names the wrong library.`,
+      );
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ *
  * Report
  * ------------------------------------------------------------------ */
 

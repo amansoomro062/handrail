@@ -24,10 +24,30 @@ function resolvedVersion(pkg: string): string {
   return "unknown";
 }
 
-const LIBRARY_VERSIONS = {
-  "@radix-ui/react-dialog": resolvedVersion("@radix-ui/react-dialog"),
-  "@radix-ui/react-dropdown-menu": resolvedVersion("@radix-ui/react-dropdown-menu"),
-};
+/**
+ * Derive the versions under test from this adapter's own dependencies.
+ *
+ * This was a hand-maintained list, and it silently went stale twice — adding a
+ * component meant adding a package, and forgetting to add it here produced
+ * results that named the wrong library's version. A result that misnames what
+ * it tested is worse than no result, and nothing downstream can detect it.
+ *
+ * Everything that is not workspace tooling or the shared React runtime is, by
+ * definition, a library under test.
+ */
+const EXCLUDED = new Set(["react", "react-dom"]);
+
+function librariesUnderTest(): Record<string, string> {
+  const manifest = JSON.parse(readFileSync(join(here, "package.json"), "utf8"));
+  const versions: Record<string, string> = {};
+  for (const name of Object.keys(manifest.dependencies ?? {})) {
+    if (name.startsWith("@handrail/") || EXCLUDED.has(name)) continue;
+    versions[name] = resolvedVersion(name);
+  }
+  return versions;
+}
+
+const LIBRARY_VERSIONS = librariesUnderTest();
 
 export default defineConfig({
   plugins: [react()],
