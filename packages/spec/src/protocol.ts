@@ -38,6 +38,12 @@ export const TEXT = {
   comboboxOption1: "Apple",
   comboboxOption2: "Banana",
   comboboxOption3: "Cherry",
+
+  /** Menu content. Distinct initial letters, so typeahead cannot disambiguate wrongly. */
+  menuTrigger: "Open menu",
+  menuItem1: "Cut",
+  menuItem2: "Duplicate",
+  menuItem3: "Paste",
 } as const;
 
 /** Metadata an adapter must expose on `window.__HANDRAIL__`. */
