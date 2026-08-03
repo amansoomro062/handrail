@@ -46,6 +46,9 @@ catalogs:
     '@adobe/react-spectrum':
       specifier: 3.47.3
       version: 3.47.3
+    '@base-ui/react':
+      specifier: 1.6.0
+      version: 1.6.0
     '@chakra-ui/react':
       specifier: 3.36.1
       version: 3.36.1
@@ -79,6 +82,9 @@ catalogs:
     antd:
       specifier: 6.5.3
       version: 6.5.3
+    radix-ui:
+      specifier: 1.6.7
+      version: 1.6.7
 
 importers:
 
@@ -307,7 +313,7 @@ importers:
   adapters/shadcn:
     dependencies:
       '@base-ui/react':
-        specifier: ^1.6.0
+        specifier: catalog:subjects
         version: 1.6.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@handrail/harness-kit':
         specifier: workspace:*
@@ -322,7 +328,7 @@ importers:
         specifier: ^0.460.0
         version: 0.460.0(react@18.3.1)
       radix-ui:
-        specifier: ^1.6.7
+        specifier: catalog:subjects
         version: 1.6.7(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: 'catalog:'

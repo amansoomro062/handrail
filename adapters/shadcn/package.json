@@ -12,12 +12,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@base-ui/react": "^1.6.0",
+    "@base-ui/react": "catalog:subjects",
     "@handrail/harness-kit": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.460.0",
-    "radix-ui": "^1.6.7",
+    "radix-ui": "catalog:subjects",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwind-merge": "^2.6.0"
