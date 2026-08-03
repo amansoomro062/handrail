@@ -37,12 +37,13 @@
       "vendor": "shadcn",
       "framework": "react",
       "packages": [
-        "shadcn"
+        "radix-ui",
+        "@base-ui/react"
       ],
       "homepage": "https://ui.shadcn.com/",
       "role": "subject",
-      "status": "planned",
-      "notes": "Copy-paste distribution built on Radix. The open question is whether the copy-paste model preserves or degrades the upstream behaviour. Pin the CLI version and the date the components were generated, not just a package version."
+      "status": "draft",
+      "notes": "Not installed — generated. Identified by CLI version and generation date (shadcn@4.16.1, 2026-08-04, new-york style) rather than a package version. Dialog, menu, tabs and accordion are built on Radix; the combobox is built on Base UI."
     },
     {
       "id": "mui",
