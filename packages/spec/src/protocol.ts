@@ -44,6 +44,17 @@ export const TEXT = {
   menuItem1: "Cut",
   menuItem2: "Duplicate",
   menuItem3: "Paste",
+
+  /**
+   * Tab content. Panels deliberately contain text and nothing focusable, so the
+   * APG requirement that an otherwise-empty panel be focusable is testable.
+   */
+  tab1: "Overview",
+  tab2: "Billing",
+  tab3: "Settings",
+  panel1: "Overview panel content",
+  panel2: "Billing panel content",
+  panel3: "Settings panel content",
 } as const;
 
 /** Metadata an adapter must expose on `window.__HANDRAIL__`. */
