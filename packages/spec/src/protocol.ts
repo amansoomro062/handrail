@@ -28,6 +28,16 @@ export const TEXT = {
   dialogTrigger: "Open dialog",
   close: "Close",
   outsideContent: "Content outside the dialog",
+
+  /**
+   * Combobox content. Three options with distinct initial letters, so that a
+   * library's typeahead cannot make traversal ambiguous, and in an order that
+   * is already alphabetical so sorting behaviour cannot change the sequence.
+   */
+  comboboxLabel: "Choose a fruit",
+  comboboxOption1: "Apple",
+  comboboxOption2: "Banana",
+  comboboxOption3: "Cherry",
 } as const;
 
 /** Metadata an adapter must expose on `window.__HANDRAIL__`. */
@@ -45,6 +55,18 @@ export interface HarnessMeta {
    * Published alongside the result.
    */
   notes?: string;
+  /**
+   * Set to false when the library genuinely does not ship this component.
+   *
+   * The runner then records every assertion as `not-applicable` and the target
+   * scores `n/a` rather than zero. A library must never be marked down for not
+   * implementing something it never claimed to — Radix has no combobox
+   * primitive, and that is a scope decision rather than an accessibility
+   * failure.
+   */
+  supported?: boolean;
+  /** Required when `supported` is false. Published alongside the result. */
+  unsupportedReason?: string;
 }
 
 export function harnessPath(component: string): string {

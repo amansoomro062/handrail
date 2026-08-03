@@ -74,6 +74,40 @@ export async function runSpec(options: RunOptions): Promise<RunResult> {
       throw error;
     }
 
+    // The library does not ship this component. Every assertion is recorded as
+    // not-applicable, which scores n/a rather than zero — see the note on
+    // `supported` in the protocol. Not implementing a component is a scope
+    // decision, not an accessibility failure.
+    if (harness.meta.supported === false) {
+      const reason =
+        harness.meta.unsupportedReason ??
+        `${targetId} does not provide a ${spec.id} component.`;
+      return {
+        schemaVersion: RESULT_SCHEMA_VERSION,
+        target: {
+          id: targetId,
+          versions: harness.meta.libraryVersions ?? {},
+          adapterVersion: harness.meta.adapterVersion,
+          ...(harness.meta.notes ? { notes: harness.meta.notes } : {}),
+        },
+        component: spec.id,
+        specVersion: spec.version,
+        environment,
+        startedAt,
+        finishedAt: new Date().toISOString(),
+        assertions: spec.assertions.map((assertion) => ({
+          id: assertion.id,
+          title: assertion.title,
+          status: "not-applicable" as const,
+          severity: assertion.severity,
+          refs: assertion.refs,
+          reason,
+          durationMs: 0,
+          logs: [],
+        })),
+      };
+    }
+
     // A missing required element is an adapter bug, and it is loud on purpose.
     // A library must never be scored down because its adapter is incomplete.
     const missing: string[] = [];
