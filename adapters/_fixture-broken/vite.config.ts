@@ -38,6 +38,7 @@ export default defineConfig({
         combobox: "harness/combobox/index.html",
         menu: "harness/menu/index.html",
         tabs: "harness/tabs/index.html",
+        accordion: "harness/accordion/index.html",
       },
     },
   },

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Handrail — deliberately broken accordion</title>
+  </head>
+  <body>
+    <!--
+      An accordion made of clickable divs. Works perfectly with a mouse. The
+      headers are not headings, so the page structure is invisible to anyone
+      navigating by heading; they are not buttons, so nothing announces that
+      they do anything; and Enter and Space do nothing at all.
+    -->
+    <button data-testid="hr-before" type="button">Before</button>
+
+    <!-- DEFECT: no heading, no button, no aria-expanded, no aria-controls. -->
+    <div data-testid="hr-header-1" tabindex="0">Shipping</div>
+    <div data-testid="hr-panel-1" hidden>Shipping section content</div>
+
+    <div data-testid="hr-header-2" tabindex="0">Payment</div>
+    <div data-testid="hr-panel-2" hidden>Payment section content</div>
+
+    <div data-testid="hr-header-3" tabindex="0">Review</div>
+    <div data-testid="hr-panel-3" hidden>Review section content</div>
+
+    <button data-testid="hr-after" type="button">After</button>
+
+    <script type="module">
+      // DEFECT: click only. Enter and Space do nothing, because a div is not a
+      // button and nobody added the key handling that a button gives for free.
+      [1, 2, 3].forEach((n) => {
+        const header = document.querySelector(`[data-testid="hr-header-${n}"]`);
+        const panel = document.querySelector(`[data-testid="hr-panel-${n}"]`);
+        header.addEventListener("click", () => {
+          panel.hidden = !panel.hidden;
+        });
+      });
+
+      window.__HANDRAIL__ = {
+        protocolVersion: 1,
+        library: "_fixture-broken",
+        libraryVersions: { "_fixture-broken": "0.1.0" },
+        adapterVersion: "0.1.0",
+        component: "accordion",
+        notes: "Deliberately broken calibration fixture. Never publish results for this target.",
+      };
+
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => document.body.setAttribute("data-handrail-ready", "true")),
+      );
+    </script>
+  </body>
+</html>

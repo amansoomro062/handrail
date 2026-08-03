@@ -60,6 +60,19 @@
       "tabs.arrow-moves-between-tabs": "fail",
       "tabs.activation-selects-tab": "fail",
       "tabs.activation-reveals-panel": "fail"
+    },
+    "accordion": {
+      "accordion.collapsed-panel-not-exposed": "pass",
+      "accordion.headers-are-tab-stops": "pass",
+      "accordion.header-is-heading": "fail",
+      "accordion.trigger-is-button": "fail",
+      "accordion.trigger-has-accessible-name": "fail",
+      "accordion.collapsed-state-communicated": "fail",
+      "accordion.trigger-controls-panel": "fail",
+      "accordion.enter-expands": "fail",
+      "accordion.space-expands": "fail",
+      "accordion.expanded-panel-exposed": "fail",
+      "accordion.collapses-again": "fail"
     }
   },
   "$note": "combobox.focus-remains-on-combobox passes here honestly: the naive implementation never moves focus, because its 'listbox' is a div nobody can focus. It gets that one right by doing nothing, which is a useful reminder that a passing assertion is not evidence of care."
