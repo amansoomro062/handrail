@@ -3,6 +3,7 @@ import { metaFor } from "./meta.js";
 import { DialogHarness } from "./harnesses/dialog.js";
 import { MenuHarness } from "./harnesses/menu.js";
 import { TabsHarness } from "./harnesses/tabs.js";
+import { AccordionHarness } from "./harnesses/accordion.js";
 import { ComboboxHarness } from "./harnesses/combobox.js";
 
 /**
@@ -13,6 +14,7 @@ const harnesses: Record<string, () => JSX.Element> = {
   dialog: DialogHarness,
   menu: MenuHarness,
   tabs: TabsHarness,
+  accordion: AccordionHarness,
   combobox: ComboboxHarness,
 };
 

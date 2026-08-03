@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@handrail/harness-kit": "workspace:*",
+    "@radix-ui/react-accordion": "catalog:subjects",
     "@radix-ui/react-dialog": "catalog:subjects",
     "@radix-ui/react-dropdown-menu": "catalog:subjects",
     "@radix-ui/react-tabs": "catalog:subjects",

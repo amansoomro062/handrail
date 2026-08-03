@@ -3,6 +3,7 @@ import { metaFor } from "./meta.js";
 import { DialogHarness } from "./harnesses/dialog.js";
 import { MenuHarness } from "./harnesses/menu.js";
 import { TabsHarness } from "./harnesses/tabs.js";
+import { AccordionHarness } from "./harnesses/accordion.js";
 
 /**
  * The route is the component id: /harness/dialog mounts the dialog harness.
@@ -12,6 +13,7 @@ const harnesses: Record<string, () => JSX.Element> = {
   dialog: DialogHarness,
   menu: MenuHarness,
   tabs: TabsHarness,
+  accordion: AccordionHarness,
 };
 
 /**
