@@ -61,6 +61,25 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
+## 014 — An intermittent result is not publishable, and instability must be measurable
+*3 August 2026*
+
+**Decision.** `handrail run --repeat <n>` runs a spec n times and fails if any assertion's status varies. No result is published without it passing.
+
+**Reasoning.** Headless UI's dialog scored 100% twice and 94% three times in a row. The failing assertion was `dialog.has-accessible-name`, and it was neither right nor wrong — it was a coin flip. Headless UI's `DialogTitle` registers its id into the dialog's `aria-labelledby` a tick after the dialog becomes visible, so reading the name immediately caught it roughly half the time.
+
+An intermittent result is worse than a consistently wrong one. A consistent failure is a claim a maintainer can check and refute. An intermittent one is indistinguishable from a real finding, and whichever run happened to be published is the one they have to argue against — while it passes on their machine.
+
+Running it once and eyeballing the number would never have caught this, because each individual run looked entirely reasonable.
+
+**Consequence.** Two more primitives, and both immediately found real instability: `waitForName` for accessible names assembled after mount, and `waitForAttrPresent` for ARIA relationships. Headless UI sets `aria-controls` after `aria-expanded`, which was flipping `accordion.trigger-controls-panel` between pass and fail. The same latent bug existed in the tabs and combobox relationship assertions and was fixed in both before either produced a published result.
+
+All 20 target/spec pairs are now stable across repeated runs.
+
+The deeper point: decision 007 has now recurred as timing (three times), as state, as name, and as relationship. It is not a bug that keeps happening — it is the *shape* of this entire problem domain. Anything a library computes after an interaction must be waited for, and the only reliable way to find the ones we missed is to run things repeatedly and watch for disagreement.
+
+---
+
 ## 013 — Adapters use only what the library exports, with no hand-written ARIA
 *3 August 2026*
 

@@ -101,7 +101,11 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
   **The instrument discriminates.** Ten runs against Radix and React Spectrum had all landed at 100%, leaving open whether these specs were too coarse. MUI answers it. The failures are concentrated and coherent, and all point at one thing: MUI ships the behaviour and leaves the ARIA wiring to the developer. Its menu trigger carries no aria-haspopup or aria-expanded, and its accordion summary no aria-controls, because the documentation has you write those yourself.
 
   Two decisions came out of it. **012** — MUI first scored 19%, because openMenu opened with Down Arrow, which MUI does not support, so nine unrelated assertions failed with "the menu did not open". The same flaw existed in combobox and accordion and was fixed in both before it produced a result. **013** — adapters use only what the library exports and never hand-write ARIA, even where the library's own docs instruct it.
-- [ ] Headless UI
+- [x] Headless UI — dialog, combobox, menu and tabs 100%; accordion 97%
+
+  The accordion failure is genuine and follows from the library's design: Headless UI ships no accordion, only Disclosure, and a disclosure button has no heading wrapper. Confirmed against the DOM rather than taken on the assertion's word.
+
+  It also produced decision **014**. Its dialog scored 100% twice and 94% three times in a row — an intermittent result caused by reading the accessible name before DialogTitle had registered itself. `--repeat` now makes instability measurable, and immediately found a second one in the accordion relationship assertion. All 20 pairs are stable.
 - [ ] Chakra UI
 - [ ] Ant Design
 
