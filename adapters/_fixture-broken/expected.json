@@ -45,6 +45,21 @@
       "menu.arrow-moves-between-items": "fail",
       "menu.escape-closes": "fail",
       "menu.item-has-accessible-name": "fail"
+    },
+    "tabs": {
+      "tabs.tab-has-accessible-name": "pass",
+      "tabs.unselected-panels-not-exposed": "pass",
+      "tabs.tab-key-reaches-selected-tab": "pass",
+      "tabs.tablist-has-role": "fail",
+      "tabs.tabs-have-tab-role": "fail",
+      "tabs.panel-has-tabpanel-role": "fail",
+      "tabs.selected-tab-communicated": "fail",
+      "tabs.panel-labelled-by-tab": "fail",
+      "tabs.tab-controls-panel": "fail",
+      "tabs.tablist-is-one-tab-stop": "fail",
+      "tabs.arrow-moves-between-tabs": "fail",
+      "tabs.activation-selects-tab": "fail",
+      "tabs.activation-reveals-panel": "fail"
     }
   },
   "$note": "combobox.focus-remains-on-combobox passes here honestly: the naive implementation never moves focus, because its 'listbox' is a div nobody can focus. It gets that one right by doing nothing, which is a useful reminder that a passing assertion is not evidence of care."

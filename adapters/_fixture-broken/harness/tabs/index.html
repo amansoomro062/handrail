@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Handrail — deliberately broken tabs</title>
+  </head>
+  <body>
+    <!--
+      Tabs built as a row of buttons. This is the most common implementation in
+      the wild and the reason the pattern is worth testing: it is completely
+      correct with a mouse, and every tab sits in the tab sequence, so a keyboard
+      user must step through all of them to reach the page content.
+    -->
+    <button data-testid="hr-before" type="button">Before</button>
+
+    <!-- DEFECT: no role=tablist, no role=tab, no aria-selected, no aria-controls. -->
+    <div data-testid="hr-tablist">
+      <button data-testid="hr-tab-1" type="button">Overview</button>
+      <button data-testid="hr-tab-2" type="button">Billing</button>
+      <button data-testid="hr-tab-3" type="button">Settings</button>
+    </div>
+
+    <!-- DEFECT: no role=tabpanel, no association with the tab that reveals it. -->
+    <div data-testid="hr-panel-1">Overview panel content</div>
+    <div data-testid="hr-panel-2" hidden>Billing panel content</div>
+    <div data-testid="hr-panel-3" hidden>Settings panel content</div>
+
+    <button data-testid="hr-after" type="button">After</button>
+
+    <script type="module">
+      const panels = [1, 2, 3].map((n) => document.querySelector(`[data-testid="hr-panel-${n}"]`));
+
+      // DEFECT: switches panels on click and nothing else. No arrow keys, no
+      // selected state, no roving tabindex.
+      [1, 2, 3].forEach((n) => {
+        document.querySelector(`[data-testid="hr-tab-${n}"]`).addEventListener("click", () => {
+          panels.forEach((panel, index) => {
+            panel.hidden = index !== n - 1;
+          });
+        });
+      });
+
+      window.__HANDRAIL__ = {
+        protocolVersion: 1,
+        library: "_fixture-broken",
+        libraryVersions: { "_fixture-broken": "0.1.0" },
+        adapterVersion: "0.1.0",
+        component: "tabs",
+        notes: "Deliberately broken calibration fixture. Never publish results for this target.",
+      };
+
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => document.body.setAttribute("data-handrail-ready", "true")),
+      );
+    </script>
+  </body>
+</html>

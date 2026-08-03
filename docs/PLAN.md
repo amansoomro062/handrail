@@ -83,7 +83,11 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
 - [x] Menu (menu button + menu) — 13 assertions. React Spectrum 13/13, **Radix 13/13**, broken fixture 4/13 exactly as predicted
 
   First component measured against two real libraries, and the first time the fixture catalogue was written as a prediction before running rather than after. It matched exactly, which is the stronger form of the same check.
-- [ ] Tabs
+- [x] Tabs — 13 assertions. React Spectrum 13/13 **first run**, Radix 13/13, broken fixture 3/13 exactly as predicted
+
+  The first spec written with the decision-007 audit applied up front rather than discovered afterwards, and the first to pass the control on the first attempt. Three specs of evidence that waiting is the default, not the fix.
+
+  Accepts both activation models the APG permits — automatic (arrows select as they move) and manual (arrows move, Enter or Space commits). A spec recognising only one would fail correct libraries for a choice the specification deliberately leaves open.
 - [ ] Accordion / Disclosure
 
 **Adapters:**

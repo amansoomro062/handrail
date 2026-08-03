@@ -84,10 +84,11 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | Dialog spec (12 assertions)                             | Implemented         |
 | Combobox spec (14 assertions)                           | Implemented         |
 | Menu spec (13 assertions)                               | Implemented         |
-| React Spectrum calibration control                      | 12/12 · 14/14 · 13/13 |
-| Radix reference adapter                                 | 12/12 · n/a · 13/13 |
+| Tabs spec (13 assertions)                               | Implemented         |
+| React Spectrum calibration control                      | 4 specs, all green  |
+| Radix reference adapter                                 | 3 green, combobox n/a |
 | Broken fixture — false positives/negatives measured     | Calibrated on both  |
-| Remaining two specs (Tabs, Accordion)                   | Not started         |
+| Remaining spec (Accordion)                              | Not started         |
 | Remaining five adapters                                 | Not started         |
 | Public site + badges                                    | Not started         |
 
