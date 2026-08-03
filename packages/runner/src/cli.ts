@@ -12,6 +12,8 @@ interface Args {
   baseUrl: string;
   outDir: string;
   headed: boolean;
+  /** Run N times and fail if any assertion's status varies. */
+  repeat: number;
   /** Path to a catalogue of expected statuses — see adapters/_fixture-broken. */
   expect?: string;
 }
@@ -113,6 +115,7 @@ function parseArgs(argv: string[]): Args {
         "    --out <dir>      Where to write result JSON (default: results)",
         "    --headed         Show the browser",
         "    --expect <file>  Compare against a catalogue of expected statuses",
+        "    --repeat <n>     Run n times and fail if any assertion is unstable",
         "",
       ].join("\n"),
     );
@@ -125,6 +128,7 @@ function parseArgs(argv: string[]): Args {
     baseUrl: args["base-url"] as string,
     outDir: (args.out as string) ?? "results",
     headed: args.headed === true,
+    repeat: Math.max(1, Number(args.repeat ?? 1) || 1),
     ...(typeof args.expect === "string" ? { expect: args.expect } : {}),
   };
 }
@@ -147,6 +151,35 @@ async function main(): Promise<void> {
     });
 
     console.log(renderTerminal(result));
+
+    // Repeat the run and report any assertion whose status varies. An
+    // intermittent result is worse than a failing one: it is indistinguishable
+    // from a real finding, and whichever run happened to be published is the one
+    // a maintainer has to argue with. Run this before publishing anything.
+    if (args.repeat > 1) {
+      const statuses = new Map<string, Set<string>>();
+      for (const assertion of result.assertions) {
+        statuses.set(assertion.id, new Set([assertion.status]));
+      }
+      for (let run = 2; run <= args.repeat; run++) {
+        const again = await runSpec({ page, baseUrl: args.baseUrl, spec, targetId: args.target });
+        for (const assertion of again.assertions) {
+          statuses.get(assertion.id)?.add(assertion.status);
+        }
+      }
+      const unstable = [...statuses].filter(([, seen]) => seen.size > 1);
+      if (unstable.length === 0) {
+        console.log(`  Stable across ${args.repeat} runs.\n`);
+      } else {
+        console.error(`  UNSTABLE across ${args.repeat} runs — not publishable\n`);
+        for (const [id, seen] of unstable) {
+          console.error(`    ${id}: ${[...seen].join(" / ")}`);
+        }
+        console.error("");
+        process.exitCode = 1;
+        return;
+      }
+    }
 
     const outDir = fromInvocationDir(args.outDir);
     await mkdir(outDir, { recursive: true });
