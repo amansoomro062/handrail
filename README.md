@@ -83,10 +83,11 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | Harness protocol + runner engine                        | Working             |
 | Dialog spec (12 assertions)                             | Implemented         |
 | Combobox spec (14 assertions)                           | Implemented         |
-| React Spectrum calibration control                      | 12/12 · 14/14       |
-| Radix reference adapter                                 | 12/12 · combobox n/a |
+| Menu spec (13 assertions)                               | Implemented         |
+| React Spectrum calibration control                      | 12/12 · 14/14 · 13/13 |
+| Radix reference adapter                                 | 12/12 · n/a · 13/13 |
 | Broken fixture — false positives/negatives measured     | Calibrated on both  |
-| Remaining three specs (Tabs, Menu, Accordion)           | Not started         |
+| Remaining two specs (Tabs, Accordion)                   | Not started         |
 | Remaining five adapters                                 | Not started         |
 | Public site + badges                                    | Not started         |
 

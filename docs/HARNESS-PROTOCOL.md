@@ -171,7 +171,39 @@ Do **not** use this to skip a component the library does ship but implements bad
 
 ---
 
-## Components: `menu`, `tabs`, `accordion`
+## Component: `menu`
+
+APG pattern: <https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/>
+
+A button that opens a menu.
+
+### Required elements
+
+| `data-testid` | What it must be                                              |
+| ------------- | ------------------------------------------------------------ |
+| `hr-before`   | A focusable `<button>` before the menu button                 |
+| `hr-trigger`  | The menu button, labelled `Open menu`                         |
+| `hr-after`    | A focusable `<button>` after the menu button                  |
+| `hr-menu`     | The menu popup (need not exist until opened)                  |
+| `hr-item-1`   | First item, `Cut`                                             |
+| `hr-item-2`   | Second item, `Duplicate`                                      |
+| `hr-item-3`   | Third item, `Paste`                                           |
+
+### Required content and state
+
+- Exactly three items, in the order above, with distinct initial letters so typeahead cannot disambiguate wrongly
+- The menu is **closed** on load
+- No item is disabled, checked, or a submenu
+
+### Note on the pattern
+
+Unlike a combobox, a menu **moves focus into itself**. Either mechanism the APG permits is accepted: DOM focus on a menu item via roving tabindex, or `aria-activedescendant` on the menu.
+
+The assertions wait for the active item to change rather than reading it immediately. Roving focus is commonly moved in an effect or an animation frame, and reading it synchronously produces false blocker-level failures against libraries that are behaving correctly — see [`DECISIONS.md`](DECISIONS.md) 007.
+
+---
+
+## Components: `tabs`, `accordion`
 
 Specifications pending — see [`PLAN.md`](PLAN.md) Phase 2. Element tables will be added here before the specs are written, so adapter authors can work ahead.
 

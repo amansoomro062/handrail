@@ -111,6 +111,12 @@ Had that shipped, we would have published a false accusation against a well-buil
 
 Twice in one day, in the same shape, in code written by someone who had already written this entry. Treat "read state immediately after a keypress" as a defect on sight during review, not as something to catch by testing.
 
+**Third recurrence — and the most serious.** `menu.arrow-moves-between-items` reported a **blocker** against Radix's dropdown menu: "Down Arrow did not move to a different item". Radix moves roving focus in an effect rather than synchronously in the keydown handler, and the runner read the active item before it moved. With the wait, Radix scores 13/13.
+
+This one would have published a blocker-level accusation, against a named library, in the first result set that contained a finding at all. It was caught only because a calibration control existed to make the result suspicious. Nothing about the failure looked wrong on its face — the message was specific, the expected and actual were populated, and the claim was plausible.
+
+The generalisation now has teeth: **an assertion that reads state after an interaction without waiting is broken, whether or not it currently passes.** The three that have appeared so far were found by luck and discipline, not by design. Auditing the remaining specs for this pattern is worth more than adding new assertions.
+
 ---
 
 ## 006 — The headline unit is a component, not a library

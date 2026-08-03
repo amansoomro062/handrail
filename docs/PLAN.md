@@ -80,7 +80,9 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
 
   It also surfaced a runner bug worth remembering: `waitForSelector` defaults to waiting for *visible*, so an adapter that renders nothing had a zero-size `<body>` and was reported as never signalling readiness. Any adapter declaring a component unsupported would have been blamed for a fault in the runner.
 
-- [ ] Menu (menu button + menu)
+- [x] Menu (menu button + menu) — 13 assertions. React Spectrum 13/13, **Radix 13/13**, broken fixture 4/13 exactly as predicted
+
+  First component measured against two real libraries, and the first time the fixture catalogue was written as a prediction before running rather than after. It matched exactly, which is the stronger form of the same check.
 - [ ] Tabs
 - [ ] Accordion / Disclosure
 
