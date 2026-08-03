@@ -22,7 +22,7 @@ If you cannot cite one, you are encoding an opinion. Opinions may be correct and
 
 ```
 expected: focus remains within the dialog
-actual:   [data-testid="cc-after"] named "After"
+actual:   [data-testid="hr-after"] named "After"
 ```
 
 **Pick severity from the definitions in [`SCORING.md`](SCORING.md)**, based on what a user cannot do — not on how egregious the code looks. `blocker` means the task is impossible by that input method. It is not a synonym for "bad".

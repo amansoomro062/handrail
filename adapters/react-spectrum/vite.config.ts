@@ -6,12 +6,6 @@ import { defineConfig } from "vite";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-/**
- * Read the *resolved* version from node_modules rather than the semver range in
- * package.json. A result that cannot name the exact version it tested is not
- * reproducible, and reproducibility is the only thing making these numbers
- * worth publishing.
- */
 function resolvedVersion(pkg: string): string {
   for (const base of [here, join(here, "..", ".."), process.cwd()]) {
     try {
@@ -25,7 +19,7 @@ function resolvedVersion(pkg: string): string {
 }
 
 const LIBRARY_VERSIONS = {
-  "@radix-ui/react-dialog": resolvedVersion("@radix-ui/react-dialog"),
+  "@adobe/react-spectrum": resolvedVersion("@adobe/react-spectrum"),
 };
 
 export default defineConfig({
@@ -33,6 +27,6 @@ export default defineConfig({
   define: {
     __HANDRAIL_LIBRARY_VERSIONS__: JSON.stringify(LIBRARY_VERSIONS),
   },
-  server: { port: 5180, strictPort: true },
-  preview: { port: 5180, strictPort: true },
+  server: { port: 5181, strictPort: true },
+  preview: { port: 5181, strictPort: true },
 });

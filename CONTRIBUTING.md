@@ -1,4 +1,4 @@
-# Contributing to Curb Cut
+# Contributing to Handrail
 
 ## The one rule
 

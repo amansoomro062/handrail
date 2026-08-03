@@ -1,19 +1,19 @@
 {
-  "name": "@handrail/adapter-radix",
+  "name": "@handrail/adapter-react-spectrum",
   "version": "0.1.0",
-  "description": "Reference adapter. Read this one first when writing a new adapter.",
+  "description": "Calibration control. Widely regarded as the accessibility gold standard — a failure here is presumed to be our bug until proven otherwise.",
   "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 5180 --strictPort",
+    "dev": "vite --port 5181 --strictPort",
     "build": "vite build",
-    "preview": "vite preview --port 5180 --strictPort",
+    "preview": "vite preview --port 5181 --strictPort",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@adobe/react-spectrum": "^3.38.0",
     "@handrail/harness-kit": "workspace:*",
-    "@radix-ui/react-dialog": "^1.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

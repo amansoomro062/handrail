@@ -1,5 +1,5 @@
 {
-  "name": "@curbcut/harness-kit",
+  "name": "@handrail/harness-kit",
   "version": "0.1.0",
   "description": "Shared adapter scaffolding. Adapters depend on this so a protocol change is a version bump, not a scavenger hunt through every adapter.",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@curbcut/spec": "workspace:*"
+    "@handrail/spec": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18",

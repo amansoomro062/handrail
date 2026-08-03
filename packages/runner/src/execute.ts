@@ -1,10 +1,10 @@
 import type { Page } from "playwright";
-import type { ComponentSpec, RunContext } from "@curbcut/spec";
+import type { ComponentSpec, RunContext } from "@handrail/spec";
 import {
   RESULT_SCHEMA_VERSION,
   type AssertionResult,
   type RunResult,
-} from "@curbcut/report";
+} from "@handrail/report";
 import { Cdp } from "./cdp.js";
 import { createA11yTools, createHarness, createKeyboardTools, HarnessError } from "./driver.js";
 

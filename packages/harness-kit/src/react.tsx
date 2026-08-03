@@ -1,6 +1,6 @@
 import { StrictMode, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import type { HarnessMeta } from "@curbcut/spec";
+import type { HarnessMeta } from "@handrail/spec";
 import { announceReady } from "./index.js";
 
 /**

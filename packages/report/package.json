@@ -1,5 +1,5 @@
 {
-  "name": "@curbcut/report",
+  "name": "@handrail/report",
   "version": "0.1.0",
   "description": "Result schema, scoring, and rendering. Deliberately separate from the runner so anyone can re-score published results with their own weightings.",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "build": "tsc --emitDeclarationOnly --declarationDir dist"
   },
   "dependencies": {
-    "@curbcut/spec": "workspace:*"
+    "@handrail/spec": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.6.3"

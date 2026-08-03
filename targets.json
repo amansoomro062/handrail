@@ -10,8 +10,8 @@
       "packages": ["@adobe/react-spectrum"],
       "homepage": "https://react-spectrum.adobe.com/",
       "role": "control",
-      "status": "planned",
-      "notes": "Calibration control. Widely regarded as the accessibility gold standard. If the harness does not score this near-perfect, the harness is wrong. Must be implemented and passing before ANY result is published."
+      "status": "calibrated",
+      "notes": "Calibration control. Widely regarded as the accessibility gold standard. If the harness does not score this near-perfect, the harness is wrong. Scores 12/12 on dialog against 3.47.3."
     },
     {
       "id": "radix",

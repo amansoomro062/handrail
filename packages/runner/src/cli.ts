@@ -2,8 +2,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { isAbsolute, join, resolve } from "node:path";
 import { chromium } from "playwright";
-import { getSpec } from "@curbcut/spec";
-import { isPublishable, renderTerminal, scoreRun } from "@curbcut/report";
+import { getSpec } from "@handrail/spec";
+import { isPublishable, renderTerminal, scoreRun } from "@handrail/report";
 import { runSpec } from "./execute.js";
 
 interface Args {
@@ -93,12 +93,12 @@ function parseArgs(argv: string[]): Args {
     console.error(
       [
         "",
-        "  curbcut run --target <id> --component <id> --base-url <url>",
+        "  handrail run --target <id> --component <id> --base-url <url>",
         "",
         `  Missing: ${missing.map((m) => `--${m}`).join(", ")}`,
         "",
         "  Example:",
-        "    pnpm curbcut run --target radix --component dialog \\",
+        "    pnpm handrail run --target radix --component dialog \\",
         "      --base-url http://localhost:5180",
         "",
         "  Options:",

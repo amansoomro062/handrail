@@ -1,4 +1,4 @@
-import type { AssertionStatus, Refs, Severity } from "@curbcut/spec";
+import type { AssertionStatus, Refs, Severity } from "@handrail/spec";
 
 /**
  * The published result schema.

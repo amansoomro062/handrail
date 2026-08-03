@@ -5,8 +5,8 @@ A naive dialog that gets almost everything wrong, on purpose.
 **Never publish results for this target.** It exists to test the runner, not a library.
 
 ```bash
-pnpm --filter @curbcut/fixture-broken run dev
-pnpm curbcut run --target _fixture-broken --component dialog \
+pnpm --filter @handrail/fixture-broken run dev
+pnpm handrail run --target _fixture-broken --component dialog \
   --base-url http://localhost:5199 \
   --expect adapters/_fixture-broken/expected.json
 ```

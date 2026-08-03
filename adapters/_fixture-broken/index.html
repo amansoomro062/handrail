@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Curb Cut — deliberately broken fixture</title>
+    <title>Handrail — deliberately broken fixture</title>
   </head>
   <body>
     <!--
@@ -12,34 +12,34 @@
       harness protocol is HTTP and HTML rather than React: the runner cannot tell
       that this adapter has no framework, no build step and no components.
     -->
-    <button data-testid="cc-before" type="button">Before</button>
-    <button data-testid="cc-trigger" type="button">Open dialog</button>
-    <button data-testid="cc-outside-content" type="button">Content outside the dialog</button>
-    <button data-testid="cc-after" type="button">After</button>
+    <button data-testid="hr-before" type="button">Before</button>
+    <button data-testid="hr-trigger" type="button">Open dialog</button>
+    <button data-testid="hr-outside-content" type="button">Content outside the dialog</button>
+    <button data-testid="hr-after" type="button">After</button>
 
     <!-- DEFECT: role="dialog" with no accessible name. -->
-    <div data-testid="cc-dialog" role="dialog" hidden>
-      <h2 data-testid="cc-title">Curb Cut test dialog</h2>
-      <input data-testid="cc-field-1" type="text" aria-label="Field one" />
-      <input data-testid="cc-field-2" type="text" aria-label="Field two" />
+    <div data-testid="hr-dialog" role="dialog" hidden>
+      <h2 data-testid="hr-title">Handrail test dialog</h2>
+      <input data-testid="hr-field-1" type="text" aria-label="Field one" />
+      <input data-testid="hr-field-2" type="text" aria-label="Field two" />
       <!-- DEFECT: icon-only close button with no accessible name. -->
-      <button data-testid="cc-close" type="button"><span aria-hidden="true">&times;</span></button>
+      <button data-testid="hr-close" type="button"><span aria-hidden="true">&times;</span></button>
     </div>
 
     <script type="module">
-      const dialog = document.querySelector('[data-testid="cc-dialog"]');
+      const dialog = document.querySelector('[data-testid="hr-dialog"]');
 
       // DEFECT: opens the dialog and nothing else. No focus move, no focus
       // trap, no Escape handler, no focus restoration, no background inerting.
-      document.querySelector('[data-testid="cc-trigger"]').addEventListener("click", () => {
+      document.querySelector('[data-testid="hr-trigger"]').addEventListener("click", () => {
         dialog.hidden = false;
       });
 
-      document.querySelector('[data-testid="cc-close"]').addEventListener("click", () => {
+      document.querySelector('[data-testid="hr-close"]').addEventListener("click", () => {
         dialog.hidden = true;
       });
 
-      window.__CURBCUT__ = {
+      window.__HANDRAIL__ = {
         protocolVersion: 1,
         library: "_fixture-broken",
         libraryVersions: { "_fixture-broken": "0.1.0" },
@@ -49,7 +49,7 @@
       };
 
       requestAnimationFrame(() =>
-        requestAnimationFrame(() => document.body.setAttribute("data-curbcut-ready", "true")),
+        requestAnimationFrame(() => document.body.setAttribute("data-handrail-ready", "true")),
       );
     </script>
   </body>

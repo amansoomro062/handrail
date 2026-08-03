@@ -11,9 +11,9 @@ export {
   harnessPath,
   testIdSelector,
   type HarnessMeta,
-} from "@curbcut/spec";
+} from "@handrail/spec";
 
-import { META_GLOBAL, READY_ATTRIBUTE, type HarnessMeta } from "@curbcut/spec";
+import { META_GLOBAL, READY_ATTRIBUTE, type HarnessMeta } from "@handrail/spec";
 
 /**
  * Publish adapter metadata and signal readiness.

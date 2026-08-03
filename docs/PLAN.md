@@ -1,4 +1,4 @@
-# Curb Cut — end-to-end plan
+# Handrail — end-to-end plan
 
 Written 3 August 2026. Assumes evenings and weekends, roughly 8–12 hours a week, one person, with contributors arriving only after launch.
 
@@ -23,7 +23,7 @@ Prove the architecture works end to end on the narrowest possible slice: one com
 - [x] Broken fixture (`adapters/_fixture-broken`) with a catalogued defect list
 - [x] `--expect` calibration mode, reporting false positives and false negatives separately
 
-**Exit criteria — met.** `curbcut run --target radix --component dialog` scores 12/12, and the broken fixture produces exactly the 8 catalogued failures with no false positives.
+**Exit criteria — met.** `handrail run --target radix --component dialog` scores 12/12, and the broken fixture produces exactly the 8 catalogued failures with no false positives.
 
 Two findings worth carrying forward:
 
@@ -40,9 +40,9 @@ This is the whole reason Phase 1 exists, and it appeared within minutes of the f
 
 This is the most important phase in the plan and the easiest to skip. Do not skip it.
 
-- [ ] Build the **React Spectrum** adapter as a calibration control
-- [ ] Run the Dialog spec against it
-- [ ] Investigate *every single failure* by hand
+- [x] Build the **React Spectrum** adapter as a calibration control
+- [x] Run the Dialog spec against it — **12/12 against `@adobe/react-spectrum@3.47.3`**
+- [x] Investigate every failure by hand — there were none to investigate
 
 React Spectrum is widely regarded as the accessibility gold standard. If it fails an assertion, the overwhelmingly likely explanation is that **our assertion is wrong**, not that Adobe is wrong. Each failure gets one of three resolutions, recorded in `docs/DECISIONS.md`:
 
@@ -50,9 +50,21 @@ React Spectrum is widely regarded as the accessibility gold standard. If it fail
 2. The adapter is wrong → fix the adapter
 3. It is a genuine defect → open an issue upstream, keep the assertion
 
-- [ ] Build a **deliberately broken reference adapter** (`adapters/_fixture-broken`) with known, catalogued defects, and assert the runner detects exactly those and no others
+- [x] Build a **deliberately broken reference adapter** (`adapters/_fixture-broken`) with known, catalogued defects, and assert the runner detects exactly those and no others
 
-**Exit criteria:** React Spectrum scores ≥ 95% on Dialog, every remaining failure has a written justification, and the broken fixture produces the exact expected failure set. False positives are now measurable, not hypothetical.
+**Exit criteria for Dialog — met.** Three calibration points now exist:
+
+| Target | Score | What it proves |
+| --- | --- | --- |
+| React Spectrum `3.47.3` | 12/12 | No false positives against a gold-standard implementation |
+| Radix `1.1.23` | 12/12 | Reproduced independently on a second good library |
+| `_fixture-broken` | 4/12, exactly as catalogued | No false negatives — every planted defect was caught, and nothing else was |
+
+**The open question this raises.** Both good libraries score 100% and the terrible one scores 37%, so the Dialog spec currently separates *good from catastrophic* — it does not yet discriminate between good implementations. That is expected of a first spec and is not a reason to invent assertions.
+
+The honest test comes in Phase 2, when MUI, Chakra and Ant Design are measured. If every library lands at either 100% or 37% with nothing in between, these twelve assertions are too coarse and need sharpening against the harder parts of the APG pattern. Judge that on the Phase 2 data rather than by guessing now.
+
+Note also that Phase 1 finished early because there were no React Spectrum failures to adjudicate. Do not read that as the calibration phase being unnecessary — the false positive it was designed to catch had already appeared in Phase 0, and fixing it is why this phase was clean.
 
 ---
 

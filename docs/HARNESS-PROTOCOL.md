@@ -23,7 +23,7 @@ Any server will do. The runner is given a base URL and appends the path. A Vite 
 Set the attribute once the component has mounted and is interactive:
 
 ```html
-<body data-curbcut-ready="true">
+<body data-handrail-ready="true">
 ```
 
 The runner waits for this before it touches anything. Setting it too early is the most common cause of flaky results — set it after mount and after any first paint your library defers.
@@ -31,7 +31,7 @@ The runner waits for this before it touches anything. Setting it too early is th
 ## 3. Expose metadata
 
 ```js
-window.__CURBCUT__ = {
+window.__HANDRAIL__ = {
   protocolVersion: 1,
   library: "radix",
   libraryVersions: { "@radix-ui/react-dialog": "1.1.4" },
@@ -55,7 +55,7 @@ Where the spec fixes a string, use it exactly. Assertions about accessible names
 
 | Slot          | Required text          |
 | ------------- | ---------------------- |
-| Dialog title  | `Curb Cut test dialog` |
+| Dialog title  | `Handrail test dialog` |
 | Trigger label | `Open dialog`          |
 | Close label   | `Close`                |
 
@@ -69,27 +69,27 @@ APG pattern: <https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/>
 
 | `data-testid`        | What it must be                                                        |
 | -------------------- | ---------------------------------------------------------------------- |
-| `cc-before`          | A focusable `<button>` in the document **before** the trigger           |
-| `cc-trigger`         | The control that opens the dialog. Label: `Open dialog`                 |
-| `cc-outside-content` | A focusable `<button>` outside the dialog, labelled `Content outside the dialog`. Used for inertness checks |
-| `cc-dialog`          | The dialog container element                                            |
-| `cc-title`           | The dialog's visible title. Text: `Curb Cut test dialog`                |
-| `cc-field-1`         | A focusable `<input type="text">` inside the dialog                     |
-| `cc-field-2`         | A second focusable `<input type="text">` inside the dialog              |
-| `cc-close`           | A `<button>` inside the dialog that closes it. Label: `Close`           |
-| `cc-after`           | A focusable `<button>` in the document **after** the trigger            |
+| `hr-before`          | A focusable `<button>` in the document **before** the trigger           |
+| `hr-trigger`         | The control that opens the dialog. Label: `Open dialog`                 |
+| `hr-outside-content` | A focusable `<button>` outside the dialog, labelled `Content outside the dialog`. Used for inertness checks |
+| `hr-dialog`          | The dialog container element                                            |
+| `hr-title`           | The dialog's visible title. Text: `Handrail test dialog`                |
+| `hr-field-1`         | A focusable `<input type="text">` inside the dialog                     |
+| `hr-field-2`         | A second focusable `<input type="text">` inside the dialog              |
+| `hr-close`           | A `<button>` inside the dialog that closes it. Label: `Close`           |
+| `hr-after`           | A focusable `<button>` in the document **after** the trigger            |
 
 ### Required initial state
 
-The dialog is **closed** on load. `cc-dialog` and its children need not exist in the DOM until opened — most libraries portal them in, and that is fine.
+The dialog is **closed** on load. `hr-dialog` and its children need not exist in the DOM until opened — most libraries portal them in, and that is fine.
 
 ### Structural requirements
 
-- `cc-before`, `cc-trigger`, `cc-outside-content` and `cc-after` are in DOM order, all outside the dialog
-- `cc-outside-content` remains in the document when the dialog opens
+- `hr-before`, `hr-trigger`, `hr-outside-content` and `hr-after` are in DOM order, all outside the dialog
+- `hr-outside-content` remains in the document when the dialog opens
 
-`cc-outside-content` is a button rather than a paragraph on purpose. Interactive elements are always present in the accessibility tree unless something deliberately hides them, so their absence — or their `ignored` flag — is an unambiguous signal. A generic `<div>` can be dropped from the tree for reasons that have nothing to do with the modal, which would make the inertness check quietly unreliable.
-- The dialog contains exactly three focusable elements: `cc-field-1`, `cc-field-2`, `cc-close`, in that DOM order
+`hr-outside-content` is a button rather than a paragraph on purpose. Interactive elements are always present in the accessibility tree unless something deliberately hides them, so their absence — or their `ignored` flag — is an unambiguous signal. A generic `<div>` can be dropped from the tree for reasons that have nothing to do with the modal, which would make the inertness check quietly unreliable.
+- The dialog contains exactly three focusable elements: `hr-field-1`, `hr-field-2`, `hr-close`, in that DOM order
 
 That last point matters. The focus-trap assertions count Tab presses, so a library that injects extra focusable elements (a sentinel node, a decorative close icon that is also tabbable) will produce different traversal. If your library does that legitimately, say so in `notes` and open an issue — do not paper over it in the adapter.
 

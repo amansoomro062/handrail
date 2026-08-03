@@ -1,5 +1,5 @@
 {
-  "name": "@curbcut/spec",
+  "name": "@handrail/spec",
   "version": "0.1.0",
   "description": "Canonical component contracts and accessibility assertions, derived from the W3C ARIA Authoring Practices Guide.",
   "license": "MIT",

@@ -67,7 +67,7 @@ Requirements for the loop to work: badges must be genuinely desirable (so scores
 ## After launch
 
 - **Regression alerts.** Automated notice when a tracked library's score drops. This generates news continuously without anyone writing it, and it is the reason to subscribe rather than read once.
-- **Talks.** axe-con, a11yTO, Smashing, State of the Browser, All Day Hey. Talk title: *"The curb cut effect: what happens when you test the libraries instead of the websites."*
+- **Talks.** axe-con, a11yTO, Smashing, State of the Browser, All Day Hey. Talk title: *"Everyone holds the handrail: what happens when you test the libraries instead of the websites."*
 - **Annual report.** "The state of component library accessibility, 2027." Year-over-year data is the asset nobody else can produce, and it gets easier to write every year.
 
 ## What success is not

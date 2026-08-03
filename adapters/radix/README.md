@@ -3,9 +3,9 @@
 The reference adapter. Copy this one when adding a library.
 
 ```bash
-pnpm --filter @curbcut/adapter-radix run dev
+pnpm --filter @handrail/adapter-radix run dev
 # then, in another terminal
-pnpm curbcut run --target radix --component dialog --base-url http://localhost:5180
+pnpm handrail run --target radix --component dialog --base-url http://localhost:5180
 ```
 
 Port 5180. Each adapter gets its own port so several can run at once.
@@ -33,7 +33,7 @@ Break it deliberately and confirm the runner notices:
 
 ```tsx
 // Remove the title — dialog.has-accessible-name should now fail.
-<Dialog.Title data-testid="cc-title">{TEXT.dialogTitle}</Dialog.Title>
+<Dialog.Title data-testid="hr-title">{TEXT.dialogTitle}</Dialog.Title>
 ```
 
 If nothing changes, your adapter is not wired to the harness correctly, and every result it produces is meaningless.

@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { TEXT } from "@curbcut/harness-kit";
+import { TEXT } from "@handrail/harness-kit";
 
 /**
  * Radix UI modal dialog, mounted exactly as the Radix documentation describes.
@@ -17,31 +17,31 @@ import { TEXT } from "@curbcut/harness-kit";
 export function DialogHarness() {
   return (
     <>
-      <button data-testid="cc-before" type="button">
+      <button data-testid="hr-before" type="button">
         Before
       </button>
 
       <Dialog.Root>
-        <Dialog.Trigger data-testid="cc-trigger">{TEXT.dialogTrigger}</Dialog.Trigger>
+        <Dialog.Trigger data-testid="hr-trigger">{TEXT.dialogTrigger}</Dialog.Trigger>
         <Dialog.Portal>
           <Dialog.Overlay />
-          <Dialog.Content data-testid="cc-dialog">
-            <Dialog.Title data-testid="cc-title">{TEXT.dialogTitle}</Dialog.Title>
+          <Dialog.Content data-testid="hr-dialog">
+            <Dialog.Title data-testid="hr-title">{TEXT.dialogTitle}</Dialog.Title>
             <Dialog.Description>
               A fixed harness for automated accessibility conformance testing.
             </Dialog.Description>
-            <input data-testid="cc-field-1" type="text" aria-label="Field one" />
-            <input data-testid="cc-field-2" type="text" aria-label="Field two" />
-            <Dialog.Close data-testid="cc-close">{TEXT.close}</Dialog.Close>
+            <input data-testid="hr-field-1" type="text" aria-label="Field one" />
+            <input data-testid="hr-field-2" type="text" aria-label="Field two" />
+            <Dialog.Close data-testid="hr-close">{TEXT.close}</Dialog.Close>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
 
-      <button data-testid="cc-outside-content" type="button">
+      <button data-testid="hr-outside-content" type="button">
         {TEXT.outsideContent}
       </button>
 
-      <button data-testid="cc-after" type="button">
+      <button data-testid="hr-after" type="button">
         After
       </button>
     </>

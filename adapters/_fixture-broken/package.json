@@ -1,5 +1,5 @@
 {
-  "name": "@curbcut/fixture-broken",
+  "name": "@handrail/fixture-broken",
   "version": "0.1.0",
   "description": "A deliberately broken dialog with catalogued defects. Makes the runner's false-positive and false-negative rate a measured number rather than an assumption.",
   "license": "MIT",

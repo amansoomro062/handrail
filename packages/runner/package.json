@@ -1,5 +1,5 @@
 {
-  "name": "@curbcut/runner",
+  "name": "@handrail/runner",
   "version": "0.1.0",
   "description": "Library-agnostic execution engine. Navigates to a harness URL and executes a component spec against whatever it finds.",
   "license": "MIT",
@@ -7,7 +7,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "bin": {
-    "curbcut": "./src/cli.ts"
+    "handrail": "./src/cli.ts"
   },
   "exports": {
     ".": "./src/index.ts"
@@ -19,8 +19,8 @@
     "test": "node --test --experimental-strip-types test/*.test.ts"
   },
   "dependencies": {
-    "@curbcut/report": "workspace:*",
-    "@curbcut/spec": "workspace:*",
+    "@handrail/report": "workspace:*",
+    "@handrail/spec": "workspace:*",
     "playwright": "^1.48.0"
   },
   "devDependencies": {

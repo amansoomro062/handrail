@@ -1,12 +1,12 @@
-# Curb Cut
+# Handrail
 
-**Curb Cut runs every major UI component library against the W3C's own accessibility specification, continuously, and publishes the results.**
+**Handrail runs every major UI component library against the W3C's own accessibility specification, continuously, and publishes the results.**
 
 Pick a component library today and you are choosing on vibes. Nobody can tell you whether its combobox is actually operable by keyboard, whether its dialog traps focus correctly, or whether the version you upgraded to last week quietly broke either of those things.
 
-Curb Cut answers that question with evidence, in public, on every release.
+Handrail answers that question with evidence, in public, on every release.
 
-> The *curb cut effect*: the kerb ramps cut for wheelchair users turned out to help everyone with a pram, a suitcase or a delivery trolley. Accessibility work is rarely only for the people it was built for.
+> A handrail is installed for the people who cannot manage the stairs without one. Everybody carrying shopping, everybody in a hurry, everybody who has ever missed a step, ends up holding it too. Accessibility work is rarely only for the people it was built for.
 
 ---
 
@@ -18,7 +18,7 @@ One broken combobox in a popular library is a broken combobox in tens of thousan
 
 ## What makes this different from an audit blog post
 
-|                    | One-off audits         | Curb Cut                                  |
+|                    | One-off audits         | Handrail                                  |
 | ------------------ | ---------------------- | ----------------------------------------- |
 | Cadence            | Once, then stale       | Every release, forever                    |
 | Comparability      | One library at a time  | Same assertions across every library      |
@@ -82,9 +82,9 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | ------------------------------------------------------ | ----------- |
 | Harness protocol + runner engine                        | Working     |
 | Dialog spec (12 assertions)                             | Implemented |
+| React Spectrum calibration control                      | 12/12 pass  |
 | Radix reference adapter                                 | 12/12 pass  |
 | Broken fixture — false positives/negatives measured     | Calibrated  |
-| React Spectrum calibration control                      | Not started |
 | Remaining four specs (Combobox, Tabs, Menu, Accordion)  | Not started |
 | Remaining five adapters                                 | Not started |
 | Public site + badges                                    | Not started |
@@ -103,10 +103,10 @@ pnpm install
 pnpm exec playwright install chromium
 
 # Terminal 1 — serve the Radix adapter
-pnpm --filter @curbcut/adapter-radix run dev
+pnpm --filter @handrail/adapter-radix run dev
 
 # Terminal 2 — run the Dialog spec against it
-pnpm curbcut run --target radix --component dialog --base-url http://localhost:5180
+pnpm handrail run --target radix --component dialog --base-url http://localhost:5180
 ```
 
 Results are written to `results/` as JSON, with a human-readable summary on stdout.
@@ -132,7 +132,7 @@ Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) — in particular the rule that
 
 ## A note on fairness
 
-Curb Cut is not a naming-and-shaming project. Every maintainer gets the full results and a right of reply before publication, and their response is published alongside the score. A library that fixes an issue before we publish is a success of this project, not a story we lost.
+Handrail is not a naming-and-shaming project. Every maintainer gets the full results and a right of reply before publication, and their response is published alongside the score. A library that fixes an issue before we publish is a success of this project, not a story we lost.
 
 ## License
 
