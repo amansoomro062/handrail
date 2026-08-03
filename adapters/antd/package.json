@@ -1,0 +1,27 @@
+{
+  "name": "@handrail/adapter-antd",
+  "version": "0.1.0",
+  "description": "Ant Design adapter.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5185 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 5185 --strictPort",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@handrail/harness-kit": "workspace:*",
+    "antd": "catalog:subjects",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}
