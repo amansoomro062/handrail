@@ -64,7 +64,18 @@ export function isPublishable(result: RunResult): { ok: boolean; reason?: string
   return { ok: true };
 }
 
+/**
+ * Round a score down, never up.
+ *
+ * toFixed(0) turns 99.6% into "100%", so a component failing a check would be
+ * presented as flawless and a reader would have no reason to open the failures.
+ * Only a genuine 100 may display as 100%.
+ */
+export function displayScore(value: number | null): string {
+  if (value === null) return "n/a";
+  return `${value === 100 ? 100 : Math.floor(value)}%`;
+}
+
 export function formatScore(s: Score): string {
-  if (s.value === null) return "n/a";
-  return `${s.value.toFixed(0)}%`;
+  return displayScore(s.value);
 }

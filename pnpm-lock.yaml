@@ -384,6 +384,9 @@ importers:
         specifier: workspace:*
         version: link:../spec
     devDependencies:
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.5
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -416,6 +419,9 @@ importers:
         specifier: 'catalog:'
         version: 1.62.1
     devDependencies:
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.5
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

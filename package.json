@@ -11,7 +11,7 @@
   "scripts": {
     "build": "pnpm -r --filter \"./packages/**\" run build",
     "typecheck": "pnpm -r run typecheck",
-    "test": "pnpm --filter @handrail/runner run test",
+    "test": "pnpm -r --if-present run test",
     "handrail": "pnpm --filter @handrail/runner run cli --",
     "adapter:radix": "pnpm --filter @handrail/adapter-radix run dev",
     "fixture:broken": "pnpm --filter @handrail/fixture-broken run dev",

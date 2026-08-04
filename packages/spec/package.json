@@ -11,12 +11,14 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "tsc --emitDeclarationOnly --declarationDir dist"
+    "build": "tsc --emitDeclarationOnly --declarationDir dist",
+    "test": "node --import tsx --test test/*.test.ts"
   },
   "dependencies": {
     "playwright-core": "catalog:"
   },
   "devDependencies": {
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "tsx": "catalog:"
   }
 }

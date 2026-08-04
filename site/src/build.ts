@@ -16,7 +16,7 @@ import { mkdir, readdir, readFile, writeFile, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { isPublishable, renderBadge, scoreRun, type RunResult } from "@handrail/report";
+import { displayScore, isPublishable, renderBadge, scoreRun, type RunResult } from "@handrail/report";
 import { getSpec, specs } from "@handrail/spec";
 import { escapeHtml, layout } from "./theme.js";
 
@@ -52,7 +52,7 @@ function scoreCell(result: RunResult | undefined, href: string): string {
     s.blockersFailed > 0
       ? `${s.blockersFailed} blocker${s.blockersFailed === 1 ? "" : "s"}`
       : `${s.counts.pass}/${s.counts.pass + s.counts.fail}`;
-  return `<a href="${href}"><span class="cell ${cls}"><b>${s.value.toFixed(0)}%</b><small>${sub}</small></span></a>`;
+  return `<a href="${href}"><span class="cell ${cls}"><b>${displayScore(s.value)}</b><small>${sub}</small></span></a>`;
 }
 
 function detailPage(target: Target, result: RunResult): string {
@@ -102,7 +102,7 @@ function detailPage(target: Target, result: RunResult): string {
 <header class="masthead">
   <p class="eyebrow">${escapeHtml(target.name)}</p>
   <h1>${escapeHtml(spec.title)}</h1>
-  <p class="lede">${s.value === null ? "Not shipped by this library." : `${s.value.toFixed(0)}%. ${s.counts.pass} of ${s.counts.pass + s.counts.fail} checks passed${s.blockersFailed ? `, including ${s.blockersFailed} blocker-level failure${s.blockersFailed === 1 ? "" : "s"}` : ""}.`}</p>
+  <p class="lede">${s.value === null ? "Not shipped by this library." : `${displayScore(s.value)}. ${s.counts.pass} of ${s.counts.pass + s.counts.fail} checks passed${s.blockersFailed ? `, including ${s.blockersFailed} blocker-level failure${s.blockersFailed === 1 ? "" : "s"}` : ""}.`}</p>
 </header>
 
 <div class="meta-grid">

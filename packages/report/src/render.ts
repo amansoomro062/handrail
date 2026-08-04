@@ -1,5 +1,5 @@
 import type { RunResult } from "./types.js";
-import { formatScore, scoreRun } from "./score.js";
+import { displayScore, formatScore, scoreRun } from "./score.js";
 
 const GLYPH = {
   pass: "PASS",
@@ -105,7 +105,7 @@ export function renderBadge(result: RunResult): Record<string, unknown> {
   return {
     schemaVersion: 1,
     label: `a11y: ${result.component}`,
-    message: value === null ? "n/a" : `${value.toFixed(0)}%`,
+    message: displayScore(value),
     color: colour,
   };
 }

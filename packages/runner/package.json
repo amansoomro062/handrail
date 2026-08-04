@@ -15,8 +15,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc --emitDeclarationOnly --declarationDir dist",
-    "cli": "tsx src/cli.ts",
-    "test": "node --test --experimental-strip-types test/*.test.ts"
+    "cli": "tsx src/cli.ts"
   },
   "dependencies": {
     "@handrail/report": "workspace:*",
