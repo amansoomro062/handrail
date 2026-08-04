@@ -133,10 +133,9 @@ function report(target, results) {
     out.push(`## The ${failing.length} finding${failing.length === 1 ? "" : "s"}`);
     out.push("");
     for (const a of failing) {
-      out.push(`### \`${a.id}\``);
+      out.push(`### ${a.detail ?? a.title}`);
       out.push("");
-      out.push(`**${a.title}**`);
-      out.push("");
+      out.push(`- **Check:** \`${a.id}\`, "${a.title}"`);
       out.push(`- **Component:** ${a.component}`);
       out.push(`- **Severity:** ${a.severity}, meaning ${SEVERITY_MEANING[a.severity] ?? ""}`);
       if (a.rationale) out.push(`- **Why it matters:** ${a.rationale}`);
@@ -146,10 +145,6 @@ function report(target, results) {
       if (a.refs?.apg) refs.push(`[APG pattern](${a.refs.apg})`);
       if (a.refs?.wcag) refs.push(a.refs.wcagUrl ? `[WCAG ${a.refs.wcag}](${a.refs.wcagUrl})` : `WCAG ${a.refs.wcag}`);
       if (refs.length) out.push(`- **Measured against:** ${refs.join(" · ")}`);
-      if (a.detail) {
-        out.push("");
-        out.push(`> ${a.detail}`);
-      }
       out.push("");
     }
   }
@@ -175,12 +170,17 @@ function report(target, results) {
 
   out.push("## Where we might be wrong");
   out.push("");
-  out.push(
-    "The most likely cause of a wrong result is our adapter, not your library. We have got this " +
-      "wrong repeatedly: one library's first run scored 27% and almost all of it was a selector of " +
-      "ours; another was reported as having a broken focus trap when the trap worked and our test " +
-      "was reading focus too early.",
-  );
+  out.push("The most likely cause of a wrong result is our adapter, not your library.");
+  out.push("");
+  if (target.adapterCorrections) {
+    out.push(`It has already happened to you. ${target.adapterCorrections}`);
+  } else {
+    out.push(
+      "We have got this wrong repeatedly. One library's first run scored 27% and almost all of it " +
+        "was a selector of ours. Another was reported as having a broken focus trap when the trap " +
+        "worked and our test was reading focus too early.",
+    );
+  }
   out.push("");
   out.push("So the adapter source is included below. Please tell us if we mounted your component in a way you would not recommend, or if a check misreads the specification. We will correct it and, if it has already been published, correct that too.");
   out.push("");
@@ -213,6 +213,18 @@ function report(target, results) {
   return out.join("\n");
 }
 
+function concentration(results) {
+  const counts = results
+    .map((r) => ({ component: r.component, n: r.assertions.filter((a) => a.status === "fail").length }))
+    .filter((c) => c.n > 0)
+    .sort((a, b) => b.n - a.n);
+  if (counts.length === 0) return "";
+  const total = counts.reduce((s, c) => s + c.n, 0);
+  if (counts.length === 1) return `, all in ${counts[0].component}`;
+  if (counts[0].n / total >= 0.5) return `, ${counts[0].n} of them in ${counts[0].component}`;
+  return `, across ${counts.length} components`;
+}
+
 function covering(target, results) {
   const failing = results.reduce((n, r) => n + r.assertions.filter((a) => a.status === "fail").length, 0);
   return `Subject: Accessibility conformance results for ${target.name}, before we publish them
@@ -226,7 +238,7 @@ is one of the libraries measured.
 ${
   failing === 0
     ? `${target.name} passes every check. There is nothing to fix, and I am writing only because you should hear about a public score from us rather than come across it, and because you may still disagree with how we measured it.`
-    : `We found ${failing} issue${failing === 1 ? "" : "s"}. Nothing is public yet, and nothing will be for fourteen days.`
+    : `We found ${failing} issue${failing === 1 ? "" : "s"}${concentration(results)}. Nothing is public yet, and nothing will be for fourteen days.`
 }
 
 The attached report has every check, the specification clause behind it, and the

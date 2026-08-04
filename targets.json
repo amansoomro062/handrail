@@ -49,7 +49,8 @@
       "unverified": {
         "combobox": "Base UI treats the combobox input as a search field: selecting an option commits to the component's value (confirmed: it becomes \"Banana\") but never writes it into the input. That may be a legitimate variant of the pattern rather than a defect, and this spec is written for the APG editable combobox where the input carries the value. Not published until the pattern match is settled."
       },
-      "notifiedOn": null
+      "notifiedOn": null,
+      "adapterCorrections": "Your dialog scored 76% with two blocker failures on its first run. That was ours: your generated dialog ships its own close button, and our assertion decided containment by looking for a test id, so it treated your button as though it were outside the dialog. Corrected before this report; your dialog passes every check."
     },
     {
       "id": "mui",
@@ -64,7 +65,8 @@
       "role": "subject",
       "status": "published",
       "notes": "Measured. Findings withheld until the maintainer has been notified, per docs/DECISIONS.md 004.",
-      "notifiedOn": null
+      "notifiedOn": null,
+      "adapterCorrections": "Your menu scored 19% on its first run. One real defect cascaded into nine unrelated failures because our helper opened the menu with a key your trigger does not support. Corrected before this report."
     },
     {
       "id": "chakra",
@@ -92,7 +94,8 @@
       "role": "subject",
       "status": "published",
       "notes": "Findings verified against the DOM, including with the library's own button component to rule out an adapter fault. Withheld from the site until the maintainer has been notified, per docs/DECISIONS.md 004.",
-      "notifiedOn": null
+      "notifiedOn": null,
+      "adapterCorrections": "Your first run scored 27% on combobox and 42% on accordion. Almost all of that was our adapter, not your library: we required the listbox to be CSS-visible when yours is a zero-height virtual-scroll node a screen reader reaches perfectly well, and we were looking for v5 class names against v6. Both were corrected before this report, and the dialog finding was downgraded from blocker to moderate once we accepted that focus reaching <body> is a wasted stop rather than an escape."
     },
     {
       "id": "headlessui",
