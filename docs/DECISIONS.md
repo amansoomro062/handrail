@@ -61,6 +61,18 @@ Format: `## NNN: Title` · date · **Decision** · **Reasoning** · **Consequenc
 
 ---
 
+## 021, What a screen reader says is evidence, not score
+
+*4 August 2026*
+
+**Decision.** Announcement checks drive real VoiceOver through Guidepup and assert only that the words a user needs were spoken: the control's name, its role, the state change. Their results are recorded with the exact instrument, macOS version, VoiceOver, Guidepup and browser, live in `results/announce/` under the same publication gate as everything else, and are never folded into a conformance score.
+
+**Reasoning.** The accessibility tree can be correct while the spoken experience is wrong, so the index needed ears as well as eyes. But an announcement is a joint product of the library, the browser and the screen reader, and its phrasing changes between macOS versions for reasons no library controls. Scoring it would attribute the screen reader's choices to the library, on one platform, from an instrument that needs a person and a real machine and so cannot be continuously re-verified by the weekly cron the way tree results are.
+
+**Consequence.** The site's ceiling statement stops at "we read the tree"; where announce observations exist they are published beside the score as quotes with their instrument named, and a maintainer can dispute them exactly as they dispute a tree result. The matching logic that turns phrases into verdicts is pure and tested against a fake screen reader, since the deciding half of an instrument must not require the instrument to be present to be verified.
+
+---
+
 ## 020, Findings are grouped by causes we author, never causes we infer
 
 *4 August 2026*

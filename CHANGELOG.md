@@ -11,6 +11,9 @@ recorded in `results/history/`; this file records changes to the instrument.
 
 ### Added
 
+- `@handrail/announce`: screen reader spot checks driving real VoiceOver via
+  Guidepup, capturing what was actually spoken. Observations, never score
+  inputs; see `docs/SCREENREADERS.md` and decision 021.
 - Specifications for dialog, combobox, menu, tabs and accordion: 64 assertions,
   each citing a W3C APG clause or WCAG success criterion.
 - Adapters for React Spectrum (calibration control), Radix UI, MUI, Headless

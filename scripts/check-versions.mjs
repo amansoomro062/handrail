@@ -41,7 +41,7 @@ const targets = JSON.parse(readFileSync(join(root, "targets.json"), "utf8")).tar
 const EXACT = /^\d+\.\d+\.\d+(?:-[\w.]+)?$/;
 
 /** Versions that can change a measured result must be pinned exactly. */
-const MEASUREMENT_CRITICAL = ["react", "react-dom", "playwright", "playwright-core"];
+const MEASUREMENT_CRITICAL = ["react", "react-dom", "playwright", "playwright-core", "@guidepup/guidepup"];
 
 function installedVersion(fromDir, pkg) {
   for (const base of [fromDir, root]) {

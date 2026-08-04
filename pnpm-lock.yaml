@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   default:
+    '@guidepup/guidepup':
+      specifier: 0.31.0
+      version: 0.31.0
     '@types/node':
       specifier: ^20.19.0
       version: 20.19.43
@@ -358,6 +361,28 @@ importers:
       vite:
         specifier: 'catalog:'
         version: 5.4.21(@types/node@22.20.1)
+
+  packages/announce:
+    dependencies:
+      '@guidepup/guidepup':
+        specifier: 'catalog:'
+        version: 0.31.0
+      '@handrail/spec':
+        specifier: workspace:*
+        version: link:../spec
+      playwright:
+        specifier: 'catalog:'
+        version: 1.62.1
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.19.43
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.5
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
 
   packages/harness-kit:
     dependencies:
@@ -1040,6 +1065,9 @@ packages:
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+
+  '@guidepup/guidepup@0.31.0':
+    resolution: {integrity: sha512-r3eKTep4fdSajiSGEJI0KHHjKvJ6e4wyMhHIGbr+ztW04CcE91CRMRbTaM5JQwZKvRiOfj3kFVKaYIx+CFJWMw==}
 
   '@headlessui/react@2.2.10':
     resolution: {integrity: sha512-5pVLNK9wlpxTUTy9GpgbX/SdcRh+HBnPktjM2wbiLTH4p+2EPHBO1aoSryUCuKUIItdDWO9ITlhUL8UnUN/oIA==}
@@ -2895,6 +2923,10 @@ packages:
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
 
+  '@xmldom/xmldom@0.9.10':
+    resolution: {integrity: sha512-A9gOqLdi6cV4ibazAjcQufGj0B1y/vDqYrcuP6d/6x8P27gRS8643Dj9o1dEKtB6O7fwxb2FgBmJS2mX7gpvdw==}
+    engines: {node: '>=14.6'}
+
   '@zag-js/accordion@1.41.2':
     resolution: {integrity: sha512-7G//V7svGGT8k5avw7bbQvbRC0Q/9QtX51b4iyAB1alR9E5mFd6Ch8q4njwcXClMQ7xePS3jUfVnzVGiRInEiQ==}
 
@@ -3383,6 +3415,10 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
+  plist@4.0.0:
+    resolution: {integrity: sha512-4dOqNo0Y2NpfSf9q4+zr4bh7pzNWeckIam34Z0KYJhg8qtNNfh59VbD+Yna5SjwcxawVvLKx5w5FtuCijpEF4Q==}
+    engines: {node: '>=18'}
+
   postcss@8.5.23:
     resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
     engines: {node: ^10 || ^12 || >=14}
@@ -3650,6 +3686,10 @@ packages:
         optional: true
       terser:
         optional: true
+
+  xmlbuilder@15.1.1:
+    resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
+    engines: {node: '>=8.0'}
 
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -4225,6 +4265,10 @@ snapshots:
       tabbable: 6.5.0
 
   '@floating-ui/utils@0.2.12': {}
+
+  '@guidepup/guidepup@0.31.0':
+    dependencies:
+      plist: 4.0.0
 
   '@headlessui/react@2.2.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -6077,6 +6121,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@xmldom/xmldom@0.9.10': {}
+
   '@zag-js/accordion@1.41.2':
     dependencies:
       '@zag-js/anatomy': 1.41.2
@@ -6952,6 +6998,11 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
+  plist@4.0.0:
+    dependencies:
+      '@xmldom/xmldom': 0.9.10
+      xmlbuilder: 15.1.1
+
   postcss@8.5.23:
     dependencies:
       nanoid: 3.3.17
@@ -7287,6 +7338,8 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.20.1
       fsevents: 2.3.3
+
+  xmlbuilder@15.1.1: {}
 
   yallist@3.1.1: {}
 

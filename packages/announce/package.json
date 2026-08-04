@@ -1,0 +1,23 @@
+{
+  "name": "@handrail/announce",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Screen reader spot checks: what VoiceOver actually announces, captured from a real run",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "cli": "tsx src/cli.ts",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@guidepup/guidepup": "catalog:",
+    "@handrail/spec": "workspace:*",
+    "playwright": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

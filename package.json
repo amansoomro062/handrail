@@ -10,6 +10,7 @@
   "packageManager": "pnpm@10.12.4",
   "scripts": {
     "adapter:radix": "pnpm --filter @handrail/adapter-radix run dev",
+    "announce": "pnpm --filter @handrail/announce run cli --",
     "build": "pnpm -r --filter \"./packages/**\" run build",
     "calibrate": "pnpm handrail run --target _fixture-broken --component dialog --base-url http://localhost:5199 --expect adapters/_fixture-broken/expected.json",
     "check:site": "node scripts/audit-site.mjs",
