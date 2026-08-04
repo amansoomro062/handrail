@@ -171,13 +171,16 @@ pnpm handrail run --target ${escapeHtml(target.id)} --component ${escapeHtml(res
 }
 
 async function main(): Promise<void> {
-  if (!existsSync(resultsDir)) {
-    console.error(`No results directory at ${resultsDir}. Run the specs first.`);
-    process.exit(1);
+  const haveResults = existsSync(resultsDir);
+  if (!haveResults) {
+    console.log("");
+    console.log("  No results on disk. Building the pre-release site from targets.json.");
   }
 
   const targets: Target[] = JSON.parse(await readFile(join(root, "targets.json"), "utf8")).targets;
-  const files = (await readdir(resultsDir)).filter((f) => f.endsWith(".json"));
+  const files = haveResults
+    ? (await readdir(resultsDir)).filter((f) => f.endsWith(".json"))
+    : [];
 
   const byTarget = new Map<string, Map<string, RunResult>>();
   const skipped: string[] = [];
@@ -200,8 +203,10 @@ async function main(): Promise<void> {
   await mkdir(join(outDir, "api", "badge"), { recursive: true });
 
   const releasableTargets = targets.filter((t) => t.status === "published" && releasable(t).ok);
+  // Measured-but-unreleased is a registry fact. A library stays listed as
+  // withheld whether or not its result files are present locally.
   const withheld = targets.filter(
-    (t) => t.status === "published" && !releasable(t).ok && byTarget.has(t.id),
+    (t) => t.status !== "planned" && !releasable(t).ok,
   );
   const published = releasableTargets;
   const drafts = targets.filter(

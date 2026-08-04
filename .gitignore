@@ -5,9 +5,10 @@ build/
 *.log
 
 # Runner output
-# results/ is deliberately committed. It is the data the index is built from, so
-# a clone can build the site without a ten minute measurement, and each commit
-# becomes a dated snapshot that makes score history diffable.
+# results/ stays untracked until every maintainer has been notified. Committing
+# them puts named findings in a public repository, which is publication whatever
+# the website is showing. See docs/DECISIONS.md 004 and 020.
+results/
 test-results/
 playwright-report/
 traces/
