@@ -331,6 +331,7 @@ function report(target, results) {
       if (a.refs?.apg) refs.push(`[APG pattern](${a.refs.apg})`);
       if (a.refs?.wcag) refs.push(a.refs.wcagUrl ? `[WCAG ${a.refs.wcag}](${a.refs.wcagUrl})` : `WCAG ${a.refs.wcag}`);
       if (refs.length) out.push(`- **Measured against:** ${refs.join(" · ")}`);
+      out.push(`- **Reproduce:** \`pnpm handrail run --target ${target.id} --component ${a.component} --only ${a.id} --base-url http://localhost:${port}\``);
       out.push("");
     };
 
@@ -361,6 +362,12 @@ function report(target, results) {
       "even where the documentation instructs the developer to. If we did, the score would measure " +
       "how carefully we copied your docs rather than what ships in the box.",
   );
+  if (results.every((r) => r.trace)) {
+    out.push(
+      "- **Traces:** every run above has a replayable Playwright trace, captured from exactly the " +
+        "run that was scored. Ask and we will send them, or regenerate them with the command below.",
+    );
+  }
   out.push("");
   out.push("Reproduce any of it from a clone of the repository:");
   out.push("");
@@ -497,6 +504,7 @@ function reportHtml(target, results) {
       o.push(`<dt>Expected</dt><dd>${esc(a.expected ?? "n/a")}</dd>`);
       o.push(`<dt>We measured</dt><dd>${esc(a.actual ?? "n/a")}</dd>`);
       if (refs.length) o.push(`<dt>Measured against</dt><dd>${refs.join(" &middot; ")}</dd>`);
+      o.push(`<dt>Reproduce</dt><dd><code>pnpm handrail run --target ${esc(target.id)} --component ${esc(a.component)} --only ${esc(a.id)} --base-url http://localhost:${port}</code></dd>`);
       o.push("</dl></div>");
     };
 
@@ -523,6 +531,9 @@ function reportHtml(target, results) {
   o.push(`<li><strong>Versions:</strong> ${esc(versions.join(", ") || "not recorded")}</li>`);
   if (env) o.push(`<li><strong>Browser:</strong> ${esc(env.browser)} ${esc(env.browserVersion)}</li>`);
   o.push("<li><strong>Configuration:</strong> default. We use only what the library exports and never hand-write ARIA, even where the documentation instructs the developer to. If we did, the score would measure how carefully we copied your docs rather than what ships in the box.</li>");
+  if (results.every((r) => r.trace)) {
+    o.push("<li><strong>Traces:</strong> every run above has a replayable Playwright trace, captured from exactly the run that was scored. Ask and we will send them, or regenerate them with the command below.</li>");
+  }
   o.push("</ul>");
   o.push("<p>Reproduce any of it from a clone of the repository:</p>");
   o.push(`<pre><code>pnpm --filter @handrail/adapter-${esc(target.id)} run dev
