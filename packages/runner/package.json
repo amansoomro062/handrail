@@ -13,9 +13,10 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "build": "tsc --emitDeclarationOnly --declarationDir dist",
-    "cli": "tsx src/cli.ts"
+    "build": "tsc -p tsconfig.build.json",
+    "cli": "tsx src/cli.ts",
+    "prepack": "pnpm run build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@handrail/report": "workspace:*",
@@ -26,5 +27,48 @@
     "@types/node": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"
+  },
+  "author": "Amanullah Soomro",
+  "homepage": "https://handrail.tech",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amansoomro062/handrail.git",
+    "directory": "packages/runner"
+  },
+  "bugs": {
+    "url": "https://github.com/amansoomro062/handrail/issues"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "aria",
+    "apg",
+    "wcag",
+    "testing",
+    "playwright",
+    "cli",
+    "component-library"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    },
+    "bin": {
+      "handrail": "./dist/cli.js"
+    }
   }
 }
