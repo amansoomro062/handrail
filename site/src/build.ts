@@ -42,7 +42,7 @@ interface Target {
 const COMPONENT_ORDER = ["dialog", "combobox", "menu", "tabs", "accordion"];
 
 function scoreCell(result: RunResult | undefined, href: string): string {
-  if (!result) return `<span class="na mono">—</span>`;
+  if (!result) return `<span class="na mono">not run</span>`;
   const s = scoreRun(result);
   if (s.value === null) {
     return `<a href="${href}"><span class="cell na"><b>n/a</b><small>not shipped</small></span></a>`;
@@ -79,8 +79,8 @@ function detailPage(target: Target, result: RunResult): string {
           ? `<div class="assertion__body">
                <p style="margin:0 0 .4rem">${escapeHtml(a.detail ?? "")}</p>
                <dl class="kv">
-                 <dt>expected</dt><dd>${escapeHtml(a.expected ?? "—")}</dd>
-                 <dt>actual</dt><dd>${escapeHtml(a.actual ?? "—")}</dd>
+                 <dt>expected</dt><dd>${escapeHtml(a.expected ?? "not recorded")}</dd>
+                 <dt>actual</dt><dd>${escapeHtml(a.actual ?? "not recorded")}</dd>
                  <dt>why</dt><dd>${escapeHtml(spec.assertions.find((x) => x.id === a.id)?.rationale ?? "")}</dd>
                  <dt>measured</dt><dd>${refs.join(" &middot; ")}</dd>
                </dl>
@@ -102,11 +102,11 @@ function detailPage(target: Target, result: RunResult): string {
 <header class="masthead">
   <p class="eyebrow">${escapeHtml(target.name)}</p>
   <h1>${escapeHtml(spec.title)}</h1>
-  <p class="lede">${s.value === null ? "Not shipped by this library." : `${s.value.toFixed(0)}% — ${s.counts.pass} of ${s.counts.pass + s.counts.fail} checks passed${s.blockersFailed ? `, including ${s.blockersFailed} blocker-level failure${s.blockersFailed === 1 ? "" : "s"}` : ""}.`}</p>
+  <p class="lede">${s.value === null ? "Not shipped by this library." : `${s.value.toFixed(0)}%. ${s.counts.pass} of ${s.counts.pass + s.counts.fail} checks passed${s.blockersFailed ? `, including ${s.blockersFailed} blocker-level failure${s.blockersFailed === 1 ? "" : "s"}` : ""}.`}</p>
 </header>
 
 <div class="meta-grid">
-  <div><dt>Versions tested</dt><dd>${versions || "—"}</dd></div>
+  <div><dt>Versions tested</dt><dd>${versions || "not recorded"}</dd></div>
   <div><dt>Specification</dt><dd><a href="${escapeHtml(spec.apgPattern)}">W3C APG</a><br>spec v${escapeHtml(result.specVersion)}</dd></div>
   <div><dt>Browser</dt><dd>${escapeHtml(result.environment.browser)} ${escapeHtml(result.environment.browserVersion)}</dd></div>
   <div><dt>Run</dt><dd>${escapeHtml(result.startedAt.slice(0, 10))}<br>runner ${escapeHtml(result.environment.runnerVersion)}</dd></div>
@@ -132,7 +132,7 @@ pnpm handrail run --target ${escapeHtml(target.id)} --component ${escapeHtml(res
 <div class="note"><strong>What this cannot tell you</strong><p>${CEILING}</p></div>
 `;
   return layout(
-    `${target.name} — ${spec.title} — Handrail`,
+    `${target.name}: ${spec.title} | Handrail`,
     body,
     `<a href="../index.html">Handrail</a> / ${escapeHtml(target.name)} / ${escapeHtml(result.component)}`,
   );
@@ -186,7 +186,7 @@ async function main(): Promise<void> {
     return `<tr><td>${name}${label}</td>${cells}</tr>`;
   };
 
-  // Detail pages, raw JSON and badges for everything we have, drafts included —
+  // Detail pages, raw JSON and badges for everything we have, drafts included.
   // a draft's page carries a warning rather than being hidden, so a link shared
   // anywhere still explains itself.
   for (const [targetId, results] of byTarget) {
