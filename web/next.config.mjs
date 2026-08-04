@@ -2,10 +2,12 @@
  * Static export. The site is a build artefact with no server behind it, which
  * is what lets anyone reproduce it from a clone and get the same pages.
  *
- * basePath exists because GitHub Pages serves the repository at /handrail. Set
- * HANDRAIL_BASE_PATH to "" when a custom domain is in front of it.
+ * The site is served from the apex of handrail.tech, so there is no path
+ * prefix. Set HANDRAIL_BASE_PATH to "/handrail" to build for the bare
+ * github.io address instead, which is what the URLs fall back to if the domain
+ * ever lapses.
  */
-const basePath = process.env.HANDRAIL_BASE_PATH ?? "/handrail";
+const basePath = process.env.HANDRAIL_BASE_PATH ?? "";
 
 /** @type {import('next').NextConfig} */
 export default {
