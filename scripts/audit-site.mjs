@@ -59,20 +59,72 @@ for (const scheme of ['light','dark']) {
       const out = { headings:[], noName:[], lang:document.documentElement.lang, title:document.title,
                     landmarks:{main:!!document.querySelector('main'),header:!!document.querySelector('header'),footer:!!document.querySelector('footer'),nav:document.querySelectorAll('nav').length},
                     tables:[], text:[] };
-      document.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(h=>out.headings.push(+h.tagName[1]));
+        const hiddenH=(el)=>{let n=el;while(n){if(n.getAttribute&&n.getAttribute('aria-hidden')==='true')return true;n=n.parentElement}return false};
+      document.querySelectorAll('h1,h2,h3,h4,h5,h6').forEach(h=>{ if(!hiddenH(h)) out.headings.push(+h.tagName[1]); });
       document.querySelectorAll('a,button').forEach(el=>{
+        if(hiddenH(el)) return;
         const name=(el.getAttribute('aria-label')||el.textContent||'').trim();
         if(!name) out.noName.push(el.outerHTML.slice(0,70));
       });
       document.querySelectorAll('table').forEach(t=>out.tables.push({
         caption:!!t.querySelector('caption'),
         scoped:t.querySelectorAll('th[scope]').length, ths:t.querySelectorAll('th').length }));
-      const bgOf=(el)=>{let n=el;while(n){const c=getComputedStyle(n).backgroundColor;if(c&&!/rgba\(0, 0, 0, 0\)|transparent/.test(c))return c;n=n.parentElement}return 'rgb(255,255,255)'};
-      document.querySelectorAll('p,li,h1,h2,h3,span,a,td,th,caption').forEach(el=>{
+      // Resolving what a pixel of text actually sits on.
+      //
+      // The old version returned the first non-transparent background-color it
+      // met walking up the tree. That is wrong twice over: a translucent colour
+      // is not the final colour, and an element on a gradient has no
+      // background-color at all, so it fell through to the page ground and
+      // reported white text on a light page. Every panel in this design is a
+      // gradient, so that produced hundreds of false failures.
+      const parse=(c)=>{const n=(c.match(/[\d.]+/g)||[]).map(Number);return n.length>=3?[n[0],n[1],n[2],n.length>3?n[3]:1]:null};
+      const over=(fg,bg)=>[0,1,2].map(i=>fg[i]*fg[3]+bg[i]*(1-fg[3]));
+      // Composite every stop of a gradient over an assumed base and return the
+      // lightest and darkest results, so text can be checked against whichever
+      // is worse for its own colour.
+      const gradientRange=(img)=>{
+        const stops=(img.match(/rgba?\([^)]*\)/g)||[]).map(parse).filter(Boolean);
+        if(!stops.length) return null;
+        const opaque=stops.filter(s=>s[3]===1);
+        const base=opaque.length?opaque.reduce((a,b)=>(a[0]+a[1]+a[2]<b[0]+b[1]+b[2]?a:b)):[255,255,255];
+        const composited=stops.map(s=>over(s,base));
+        const lum=(c)=>0.2126*c[0]+0.7152*c[1]+0.0722*c[2];
+        return {light:composited.reduce((a,b)=>lum(a)>lum(b)?a:b), dark:composited.reduce((a,b)=>lum(a)<lum(b)?a:b)};
+      };
+      const bgOf=(el)=>{
+        const layers=[];
+        let n=el;
+        while(n){
+          const cs=getComputedStyle(n);
+          if(cs.backgroundImage && cs.backgroundImage!=='none' && !/^url\(/.test(cs.backgroundImage)){
+            const r=gradientRange(cs.backgroundImage);
+            if(r) return {layers, range:r};
+          }
+          const c=parse(cs.backgroundColor);
+          if(c && c[3]>0){
+            if(c[3]===1) return {layers, solid:[c[0],c[1],c[2]]};
+            layers.push(c);
+          }
+          n=n.parentElement;
+        }
+        return {layers, solid:[255,255,255]};
+      };
+      const resolveBg=(el)=>{
+        const {layers, solid, range}=bgOf(el);
+        const apply=(base)=>layers.reduceRight((acc,l)=>over(l,acc), base);
+        if(solid) return {kind:'solid', colours:[apply(solid)]};
+        return {kind:'gradient', colours:[apply(range.light), apply(range.dark)]};
+      };
+      // Anything hidden from assistive technology is decoration; a contrast
+      // rule about it would be a rule about nothing.
+      const hidden=(el)=>{let n=el;while(n){if(n.getAttribute&&n.getAttribute('aria-hidden')==='true')return true;n=n.parentElement}return false};
+      document.querySelectorAll('p,li,h1,h2,h3,h4,span,a,td,th,caption').forEach(el=>{
         if(!el.textContent.trim()||el.children.length) return;
         const cs=getComputedStyle(el);
-        if(cs.visibility==='hidden'||cs.display==='none') return;
-        out.text.push({ fg:cs.color, bg:bgOf(el), size:parseFloat(cs.fontSize), weight:cs.fontWeight, t:el.textContent.trim().slice(0,32) });
+        if(cs.visibility==='hidden'||cs.display==='none'||cs.opacity==='0') return;
+        if(hidden(el)) return;
+        const bg=resolveBg(el);
+        out.text.push({ fg:cs.color, bgs:bg.colours, onGradient:bg.kind==='gradient', size:parseFloat(cs.fontSize), weight:cs.fontWeight, t:el.textContent.trim().slice(0,32) });
       });
       return out;
     });
@@ -88,8 +140,23 @@ for (const scheme of ['light','dark']) {
     for (const t of r.text){
       const large = t.size>=24 || (t.size>=18.66 && +t.weight>=700);
       const need = large?3:4.5;
-      const c = ratio(parse(t.fg), parse(t.bg));
-      if (c < need) problems.push(`[${scheme}${path}] contrast ${c.toFixed(2)}:1 (needs ${need}) "${t.t}" ${t.fg} on ${t.bg}`);
+      // Text over a gradient is judged at the worst point of it, not an
+      // average, because the worst point is where somebody has to read it.
+      const fg = parse(t.fg);
+      const fgAlpha = (t.fg.match(/[\d.]+/g)||[]).map(Number)[3];
+      const results = t.bgs.map((bg) => {
+        const b = bg.map(Math.round);
+        // Composite the text's own alpha first: a 70% white label is not white.
+        const solid = fgAlpha !== undefined && fgAlpha < 1
+          ? fg.map((v,i)=>Math.round(v*fgAlpha + b[i]*(1-fgAlpha)))
+          : fg;
+        return { ratio: ratio(solid, b), bg: `rgb(${b.join(',')})` };
+      });
+      const worst = results.reduce((a,b)=>a.ratio<b.ratio?a:b);
+      if (worst.ratio < need) {
+        const where = t.onGradient ? ' at the worst point of a gradient' : '';
+        problems.push(`[${scheme}${path}] contrast ${worst.ratio.toFixed(2)}:1 (needs ${need}) "${t.t}" ${t.fg} on ${worst.bg}${where}`);
+      }
     }
 
     // Focus must be visible: something must change when focused.
