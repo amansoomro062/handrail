@@ -14,7 +14,7 @@
  * nobody has seen yet.
  */
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -22,7 +22,15 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const resultsDir = join(root, "results");
 const outRoot = join(root, "notifications");
 const htmlRoot = join(outRoot, "html");
-const CSS = readFileSync(join(root, "site", "src", "theme.css"), "utf8");
+// The report is the first thing a maintainer sees. It should not look like a
+// lesser artefact than the page their score eventually appears on, so it uses
+// the site's own stylesheet rather than a copy that will drift from it.
+const CSS = readFileSync(join(root, "web", "app", "globals.css"), "utf8")
+  // The font is served from the site; a report read off disk has no such path.
+  .replace(/@font-face \{[\s\S]*?\n\}\n/, "");
+
+const SITE = "https://handrail.tech";
+const REPO = "https://github.com/amansoomro062/handrail";
 
 const esc = (s) =>
   String(s ?? "")
@@ -46,30 +54,74 @@ function page(title, body) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="robots" content="noindex, nofollow">
-<style>${CSS}
-.rep { max-width: 860px; margin: 0 auto; padding: 2.5rem var(--gutter) 5rem; }
-.rep h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
-.rep h2 { margin-top: 2.6rem; }
-.finding { border: 1px solid var(--rule); border-left: 5px solid var(--fail); background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
-/* Findings are h3 alone and h4 once a cause heading sits above them. */
-.finding h3, .finding h4 { font-size: 1.05rem; margin: 0 0 0.7rem; line-height: 1.35; }
-.finding dl { display: grid; grid-template-columns: 8.5rem 1fr; gap: 0.3rem 0.9rem; margin: 0; font-size: 0.93rem; }
-.finding dt { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); padding-top: 0.18rem; }
+<style>
+/* Inter travels with the report, so it reads the same off disk as on the site. */
+@font-face {
+  font-family: "InterVar";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./inter-latin-var.woff2") format("woff2");
+}
+${CSS}
+body { padding: 0; }
+.rep { max-width: 900px; margin: 0 auto; padding: 40px var(--gutter) 90px; }
+.rep h1 { font-size: clamp(30px, 4.4vw, 52px); }
+.rep h2 { margin-top: 3rem; font-size: clamp(22px, 2.4vw, 32px); }
+.rep > p { max-width: 68ch; color: var(--ink-2); margin-bottom: 1rem; }
+.rep .lede { color: var(--ink-2); font-size: 19px; max-width: 60ch; margin: 16px 0 28px; }
+.rep ul.clean { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 10px; }
+.rep ul.clean li { max-width: 74ch; color: var(--ink-2); padding-left: 18px; position: relative; }
+.rep ul.clean li::before {
+  content: ""; position: absolute; left: 0; top: 10px; width: 7px; height: 7px;
+  border-radius: 2px; background: linear-gradient(135deg, var(--amber), var(--rust));
+}
+.rep ul.clean li strong { color: var(--ink); }
+
+/* A finding, as a card on the page ground. */
+.finding {
+  border: 1px solid var(--line); border-left: 5px solid var(--fail);
+  background: var(--surface); border-radius: 20px; padding: 22px 24px; margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba(18,28,34,0.04);
+}
+.finding h3, .finding h4 { font-size: 18px; margin: 0 0 14px; line-height: 1.3; }
+.finding dl { display: grid; grid-template-columns: 9rem 1fr; gap: 9px 16px; margin: 0; font-size: 15px; }
+.finding dt {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-3); padding-top: 4px;
+}
 .finding dd { margin: 0; color: var(--ink-2); }
-.finding code { background: var(--surface-2); padding: 0.08em 0.35em; border-radius: 2px; }
-@media (max-width: 620px) { .finding dl { grid-template-columns: 1fr; gap: 0.1rem; } .finding dt { padding-top: 0.5rem; } }
-/* The site styles bare <section> as a full page band, so set the whole box
-   here rather than inherit 4.5rem of padding meant for something else. */
-.cause { margin: 2rem 0 2.4rem; padding: 0 0 0 1.1rem; border-left: 2px solid var(--rule); }
-.cause h3 { margin: 0 0 0.2rem; font-size: 1.15rem; }
-.cause__count { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); margin: 0 0 0.6rem; }
-.cause > p { margin-bottom: 1rem; }
-.banner { border: 1px solid var(--rule); border-left: 5px solid var(--safety); background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.2rem; margin: 1.5rem 0; }
+@media (max-width: 620px) { .finding dl { grid-template-columns: 1fr; gap: 2px; } .finding dt { padding-top: 10px; } }
+
+/* A group of findings sharing one cause. */
+.cause { margin: 2.2rem 0 2.6rem; padding: 0 0 0 1.2rem; border-left: 2px solid var(--line); }
+.cause h3 { margin: 0 0 0.2rem; font-size: 20px; }
+.cause__count {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-3); margin: 0 0 0.7rem;
+}
+.cause > p { margin-bottom: 1.1rem; color: var(--ink-2); max-width: 70ch; }
+
+/* The panels: same material as the site. */
+.banner {
+  border-radius: 26px; padding: 26px 28px; margin: 1.6rem 0; color: #fff;
+}
+.banner p { color: rgba(255,255,255,0.82); max-width: 68ch; }
 .banner p:last-child { margin-bottom: 0; }
-details { border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 0.6rem; background: var(--surface); }
-summary { cursor: pointer; padding: 0.6rem 0.85rem; font-family: var(--mono); font-size: 0.85rem; }
-details pre { margin: 0; border: 0; border-top: 1px solid var(--rule); border-radius: 0; }
-</style>
+.banner .note__t { color: rgba(255,255,255,0.78); }
+.banner--paper {
+  background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--amber);
+  color: var(--ink); border-radius: 20px;
+}
+.banner--paper p { color: var(--ink-2); }
+.banner--paper .note__t { color: var(--ink-3); }
+
+details {
+  border: 1px solid var(--line); border-radius: 16px; margin-bottom: 8px; background: var(--surface);
+}
+summary { cursor: pointer; padding: 12px 16px; font-family: var(--mono); font-size: 13px; }
+details pre { margin: 0; border-radius: 0 0 15px 15px; }
+</style></style>
 </head>
 <body>
 <main class="rep">
@@ -336,6 +388,14 @@ function report(target, results) {
   out.push("So the adapter source is included below. Please tell us if we mounted your component in a way you would not recommend, or if a check misreads the specification. We will correct it and, if it has already been published, correct that too.");
   out.push("");
 
+  out.push("## Where to check us");
+  out.push("");
+  out.push(`- [How the measurement works](${SITE}/method), including why the runner never learns which library it is testing.`);
+  out.push(`- [How scoring works](${SITE}/scoring), with every weighting and what is deliberately left out.`);
+  out.push(`- [Our disclosure policy](${SITE}/disclosure), covering notice, right of reply, and conflicts of interest.`);
+  out.push(`- [The decision log](${SITE}/decisions), which is largely a record of results we got wrong and corrected.`);
+  out.push(`- [The source](${REPO}). Every adapter, spec and score, and the code that produced this report.`);
+  out.push("");
   out.push("## What happens next");
   out.push("");
   out.push("- You have **fourteen days** before anything about this library is published.");
@@ -387,13 +447,13 @@ function reportHtml(target, results) {
   const port = PORTS[target.id] ?? 5180;
   const o = [];
 
-  o.push(`<p class="eyebrow">Private, unpublished</p>`);
+  o.push(`<p class="eyebrow eyebrow--ink">Private, unpublished</p>`);
   o.push(`<h1>Accessibility conformance results for ${esc(target.name)}</h1>`);
   o.push(`<p class="lede">You are hearing this before we publish anything. No score for ${esc(target.name)} is on our index, and none will be for at least fourteen days, whatever this report says.</p>`);
   o.push(`<p>Handrail runs component libraries against the W3C ARIA Authoring Practices Guide and publishes the results. Every check cites the clause it measures, every score names an exact version, and every result is run repeatedly and discarded if the answer changes.</p>`);
 
   o.push("<h2>The short version</h2>");
-  o.push('<div class="tablewrap"><table><caption>One row per component.</caption><thead><tr><th scope="col">Component</th><th scope="col">Score</th><th scope="col">Failing checks</th></tr></thead><tbody>');
+  o.push('<div class="tablewrap"><table><caption class="visually-hidden">One row per component.</caption><thead><tr><th scope="col">Component</th><th scope="col">Score</th><th scope="col">Failing checks</th></tr></thead><tbody>');
   for (const r of [...results].sort((a, b) => a.component.localeCompare(b.component))) {
     const f = r.assertions.filter((a) => a.status === "fail").length;
     const chip = f === 0
@@ -404,13 +464,13 @@ function reportHtml(target, results) {
   o.push("</tbody></table></div>");
 
   if (failing.length > 0 && notes) {
-    o.push('<div class="banner"><p class="note__t">Read this before the findings</p>');
+    o.push('<div class="banner banner--paper"><p class="note__t">Read this before the findings</p>');
     o.push(`<p>We mounted your components like this: ${esc(notes)}</p>`);
     o.push("<p>If that choice is the disagreement rather than the findings themselves, say so and we will publish your reasoning beside the score. It is a judgement call, not a measurement, and you are better placed to argue it than we are.</p></div>");
   }
 
   if (failing.length === 0) {
-    o.push(`<div class="banner"><p>We found nothing to report. ${esc(target.name)} passes every check we run. We are telling you anyway, because you should hear about a public score from us rather than find it, and because you may still think we measured something wrongly.</p></div>`);
+    o.push(`<div class="banner field"><p>We found nothing to report. ${esc(target.name)} passes every check we run. We are telling you anyway, because you should hear about a public score from us rather than find it, and because you may still think we measured something wrongly.</p></div>`);
   } else {
     const { groups, loose } = groupByCause(target, failing);
     const grouped = groups.length > 0;
@@ -473,11 +533,19 @@ pnpm handrail run --target ${esc(target.id)} --component &lt;component&gt; \\
   o.push("<p>The most likely cause of a wrong result is our adapter, not your library.</p>");
   o.push(
     target.adapterCorrections
-      ? `<div class="banner"><p>It has already happened to you. ${esc(target.adapterCorrections)}</p></div>`
+      ? `<div class="banner field"><p>It has already happened to you. ${esc(target.adapterCorrections)}</p></div>`
       : "<p>We have got this wrong repeatedly. One library's first run scored 27% and almost all of it was a selector of ours. Another was reported as having a broken focus trap when the trap worked and our test was reading focus too early.</p>",
   );
   o.push("<p>So the adapter source is included below. Please tell us if we mounted your component in a way you would not recommend, or if a check misreads the specification. We will correct it and, if it has already been published, correct that too.</p>");
 
+  o.push("<h2>Where to check us</h2>");
+  o.push("<ul class=\"clean\">");
+  o.push(`<li><strong><a href="${SITE}/method">How the measurement works</a></strong>, including why the runner never learns which library it is testing.</li>`);
+  o.push(`<li><strong><a href="${SITE}/scoring">How scoring works</a></strong>, with every weighting and what is deliberately left out.</li>`);
+  o.push(`<li><strong><a href="${SITE}/disclosure">Our disclosure policy</a></strong>, covering notice, right of reply, and conflicts of interest.</li>`);
+  o.push(`<li><strong><a href="${SITE}/decisions">The decision log</a></strong>, which is largely a record of results we got wrong and corrected.</li>`);
+  o.push(`<li><strong><a href="${REPO}">The source</a></strong>. Every adapter, spec and score, and the code that produced this report.</li>`);
+  o.push("</ul>");
   o.push("<h2>What happens next</h2><ul class=\"clean\">");
   o.push("<li>You have <strong>fourteen days</strong> before anything about this library is published.</li>");
   o.push("<li>If you reply, your response is published beside the score, in full and unedited.</li>");
@@ -557,6 +625,7 @@ for (const target of targets) {
   writeFileSync(join(dir, "report.md"), `${report(target, results)}\n`, "utf8");
   writeFileSync(join(dir, "covering-message.txt"), covering(target, results), "utf8");
   mkdirSync(htmlRoot, { recursive: true });
+  copyFileSync(join(root, "web", "public", "fonts", "inter-latin-var.woff2"), join(htmlRoot, "inter-latin-var.woff2"));
   writeFileSync(join(htmlRoot, `${target.id}.html`), reportHtml(target, results), "utf8");
   written.push({ target, results });
   const failing = results.reduce((n, r) => n + r.assertions.filter((a) => a.status === "fail").length, 0);
@@ -585,10 +654,10 @@ if (written.length > 0) {
       `<p class="eyebrow">Private, unpublished</p>
 <h1>Maintainer reports</h1>
 <p class="lede">One report per library, to be sent before anything is published. Fewest findings first, because those are the easiest conversations to start with.</p>
-<div class="tablewrap"><table><caption>Every measured library.</caption>
+<div class="tablewrap"><table><caption class="visually-hidden">Every measured library.</caption>
 <thead><tr><th scope="col">Library</th><th scope="col">Findings</th><th scope="col">Notified</th></tr></thead>
 <tbody>${rows}</tbody></table></div>
-<div class="banner"><p class="note__t">Before sending</p><p>Record the date each one goes out in <code>targets.json</code> as <code>notifiedOn</code>. That date is what releases the results: the site generator and <code>pnpm restore:docs</code> both refuse to publish a library until it is set and fourteen days have passed.</p></div>`,
+<div class="banner banner--paper"><p class="note__t">Before sending</p><p>Record the date each one goes out in <code>targets.json</code> as <code>notifiedOn</code>. That date is what releases the results: the site generator and <code>pnpm restore:docs</code> both refuse to publish a library until it is set and fourteen days have passed.</p></div>`,
     ),
     "utf8",
   );
