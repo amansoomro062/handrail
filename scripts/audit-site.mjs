@@ -6,13 +6,43 @@
  * focus visibility, in both colour schemes. A site about accessibility that is
  * not accessible would undo the argument before anyone read it.
  *
- * Expects the site served locally, eg: npx serve site/dist -p 8097
+ * Expects the pages served locally. Defaults to the built site; pass a base URL
+ * and paths to audit anything else, which is how the maintainer reports get
+ * held to the same standard as the pages they eventually appear on.
+ *
+ *   npx serve site/dist -p 8097 && node scripts/audit-site.mjs
+ *   node scripts/audit-site.mjs http://localhost:5199 /index.html /antd.html
  */
 import { chromium } from 'playwright';
+import { readdirSync, existsSync } from 'node:fs';
+import { join, relative } from 'node:path';
+
+/**
+ * Every page the site actually built, rather than a hardcoded list.
+ *
+ * A fixed list goes stale silently: while results are withheld no per-library
+ * page exists, and auditing one reported "no title" for the 404 body instead of
+ * saying the page was missing.
+ */
+function discover(dir, base = dir) {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory()
+      ? discover(join(dir, e.name), base)
+      : e.name.endsWith('.html')
+        ? ['/' + relative(base, join(dir, e.name))]
+        : [],
+  );
+}
 
 const lum = ([r,g,b]) => { const f=(c)=>{c/=255;return c<=0.03928?c/12.92:((c+0.055)/1.055)**2.4}; return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b); };
 const ratio = (a,b) => { const [l1,l2]=[lum(a),lum(b)].sort((x,y)=>y-x); return (l1+0.05)/(l2+0.05); };
 const parse = (s) => (s.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
+
+const [baseArg, ...pathArgs] = process.argv.slice(2);
+const BASE = baseArg ?? 'http://localhost:8097';
+const PATHS = pathArgs.length > 0 ? pathArgs : discover('site/dist').sort();
+if (PATHS.length === 0) { console.error('  Nothing to audit. Build the site first.'); process.exit(1); }
 
 const b = await chromium.launch();
 const problems = [];
@@ -20,8 +50,9 @@ for (const scheme of ['light','dark']) {
   const ctx = await b.newContext({ viewport:{width:1280,height:1000} });
   const p = await ctx.newPage();
   p.on('pageerror', e => problems.push(`[${scheme}] page error: ${e.message}`));
-  for (const path of ['/index.html','/results.html','/mui/menu.html']) {
-    await p.goto('http://localhost:8097'+path, { waitUntil:'networkidle' });
+  for (const path of PATHS) {
+    const res = await p.goto(BASE+path, { waitUntil:'networkidle' });
+    if (!res || !res.ok()) { problems.push(`[${scheme}${path}] not served: HTTP ${res?.status() ?? 'no response'}`); continue; }
     await p.evaluate((s)=>{document.documentElement.setAttribute('data-theme',s)}, scheme);
 
     const r = await p.evaluate(() => {
