@@ -13,7 +13,8 @@
       "dialog.escape-closes": "fail",
       "dialog.focus-restored-on-close": "fail",
       "dialog.background-inert": "fail",
-      "dialog.close-has-accessible-name": "fail"
+      "dialog.close-has-accessible-name": "fail",
+      "dialog.tab-never-leaves-dialog": "fail"
     },
     "combobox": {
       "combobox.has-accessible-name": "pass",

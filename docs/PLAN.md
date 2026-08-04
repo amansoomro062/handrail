@@ -122,7 +122,9 @@ Widen along both axes. Specs first, then adapters, because a spec bug found afte
   Chakra v3 is built on Ark UI and scores like it. Its one accordion finding is shared with other libraries, which makes it an ecosystem observation rather than a fact about any one of them. Details withheld pending notification.
 
   It produced decision **015**, the most consequential one so far. One library's combobox failed `escape-closes` about half the time, and it was genuinely real, but only when Escape arrived within 50ms of the popup opening, which no human can do. The index now interacts at human speed and treats sub-60ms races as out of scope. Publishing that would have been technically accurate and completely irrelevant to any actual user.
-- [~] Ant Design, **draft, not publishable.** Scores withheld.
+- [x] Ant Design. Scores withheld until its maintainer has been notified.
+
+  Its three open items are now closed against the DOM. Two were genuine, one of them confirmed a second time using the library's own button component to rule out an adapter fault. The third turned out to be our severity model rather than a defect, which produced decision **020**.
 
   The first run produced the worst scores in the index, and investigating them moved combobox from 27% to 94% and accordion from 42% to 85%, every point of it our adapter's fault. A 27% would have been the headline finding of the whole project. It was a selector.
 

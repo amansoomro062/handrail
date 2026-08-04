@@ -90,13 +90,8 @@
       ],
       "homepage": "https://ant.design/",
       "role": "subject",
-      "status": "draft",
-      "notes": "NOT PUBLISHABLE. First-run scores were dominated by adapter bugs of ours: combobox moved 27% -> 94% and accordion 42% -> 85% after correcting a visibility check and a v5 class name. Remaining failures are unverified, see docs/DECISIONS.md 016 for exactly which are confirmed and which are still open.",
-      "unverified": {
-        "combobox": "Only one option is in the DOM at a time under virtualisation. That is legitimate when the library carries aria-setsize and aria-posinset, which this spec does not yet check, so the failure is most likely ours.",
-        "menu": "Six failures, none confirmed against the DOM.",
-        "dialog": "Focus passes through <body> for one Tab before returning. Real, but less serious than reaching background content, and the severity should probably distinguish the two."
-      },
+      "status": "published",
+      "notes": "Findings verified against the DOM, including with the library's own button component to rule out an adapter fault. Withheld from the site until the maintainer has been notified, per docs/DECISIONS.md 004.",
       "notifiedOn": null
     },
     {

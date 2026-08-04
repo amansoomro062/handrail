@@ -301,17 +301,32 @@ const assertions: Assertion[] = [
       if (!(await openPopup(ctx)))
         return fail("The popup did not open, so the options could not be checked.");
       const wrong: string[] = [];
+      let present = 0;
       for (const testId of ["hr-option-1", "hr-option-2", "hr-option-3"]) {
         const role = await ctx.a11y.roleFor(testId);
-        if (role !== "option") wrong.push(`${testId}: ${role ?? "absent from the accessibility tree"}`);
+        if (role === "option") present += 1;
+        else wrong.push(`${testId}: ${role ?? "absent from the accessibility tree"}`);
       }
-      return wrong.length === 0
-        ? pass("All three options expose role=option.")
-        : fail(
-            "One or more options do not expose an option role.",
-            'all options expose role="option"',
-            wrong.join("; "),
-          );
+      if (wrong.length === 0) return pass("All three options expose role=option.");
+
+      // A virtualised list may legitimately render a window of the options, but
+      // only if it tells assistive technology how many there are and where each
+      // sits. Without aria-setsize and aria-posinset the user cannot know the
+      // set exists, so the two cases need different words.
+      const setsize = present > 0 ? await ctx.harness.attr("hr-option-1", "aria-setsize") : null;
+      const posinset = present > 0 ? await ctx.harness.attr("hr-option-1", "aria-posinset") : null;
+      if (present > 0 && present < 3 && !setsize) {
+        return fail(
+          `Only ${present} of 3 options is exposed at a time, and the list does not say how many there are.`,
+          "either every option is exposed, or aria-setsize and aria-posinset describe the full set",
+          `${present} option(s) present, aria-setsize=${setsize ?? "absent"}, aria-posinset=${posinset ?? "absent"}`,
+        );
+      }
+      return fail(
+        "One or more options do not expose an option role.",
+        'all options expose role="option"',
+        wrong.join("; "),
+      );
     },
   },
 

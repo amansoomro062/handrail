@@ -199,7 +199,7 @@ const assertions: Assertion[] = [
 
   {
     id: "dialog.focus-trapped-forward",
-    title: "Tab does not move focus out of an open dialog",
+    title: "Tab never reaches operable content behind the dialog",
     rationale:
       "Content behind a modal is inert to a mouse user. If Tab escapes into it, a keyboard user ends up interacting with things they cannot see.",
     severity: "blocker",
@@ -214,7 +214,10 @@ const assertions: Assertion[] = [
         await ctx.keyboard.press("Tab");
         const inside = await ctx.keyboard.isFocusWithin("hr-dialog");
         const step = await ctx.keyboard.focused();
-        if (!inside) {
+        // Landing on <body> is a wasted stop, not an escape: nothing back there
+        // can be operated. That is a real but lesser defect, and it is measured
+        // by dialog.tab-never-leaves-dialog instead.
+        if (!inside && !step.isBody) {
           return fail(
             step.isBody
               ? `Focus landed on <body> after ${i + 1} Tab press${i === 0 ? "" : "es"}, leaving the dialog for a step. It did not reach background content, but the tab stop is wasted and the APG requires focus to remain within the dialog.`
@@ -230,7 +233,7 @@ const assertions: Assertion[] = [
 
   {
     id: "dialog.focus-trapped-backward",
-    title: "Shift+Tab does not move focus out of an open dialog",
+    title: "Shift+Tab never reaches operable content behind the dialog",
     rationale:
       "Backward traversal is routinely forgotten when forward traversal is handled, and it strands users just as badly.",
     severity: "blocker",
@@ -241,7 +244,7 @@ const assertions: Assertion[] = [
         await ctx.keyboard.press("Shift+Tab");
         const inside = await ctx.keyboard.isFocusWithin("hr-dialog");
         const step = await ctx.keyboard.focused();
-        if (!inside) {
+        if (!inside && !step.isBody) {
           return fail(
             `Focus left the dialog after ${i + 1} Shift+Tab press${i === 0 ? "" : "es"}.`,
             "focus remains within the dialog",
@@ -250,6 +253,35 @@ const assertions: Assertion[] = [
         }
       }
       return pass("Focus stayed within the dialog across six Shift+Tab presses.");
+    },
+  },
+
+
+  {
+    id: "dialog.tab-never-leaves-dialog",
+    title: "Tab never leaves the dialog, even briefly",
+    rationale:
+      "A tab stop on nothing gives a keyboard user no feedback and no way to tell whether they have fallen out of the dialog. They have not, and can carry on, which is why this is not a blocker, but the APG asks Tab to cycle among the dialog's own elements.",
+    severity: "moderate",
+    refs: { apg: APG_KEYBOARD, ...WCAG.focusOrder },
+    async run(ctx) {
+      if (!(await openDialog(ctx)))
+        return fail("The dialog did not open, so the tab cycle could not be checked.");
+      for (const backwards of [false, true]) {
+        for (let i = 0; i < 6; i++) {
+          await ctx.keyboard.press(backwards ? "Shift+Tab" : "Tab");
+          if (await ctx.keyboard.isFocusWithin("hr-dialog")) continue;
+          const step = await ctx.keyboard.focused();
+          return fail(
+            `Focus left the dialog after ${i + 1} ${backwards ? "Shift+Tab" : "Tab"} press${i === 0 ? "" : "es"}.`,
+            "focus stays on the dialog's own elements throughout the cycle",
+            describeFocus(step),
+          );
+        }
+        await ctx.harness.reset();
+        await openDialog(ctx);
+      }
+      return pass("Focus stayed within the dialog in both directions.");
     },
   },
 
