@@ -28,7 +28,7 @@ Prove the architecture works end to end on the narrowest possible slice: one com
 - [x] Broken fixture (`adapters/_fixture-broken`) with a catalogued defect list
 - [x] `--expect` calibration mode, reporting false positives and false negatives separately
 
-**Exit criteria, met.** `handrail run --target radix --component dialog` scores 12/12, and the broken fixture produces exactly the 8 catalogued failures with no false positives.
+**Exit criteria, met.** `handrail run --target radix --component dialog` scores 13/13, and the broken fixture produces exactly the 8 catalogued failures with no false positives.
 
 Two findings worth carrying forward:
 
@@ -61,8 +61,8 @@ React Spectrum is widely regarded as the accessibility gold standard. If it fail
 
 | Target | Score | What it proves |
 | --- | --- | --- |
-| React Spectrum `3.47.3` | 12/12 | No false positives against a gold-standard implementation |
-| Radix `1.1.23` | 12/12 | Reproduced independently on a second good library |
+| React Spectrum `3.47.3` | 13/13 | No false positives against a gold-standard implementation |
+| Radix `1.1.23` | 13/13 | Reproduced independently on a second good library |
 | `_fixture-broken` | 4/12, exactly as catalogued | No false negatives, every planted defect was caught, and nothing else was |
 
 **The open question this raises.** Both good libraries score 100% and the terrible one scores 37%, so the Dialog spec currently separates *good from catastrophic*, it does not yet discriminate between good implementations. That is expected of a first spec and is not a reason to invent assertions.
