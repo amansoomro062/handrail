@@ -90,6 +90,9 @@ importers:
 
   .:
     devDependencies:
+      playwright:
+        specifier: 'catalog:'
+        version: 1.62.1
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
