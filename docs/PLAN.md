@@ -21,7 +21,7 @@ Prove the architecture works end to end on the narrowest possible slice: one com
 - [x] Monorepo, workspace, TypeScript config
 - [x] Harness protocol defined and documented
 - [x] Runner engine: Playwright driver, CDP accessibility-tree access, keyboard primitives
-- [x] Dialog spec, 12 assertions grounded in APG
+- [x] Dialog spec, 13 assertions grounded in APG
 - [x] Radix reference adapter
 - [x] Scoring and JSON report output
 - [x] `pnpm install` clean, Chromium installed, full run green locally
@@ -46,7 +46,7 @@ This is the whole reason Phase 1 exists, and it appeared within minutes of the f
 This is the most important phase in the plan and the easiest to skip. Do not skip it.
 
 - [x] Build the **React Spectrum** adapter as a calibration control
-- [x] Run the Dialog spec against it, **12/12 against `@adobe/react-spectrum@3.47.3`**
+- [x] Run the Dialog spec against it, **13/13 against `@adobe/react-spectrum@3.47.3`**
 - [x] Investigate every failure by hand, there were none to investigate
 
 React Spectrum is widely regarded as the accessibility gold standard. If it fails an assertion, the overwhelmingly likely explanation is that **our assertion is wrong**, not that Adobe is wrong. Each failure gets one of three resolutions, recorded in `docs/DECISIONS.md`:

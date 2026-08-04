@@ -87,7 +87,7 @@ adapter used to produce them and fourteen days to reply. That is
 | Milestone                                              | State       |
 | ------------------------------------------------------ | ----------- |
 | Harness protocol + runner engine                        | Working             |
-| Dialog spec (12 assertions)                             | Implemented         |
+| Dialog spec (13 assertions)                             | Implemented         |
 | Combobox spec (14 assertions)                           | Implemented         |
 | Menu spec (13 assertions)                               | Implemented         |
 | Tabs spec (13 assertions)                               | Implemented         |
