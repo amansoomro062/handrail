@@ -8,6 +8,28 @@
  * scripts/audit-site.mjs, which fails the build if any of it drifts.
  */
 
+/**
+ * Inter, self-hosted.
+ *
+ * The design leans on weight 560 and -0.045em tracking, neither of which
+ * survives a fallback: system-ui renders SF Pro on a Mac and Segoe UI on
+ * Windows, and the second is a different typeface with different proportions.
+ * A 47KB latin subset is a fair price for the page looking the same everywhere.
+ *
+ * font-display: swap so text is readable immediately and never invisible while
+ * the file loads.
+ */
+@font-face {
+  font-family: "InterVar";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-latin-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   color-scheme: light;
 
@@ -26,7 +48,7 @@
   --fail: #c24a32;
   --warn: #8e6200; /* 4.54:1 on the ground, 5.39:1 on white */
 
-  --sans: system-ui, -apple-system, "Inter", "Segoe UI", Roboto, sans-serif;
+  --sans: "InterVar", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --radius-panel: 40px;
