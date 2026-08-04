@@ -16,7 +16,7 @@ function assertion(
   severity: Severity = "serious",
   id = `x.${status}-${severity}-${Math.abs(Math.round(performance.now() * 1000))}`,
 ): AssertionResult {
-  return { id, title: "t", status, severity, refs: {}, durationMs: 1, logs: [] };
+  return { id, title: "t", rationale: "r", status, severity, refs: {}, durationMs: 1, logs: [] };
 }
 
 function run(assertions: AssertionResult[], overrides: Partial<RunResult> = {}): RunResult {

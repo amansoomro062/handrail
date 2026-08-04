@@ -114,6 +114,7 @@ export async function runSpec(options: RunOptions): Promise<RunResult> {
         assertions: spec.assertions.map((assertion) => ({
           id: assertion.id,
           title: assertion.title,
+          rationale: assertion.rationale,
           status: "not-applicable" as const,
           severity: assertion.severity,
           refs: assertion.refs,
@@ -169,6 +170,7 @@ export async function runSpec(options: RunOptions): Promise<RunResult> {
         outcome = {
           id: assertion.id,
           title: assertion.title,
+          rationale: assertion.rationale,
           status: result.status,
           severity: assertion.severity,
           refs: assertion.refs,
@@ -184,6 +186,7 @@ export async function runSpec(options: RunOptions): Promise<RunResult> {
         outcome = {
           id: assertion.id,
           title: assertion.title,
+          rationale: assertion.rationale,
           status: "error",
           severity: assertion.severity,
           refs: assertion.refs,

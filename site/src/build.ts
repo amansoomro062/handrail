@@ -113,7 +113,7 @@ function detailPage(target: Target, result: RunResult): string {
                <dl class="kv">
                  <dt>expected</dt><dd>${escapeHtml(a.expected ?? "not recorded")}</dd>
                  <dt>actual</dt><dd>${escapeHtml(a.actual ?? "not recorded")}</dd>
-                 <dt>why</dt><dd>${escapeHtml(spec.assertions.find((x) => x.id === a.id)?.rationale ?? "")}</dd>
+                 <dt>why</dt><dd>${escapeHtml(a.rationale ?? "")}</dd>
                  <dt>measured</dt><dd>${refs.join(" &middot; ")}</dd>
                </dl>
              </div>`

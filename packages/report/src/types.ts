@@ -14,6 +14,14 @@ export interface AssertionResult {
   status: AssertionStatus;
   severity: Severity;
   refs: Refs;
+  /**
+   * Why this check exists, in terms of what a person cannot do.
+   *
+   * Copied into the result rather than looked up from the spec, so a result
+   * stays readable years later without the spec version that produced it. It is
+   * also what a maintainer reads first when they receive a finding.
+   */
+  rationale: string;
   /** Human-readable outcome. Required for anything that is not a pass. */
   detail?: string;
   expected?: string;

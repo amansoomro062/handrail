@@ -28,3 +28,6 @@ site/dist-ts/
 # Full text of the docs, held back until every maintainer has been notified.
 # Restore with: pnpm restore:docs
 docs/.unredacted/
+
+# Private maintainer reports. Findings nobody has seen yet.
+notifications/
