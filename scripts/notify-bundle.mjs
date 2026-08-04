@@ -21,6 +21,56 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const resultsDir = join(root, "results");
 const outRoot = join(root, "notifications");
+const htmlRoot = join(outRoot, "html");
+const CSS = readFileSync(join(root, "site", "src", "theme.css"), "utf8");
+
+const esc = (s) =>
+  String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+/**
+ * The HTML report, rendered from the same data as the Markdown one.
+ *
+ * Not a Markdown conversion: a maintainer opening this should get a document
+ * that reads like the index their score will appear on, with the findings
+ * legible at a glance and the adapter source folded away until wanted.
+ */
+function page(title, body) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="robots" content="noindex, nofollow">
+<style>${CSS}
+.rep { max-width: 860px; margin: 0 auto; padding: 2.5rem var(--gutter) 5rem; }
+.rep h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+.rep h2 { margin-top: 2.6rem; }
+.finding { border: 1px solid var(--rule); border-left: 5px solid var(--fail); background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
+.finding h3 { font-size: 1.05rem; margin: 0 0 0.7rem; line-height: 1.35; }
+.finding dl { display: grid; grid-template-columns: 8.5rem 1fr; gap: 0.3rem 0.9rem; margin: 0; font-size: 0.93rem; }
+.finding dt { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); padding-top: 0.18rem; }
+.finding dd { margin: 0; color: var(--ink-2); }
+.finding code { background: var(--surface-2); padding: 0.08em 0.35em; border-radius: 2px; }
+@media (max-width: 620px) { .finding dl { grid-template-columns: 1fr; gap: 0.1rem; } .finding dt { padding-top: 0.5rem; } }
+.banner { border: 1px solid var(--rule); border-left: 5px solid var(--safety); background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.2rem; margin: 1.5rem 0; }
+.banner p:last-child { margin-bottom: 0; }
+details { border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 0.6rem; background: var(--surface); }
+summary { cursor: pointer; padding: 0.6rem 0.85rem; font-family: var(--mono); font-size: 0.85rem; }
+details pre { margin: 0; border: 0; border-top: 1px solid var(--rule); border-radius: 0; }
+</style>
+</head>
+<body>
+<main class="rep">
+${body}
+</main>
+</body>
+</html>`;
+}
 
 const PORTS = {
   radix: 5180,
@@ -225,6 +275,97 @@ function concentration(results) {
   return `, across ${counts.length} components`;
 }
 
+function reportHtml(target, results) {
+  const failing = results.flatMap((r) =>
+    r.assertions.filter((a) => a.status === "fail").map((a) => ({ ...a, component: r.component })),
+  );
+  const versions = [...new Set(results.flatMap((r) => Object.entries(r.target.versions).map(([n, v]) => `${n}@${v}`)))];
+  const env = results[0]?.environment;
+  const notes = results[0]?.target?.notes;
+  const port = PORTS[target.id] ?? 5180;
+  const o = [];
+
+  o.push(`<p class="eyebrow">Private, unpublished</p>`);
+  o.push(`<h1>Accessibility conformance results for ${esc(target.name)}</h1>`);
+  o.push(`<p class="lede">You are receiving this before anyone else. Nothing here is public, and none of it will be for at least fourteen days.</p>`);
+  o.push(`<p>Handrail runs component libraries against the W3C ARIA Authoring Practices Guide and publishes the results. Every check cites the clause it measures, every score names an exact version, and every result is run repeatedly and discarded if the answer changes.</p>`);
+
+  o.push("<h2>The short version</h2>");
+  o.push('<div class="tablewrap"><table><caption>One row per component.</caption><thead><tr><th scope="col">Component</th><th scope="col">Score</th><th scope="col">Failing checks</th></tr></thead><tbody>');
+  for (const r of [...results].sort((a, b) => a.component.localeCompare(b.component))) {
+    const f = r.assertions.filter((a) => a.status === "fail").length;
+    const chip = f === 0
+      ? '<span class="chip chip--pass"><span class="chip__dot"></span>none</span>'
+      : `<span class="chip chip--fail"><span class="chip__dot"></span>${f}</span>`;
+    o.push(`<tr><th scope="row">${esc(r.component)}</th><td>${show(score(r))}</td><td>${chip}</td></tr>`);
+  }
+  o.push("</tbody></table></div>");
+
+  if (failing.length > 0 && notes) {
+    o.push('<div class="banner"><p class="note__t">Read this before the findings</p>');
+    o.push(`<p>We mounted your components like this: ${esc(notes)}</p>`);
+    o.push("<p>If that choice is the disagreement rather than the findings themselves, say so and we will publish your reasoning beside the score. It is a judgement call, not a measurement, and you are better placed to argue it than we are.</p></div>");
+  }
+
+  if (failing.length === 0) {
+    o.push(`<div class="banner"><p>We found nothing to report. ${esc(target.name)} passes every check we run. We are telling you anyway, because you should hear about a public score from us rather than find it, and because you may still think we measured something wrongly.</p></div>`);
+  } else {
+    o.push(`<h2>The ${failing.length} finding${failing.length === 1 ? "" : "s"}</h2>`);
+    for (const a of failing) {
+      const refs = [];
+      if (a.refs?.apg) refs.push(`<a href="${esc(a.refs.apg)}">APG pattern</a>`);
+      if (a.refs?.wcag) refs.push(a.refs.wcagUrl ? `<a href="${esc(a.refs.wcagUrl)}">WCAG ${esc(a.refs.wcag)}</a>` : `WCAG ${esc(a.refs.wcag)}`);
+      o.push('<div class="finding">');
+      o.push(`<h3>${esc(a.detail ?? a.title)}</h3><dl>`);
+      // The code chip carries its own padding, so a comma after it reads as a
+      // stray space. Break the line rather than punctuate across it.
+      o.push(`<dt>Check</dt><dd><code>${esc(a.id)}</code><br>"${esc(a.title)}"</dd>`);
+      o.push(`<dt>Component</dt><dd>${esc(a.component)}</dd>`);
+      o.push(`<dt>Severity</dt><dd>${esc(a.severity)}, meaning ${esc(SEVERITY_MEANING[a.severity] ?? "")}</dd>`);
+      if (a.rationale) o.push(`<dt>Why it matters</dt><dd>${esc(a.rationale)}</dd>`);
+      o.push(`<dt>Expected</dt><dd>${esc(a.expected ?? "n/a")}</dd>`);
+      o.push(`<dt>We measured</dt><dd>${esc(a.actual ?? "n/a")}</dd>`);
+      if (refs.length) o.push(`<dt>Measured against</dt><dd>${refs.join(" &middot; ")}</dd>`);
+      o.push("</dl></div>");
+    }
+  }
+
+  o.push("<h2>How we tested it</h2><ul class=\"clean\">");
+  o.push(`<li><strong>Versions:</strong> ${esc(versions.join(", ") || "not recorded")}</li>`);
+  if (env) o.push(`<li><strong>Browser:</strong> ${esc(env.browser)} ${esc(env.browserVersion)}</li>`);
+  o.push("<li><strong>Configuration:</strong> default. We use only what the library exports and never hand-write ARIA, even where the documentation instructs the developer to. If we did, the score would measure how carefully we copied your docs rather than what ships in the box.</li>");
+  o.push("</ul>");
+  o.push("<p>Reproduce any of it from a clone of the repository:</p>");
+  o.push(`<pre><code>pnpm --filter @handrail/adapter-${esc(target.id)} run dev
+pnpm handrail run --target ${esc(target.id)} --component &lt;component&gt; \\
+  --base-url http://localhost:${port} --repeat 3</code></pre>`);
+
+  o.push("<h2>Where we might be wrong</h2>");
+  o.push("<p>The most likely cause of a wrong result is our adapter, not your library.</p>");
+  o.push(
+    target.adapterCorrections
+      ? `<div class="banner"><p>It has already happened to you. ${esc(target.adapterCorrections)}</p></div>`
+      : "<p>We have got this wrong repeatedly. One library's first run scored 27% and almost all of it was a selector of ours. Another was reported as having a broken focus trap when the trap worked and our test was reading focus too early.</p>",
+  );
+  o.push("<p>So the adapter source is included below. Please tell us if we mounted your component in a way you would not recommend, or if a check misreads the specification. We will correct it and, if it has already been published, correct that too.</p>");
+
+  o.push("<h2>What happens next</h2><ul class=\"clean\">");
+  o.push("<li>You have <strong>fourteen days</strong> before anything about this library is published.</li>");
+  o.push("<li>If you reply, your response is published beside the score, in full and unedited.</li>");
+  o.push("<li><strong>If you ship a fix in that window, we publish the fixed score.</strong> A finding that gets fixed before publication is the best outcome this project has, not a story we lost.</li>");
+  o.push("<li>If you would like longer, ask. The deadline is ours, not a rule.</li></ul>");
+
+  const sources = adapterSource(target.id);
+  if (sources.length) {
+    o.push("<h2>The adapter we used</h2>");
+    o.push("<p>This is the whole of the library-specific code. There is nothing else.</p>");
+    for (const s of sources) {
+      o.push(`<details><summary>${esc(s.name)}</summary><pre><code>${esc(s.code.trimEnd())}</code></pre></details>`);
+    }
+  }
+  return page(`${target.name}: accessibility conformance results`, o.join("\n"));
+}
+
 function covering(target, results) {
   const failing = results.reduce((n, r) => n + r.assertions.filter((a) => a.status === "fail").length, 0);
   return `Subject: Accessibility conformance results for ${target.name}, before we publish them
@@ -253,6 +394,7 @@ Thanks for your time, and for the library.
 }
 
 let made = 0;
+const written = [];
 for (const target of targets) {
   if (target.status === "planned") continue;
   if (only && target.id !== only) continue;
@@ -265,12 +407,46 @@ for (const target of targets) {
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "report.md"), `${report(target, results)}\n`, "utf8");
   writeFileSync(join(dir, "covering-message.txt"), covering(target, results), "utf8");
+  mkdirSync(htmlRoot, { recursive: true });
+  writeFileSync(join(htmlRoot, `${target.id}.html`), reportHtml(target, results), "utf8");
+  written.push({ target, results });
   const failing = results.reduce((n, r) => n + r.assertions.filter((a) => a.status === "fail").length, 0);
   console.log(`  ${target.name.padEnd(16)} ${String(failing).padStart(2)} finding(s)  ->  notifications/${target.id}/`);
   made++;
 }
 
+if (written.length > 0) {
+  const rows = written
+    .sort((a, b) => {
+      const f = (x) => x.results.reduce((n, r) => n + r.assertions.filter((a) => a.status === "fail").length, 0);
+      return f(a) - f(b);
+    })
+    .map(({ target, results }) => {
+      const f = results.reduce((n, r) => n + r.assertions.filter((a) => a.status === "fail").length, 0);
+      const chip = f === 0
+        ? '<span class="chip chip--pass"><span class="chip__dot"></span>none</span>'
+        : `<span class="chip chip--fail"><span class="chip__dot"></span>${f}</span>`;
+      return `<tr><th scope="row"><a href="./${target.id}.html">${esc(target.name)}</a></th><td>${chip}</td><td>${target.notifiedOn ? esc(target.notifiedOn) : "not yet"}</td></tr>`;
+    })
+    .join("\n");
+  writeFileSync(
+    join(htmlRoot, "index.html"),
+    page(
+      "Maintainer reports",
+      `<p class="eyebrow">Private, unpublished</p>
+<h1>Maintainer reports</h1>
+<p class="lede">One report per library, to be sent before anything is published. Fewest findings first, because those are the easiest conversations to start with.</p>
+<div class="tablewrap"><table><caption>Every measured library.</caption>
+<thead><tr><th scope="col">Library</th><th scope="col">Findings</th><th scope="col">Notified</th></tr></thead>
+<tbody>${rows}</tbody></table></div>
+<div class="banner"><p class="note__t">Before sending</p><p>Record the date each one goes out in <code>targets.json</code> as <code>notifiedOn</code>. That date is what releases the results: the site generator and <code>pnpm restore:docs</code> both refuse to publish a library until it is set and fourteen days have passed.</p></div>`,
+    ),
+    "utf8",
+  );
+}
+
 console.log("");
 console.log(`  ${made} bundle(s) written to notifications/ (untracked)`);
+console.log("  HTML in notifications/html/, open index.html");
 console.log("  Record the date you send each one in targets.json as notifiedOn.");
 console.log("");

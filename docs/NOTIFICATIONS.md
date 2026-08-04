@@ -18,6 +18,17 @@ findings nobody has seen) and holds:
 - `report.md` — every check, the clause behind it, and the full adapter source
 - `covering-message.txt` — a short note to send alongside it
 
+The same reports are also written as HTML to `notifications/html/`, one page per
+library plus an `index.html` listing all of them. Open the index to read them.
+They use the site's own stylesheet, so a maintainer sees the report in the same
+form as the page their score eventually appears on, and they pass
+`scripts/audit-site.mjs` for the same reasons the site does:
+
+```bash
+npx serve notifications/html -l 5199
+node scripts/audit-site.mjs http://localhost:5199 /index.html /mui.html
+```
+
 Then:
 
 1. Send it. A GitHub issue on their repo is usually right, and it puts the
