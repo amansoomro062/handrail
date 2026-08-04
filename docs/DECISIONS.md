@@ -61,6 +61,42 @@ Format: `## NNN: Title` · date · **Decision** · **Reasoning** · **Consequenc
 
 ---
 
+## 020, Findings are grouped by causes we author, never causes we infer
+
+*4 August 2026*
+
+**Decision.** A maintainer report may group several findings under one underlying cause, but the groupings are written by hand in `targets.json`, from the measured values, and are never derived automatically. The generator warns when a declared cause names a check that is no longer failing, refuses to render a group with fewer than two live findings, and throws if grouping would drop a finding from the report.
+
+**Reasoning.** Twelve findings listed flat read as twelve problems when they may be two decisions. But causation is a claim about someone else's code, and a guessed grouping is a second kind of false accusation inside a report that already asks to be trusted. The caution is not hypothetical: the obvious grouping for one library's three menu keyboard failures was that the menu never opened, and the measured values show it opens on click and focus simply never enters it. Grouped by intuition, the report would have told the maintainer something false about their own component.
+
+**Consequence.** Reports lead with "N findings, M share K underlying causes" only when it is true. A stale grouping surfaces as a warning rather than passing silently, because a cause that no longer matches the results means the report and the run disagree, and the run is the one that is right.
+
+---
+
+## 019, The audit judges text at the worst point of a gradient
+
+*4 August 2026*
+
+**Decision.** The accessibility audit resolves what a piece of text actually sits on: it composites translucent background layers, extracts the stops of a gradient and checks contrast against whichever composited stop is worst for that text, composites the text's own alpha before comparing, and ignores anything inside `aria-hidden`.
+
+**Reasoning.** The previous audit took the first non-transparent `background-color` above an element. On a design where every panel is a gradient, and so has no background-color at all, that fell through to the page ground and reported white text on a light page over four hundred times. An audit that cries wolf at that rate gets ignored, which is worse than no audit. Once the numbers were honest, they found two real failures the false ones had buried: muted text at 4.13:1 at the light end of the field, and an accent at 3.96:1 on the page ground.
+
+**Consequence.** The colours in the design system are solved numerically against their worst background rather than adjusted by eye, and the same audit now runs over the public site and the private maintainer reports, in both colour schemes. A report that fails the standard we hold libraries to does not go out.
+
+---
+
+## 018, The publication gate fails closed
+
+*4 August 2026*
+
+**Decision.** `releasable()` treats a `notifiedOn` date it cannot parse as "not notified", and the window comparison is written so that only a proven fourteen days releases a result. The gate is enforced in three places, the pages, the machine-readable API emission, and the deploy, and the deploy runs the gate's tests before publishing anything.
+
+**Reasoning.** `Date.parse` returns `NaN` for anything malformed, and every numeric comparison against `NaN` is false. Written the intuitive way, `days < NOTICE_DAYS` fails to trigger and a typo in one date field publishes a library whose maintainer was never told. The test written for the gate found exactly this on its first run. Nobody learning about a finding from a public page is the one promise this project cannot recover from breaking, so it cannot be allowed to depend on a date being typed correctly.
+
+**Consequence.** Seven test cases pin the behaviour, including a future date and an unparseable one, plus a standing assertion that nothing currently in the repository is releasable. That last test fails the moment any date is set that should not have been, which converts a silent leak into a red build.
+
+---
+
 ## 017, Focus containment is a DOM question, not a test-id question
 *4 August 2026*
 

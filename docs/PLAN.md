@@ -139,14 +139,15 @@ Run each new spec against React Spectrum first, as in Phase 1, before pointing i
 ## Phase 3: Publication infrastructure
 **Weeks 9–10 · 28 September – 11 October · ~25 hours**
 
-- [ ] Static site: index table, per-library pages, per-assertion detail
-- [ ] Every failure links to the APG clause, the WCAG success criterion, a reproduction URL, and a downloadable Playwright trace
-- [ ] Raw JSON published alongside, so anyone can re-score with their own weightings
-- [ ] Badge endpoint (shields.io JSON schema)
-- [ ] Version history view, the regression tracker
-- [ ] Scheduled CI: re-run on a weekly cron and on new releases of tracked packages
+- [x] Static site, built larger than planned: a designed product site at [handrail.tech](https://handrail.tech), Next.js static export, with the method, scoring, decision log and disclosure pages generated from `docs/`
+- [x] Per-library, per-component pages with a per-assertion anchor, each failure carrying the APG clause, the WCAG criterion, a single-assertion reproduction command (`--only`) and a downloadable Playwright trace
+- [x] Raw JSON published alongside, so anyone can re-score with their own weightings
+- [x] Badge endpoint (shields.io JSON schema)
+- [x] Version history data: every run archived by date in `results/history/`, so the regression tracker has something to draw. The view itself waits for a second data point
+- [x] Scheduled CI: weekly cron re-measure (`measure.yml`)
+- [x] Not planned, added: the publication gate enforced in pages, API and deploy, tested to fail closed; an accessibility audit run over the site and the maintainer reports in both colour schemes; the packages made publishable and the `@handrail` npm scope reserved
 
-**Exit criteria:** a stranger can reach a specific failing assertion in three clicks and reproduce it locally without asking us anything.
+**Exit criteria:** a stranger can reach a specific failing assertion in three clicks and reproduce it locally without asking us anything. Met: index, component page, assertion anchor; the anchor carries the `--only` command and the trace.
 
 ---
 

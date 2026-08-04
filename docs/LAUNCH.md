@@ -14,6 +14,10 @@ Doing 5 before 2 turns the project into a hit piece and makes enemies of the peo
 
 Working title: **"We tested seven component libraries against the W3C's own accessibility specification."**
 
+A draft of everything that can be written before the notice period ends is in
+[`WRITEUP.md`](WRITEUP.md). Sections 4 and 5 are placeholders by design; they
+are made of maintainer responses that do not exist yet.
+
 Structure:
 
 1. **The problem**, you choose a component library on vibes, and its combobox may be unusable by keyboard in ways nobody has checked
