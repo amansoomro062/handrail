@@ -33,18 +33,28 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium
 
+      # Filtered to the package that owns playwright. pnpm does not hoist
+      # binaries, so `pnpm exec playwright` at the workspace root finds nothing
+      # on a clean machine, and on a developer's machine it may find an
+      # unrelated global install at a different version.
+      - run: pnpm --filter @handrail/runner exec playwright install --with-deps chromium
+
+      # Serving and testing live in one step on purpose. A server backgrounded
+      # in one step and used in the next depends on the process surviving
+      # between shells, which is a needless thing to rely on.
+      #
       # The fixture has a catalogued list of deliberate defects. The runner must
-      # detect exactly those and no others. This is what stops a false positive
-      # or a false negative reaching a published result, so it gates everything.
-      - name: Serve the broken fixture
-        run: pnpm --filter @handrail/fixture-broken run dev &
-      - name: Wait for it
-        run: npx --yes wait-on http://localhost:5199/harness/dialog --timeout 60000
-
-      - name: Calibrate every spec
+      # detect exactly those and no others, which is what stops a false positive
+      # or a false negative reaching a published result.
+      - name: Calibrate every spec against the broken fixture
         run: |
+          set -euo pipefail
+          pnpm --filter @handrail/fixture-broken run dev &
+          server=$!
+          trap 'kill $server 2>/dev/null || true' EXIT
+          npx --yes wait-on http://localhost:5199/harness/dialog --timeout 60000
+
           for spec in dialog combobox menu tabs accordion; do
             pnpm handrail run --target _fixture-broken --component "$spec" \
               --base-url http://localhost:5199 \

@@ -107,7 +107,7 @@ Requires Node 20.11+ (`.nvmrc` pins 22) and pnpm 10.
 ```bash
 nvm use
 pnpm install
-pnpm exec playwright install chromium
+pnpm --filter @handrail/runner exec playwright install chromium
 
 # Terminal 1: serve the Radix adapter
 pnpm --filter @handrail/adapter-radix run dev
