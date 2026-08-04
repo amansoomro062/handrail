@@ -31,3 +31,8 @@ docs/.unredacted/
 
 # Private maintainer reports. Findings nobody has seen yet.
 notifications/
+
+# Next.js
+web/out
+web/.next
+web/public/api

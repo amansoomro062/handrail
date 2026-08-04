@@ -1,0 +1,28 @@
+{
+  "name": "@handrail/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build --webpack",
+    "dev": "next dev --webpack -p 5310",
+    "prebuild": "node scripts/emit-api.mjs",
+    "start": "npx serve out -l 5311",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@handrail/markdown": "workspace:*",
+    "@handrail/report": "workspace:*",
+    "@handrail/spec": "workspace:*",
+    "next": "^16.3.0",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

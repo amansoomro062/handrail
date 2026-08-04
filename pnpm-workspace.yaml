@@ -2,6 +2,7 @@ packages:
   - "packages/*"
   - "adapters/*"
   - "site"
+  - "web"
 
 # ---------------------------------------------------------------------------
 # Version policy: see docs/VERSIONING.md
