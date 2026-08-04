@@ -5,7 +5,7 @@ import { TEXT } from "@handrail/harness-kit";
  * Radix UI accordion, mounted exactly as the Radix documentation describes.
  *
  * `type="single"` with `collapsible` so an expanded section can be closed again
- *, the default without `collapsible` refuses to collapse the open section,
+ *  The default without it refuses to collapse the open section,
  * which is a configuration choice rather than the library's natural behaviour.
  * All sections start collapsed, per the protocol.
  *

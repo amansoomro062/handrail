@@ -108,6 +108,20 @@ function report(target, results) {
   }
   out.push("");
 
+  const notes = results[0]?.target?.notes;
+  if (failing.length > 0 && notes) {
+    out.push("## Read this before the findings");
+    out.push("");
+    out.push(`We mounted your components like this: ${notes}`);
+    out.push("");
+    out.push(
+      "If that choice is the disagreement rather than the findings themselves, say so and we " +
+        "will publish your reasoning beside the score. It is a judgement call, not a measurement, " +
+        "and you are better placed to argue it than we are.",
+    );
+    out.push("");
+  }
+
   if (failing.length === 0) {
     out.push(
       `We found nothing to report. ${target.name} passes every check we run. ` +
@@ -144,7 +158,6 @@ function report(target, results) {
   out.push("");
   out.push(`- **Versions:** ${versions.join(", ") || "not recorded"}`);
   if (env) out.push(`- **Browser:** ${env.browser} ${env.browserVersion}`);
-  if (results[0]?.target.notes) out.push(`- **Mounting notes:** ${results[0].target.notes}`);
   out.push(
     "- **Configuration:** default. We use only what the library exports and never hand-write ARIA, " +
       "even where the documentation instructs the developer to. If we did, the score would measure " +
