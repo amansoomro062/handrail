@@ -30,6 +30,30 @@ const CEILING =
   "Automated tests cannot judge whether a label is meaningful, whether a reading order makes sense, or whether the " +
   "experience is usable with a screen reader. Those need human judgement and disabled users. This is a floor, not a ceiling.";
 
+/** Days a maintainer has with their results before anything is published. */
+const NOTICE_DAYS = 14;
+
+/**
+ * May this library's results go on the site yet?
+ *
+ * Decision 004: nobody learns about a finding from a public page. This is
+ * enforced here rather than trusted to whoever runs the build, because the
+ * cost of getting it wrong is the one thing the project cannot buy back.
+ */
+function releasable(target: Target): { ok: boolean; reason: string } {
+  if (!target.notifiedOn) {
+    return { ok: false, reason: "maintainer has not been notified" };
+  }
+  const days = (Date.now() - Date.parse(target.notifiedOn)) / 86_400_000;
+  if (days < NOTICE_DAYS) {
+    return {
+      ok: false,
+      reason: `notified ${Math.floor(days)} of ${NOTICE_DAYS} days ago`,
+    };
+  }
+  return { ok: true, reason: "" };
+}
+
 interface Target {
   id: string;
   name: string;
@@ -38,6 +62,8 @@ interface Target {
   role: string;
   status: string;
   notes?: string;
+  /** ISO date the maintainer received their results privately, or null. */
+  notifiedOn?: string | null;
   /** Components measured but not confirmed by hand, keyed by component id. */
   unverified?: Record<string, string>;
 }
@@ -173,11 +199,18 @@ async function main(): Promise<void> {
   await mkdir(join(outDir, "api", "results"), { recursive: true });
   await mkdir(join(outDir, "api", "badge"), { recursive: true });
 
-  const published = targets.filter((t) => t.status === "published");
-  const drafts = targets.filter((t) => t.status === "draft" && byTarget.has(t.id));
+  const releasableTargets = targets.filter((t) => t.status === "published" && releasable(t).ok);
+  const withheld = targets.filter(
+    (t) => t.status === "published" && !releasable(t).ok && byTarget.has(t.id),
+  );
+  const published = releasableTargets;
+  const drafts = targets.filter(
+    (t) => t.status === "draft" && byTarget.has(t.id) && releasable(t).ok,
+  );
 
   let pages = 0;
   let badges = 0;
+  const withheldNote: string[] = [];
 
   const rowFor = (t: Target) => {
     const results = byTarget.get(t.id);
@@ -198,6 +231,11 @@ async function main(): Promise<void> {
   for (const [targetId, results] of byTarget) {
     const target = targets.find((t) => t.id === targetId);
     if (!target) continue;
+    const gate = releasable(target);
+    if (!gate.ok) {
+      withheldNote.push(`${target.name}: ${gate.reason}`);
+      continue;
+    }
     await mkdir(join(outDir, targetId), { recursive: true });
     await mkdir(join(outDir, "api", "badge", targetId), { recursive: true });
 
@@ -240,6 +278,28 @@ async function main(): Promise<void> {
     }
   }
 
+  const withheldSection =
+    withheld.length > 0
+      ? `<h2>Withheld pending maintainer notice</h2>
+<p>
+  These have been measured, but their maintainers have not yet had the fourteen days that
+  decision 004 gives them. Nothing about a library is published before then, including a
+  passing score.
+</p>
+<div class="tablewrap">
+<table>
+  <caption>Measured, not yet released.</caption>
+  <thead><tr><th scope="col">Library</th><th scope="col">Status</th></tr></thead>
+  <tbody>${withheld
+    .map(
+      (t) =>
+        `<tr><th scope="row"><span class="libname">${escapeHtml(t.name)}</span></th><td><span class="chip chip--na"><span class="chip__dot"></span>${escapeHtml(releasable(t).reason)}</span></td></tr>`,
+    )
+    .join("")}</tbody>
+</table>
+</div>`
+      : "";
+
   const indexBody = `
 <header class="pagehead">
   <h1>Handrail</h1>
@@ -255,7 +315,7 @@ async function main(): Promise<void> {
   week's upgrade quietly broke either. This is that, measured.
 </p>
 
-<h2>Results</h2>
+${published.length === 0 ? "" : "<h2>Results</h2>"}
 <div class="tablewrap">
 <table>
   <caption>Conformance by library and component. Each cell links to every check behind it.</caption>
@@ -283,6 +343,8 @@ finding until each failure has been confirmed by hand.</p>
 </div>`
     : ""
 }
+
+${withheldSection}
 
 <h2>How this works</h2>
 <p>
@@ -315,7 +377,8 @@ finding until each failure has been confirmed by hand.</p>
   await writeFile(
     join(outDir, "index.html"),
     layout("Handrail: does your component library work by keyboard?", landing({
-      targets,
+      withheld,
+      targets: releasableTargets,
       results: byTarget,
       componentOrder: COMPONENT_ORDER,
       ceiling: CEILING,
@@ -325,7 +388,12 @@ finding until each failure has been confirmed by hand.</p>
 
   const apiIndex = {
     generated: new Date().toISOString().slice(0, 10),
-    targets: [...byTarget].map(([id, results]) => {
+    targets: [...byTarget]
+      .filter(([id]) => {
+        const t = targets.find((x) => x.id === id);
+        return t ? releasable(t).ok : false;
+      })
+      .map(([id, results]) => {
       const target = targets.find((t) => t.id === id);
       return {
         id,
@@ -354,7 +422,12 @@ finding until each failure has been confirmed by hand.</p>
   console.log("");
   console.log(`  ${pages} detail pages`);
   console.log(`  ${badges} badge endpoints`);
-  console.log(`  ${published.length} published targets, ${drafts.length} draft`);
+  console.log(`  ${published.length} released targets, ${drafts.length} draft`);
+  if (withheldNote.length > 0) {
+    console.log("");
+    console.log("  Withheld pending maintainer notice:");
+    for (const w of withheldNote) console.log(`    ${w}`);
+  }
   console.log(`  ${Object.keys(specs).length} specs covered`);
   if (skipped.length > 0) {
     console.log("");

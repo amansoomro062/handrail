@@ -18,6 +18,7 @@ export interface LandingTarget {
 }
 
 export interface LandingInput {
+  withheld: LandingTarget[];
   targets: LandingTarget[];
   results: Map<string, Map<string, RunResult>>;
   componentOrder: string[];
@@ -33,8 +34,10 @@ interface Row {
 }
 
 export function landing(input: LandingInput): string {
-  const { targets, results, componentOrder, ceiling } = input;
-  const published = targets.filter((t) => t.status === "published");
+  const { targets, results, componentOrder, ceiling, withheld } = input;
+  // Already gated by the caller. Filtering here again is how the front page
+  // once leaked results the rest of the build had withheld.
+  const published = targets;
 
   let checksRun = 0;
   let componentsMeasured = 0;
@@ -114,6 +117,10 @@ export function landing(input: LandingInput): string {
         <span class="board__score">${r.overall === null ? "n/a" : displayScore(r.overall)}</span>
       </div>`;
   };
+
+  if (rows.length === 0) {
+    return prelaunch({ withheld, componentOrder, checksRun, componentsMeasured, ceiling });
+  }
 
   return `
 <section class="hero" aria-labelledby="hero-h">
@@ -272,6 +279,133 @@ ${
   <div class="btn-row" style="margin-top:0">
     <a class="btn" href="https://github.com/amansoomro062/handrail/blob/main/docs/ADAPTERS.md">Write an adapter</a>
     <a class="btn btn--ghost" href="https://github.com/amansoomro062/handrail/blob/main/docs/DECISIONS.md">Read the decision log</a>
+  </div>
+</section>
+`;
+}
+
+/**
+ * The page before any results are released.
+ *
+ * It describes the method and the state of the work honestly, and names no
+ * library's score, because no maintainer has seen theirs yet.
+ */
+function prelaunch(input: {
+  withheld: LandingTarget[];
+  componentOrder: string[];
+  checksRun: number;
+  componentsMeasured: number;
+  ceiling: string;
+}): string {
+  const { withheld, componentOrder, checksRun, componentsMeasured, ceiling } = input;
+  return `
+<section class="hero" aria-labelledby="hero-h">
+  <div class="hero__grid">
+    <div>
+      <p class="eyebrow">Accessibility conformance testing</p>
+      <h1 id="hero-h">Does your component library actually work by keyboard?</h1>
+      <p class="lede">
+        Handrail measures React component libraries against the W3C's own accessibility
+        specification. The measuring is done. The results are with the maintainers.
+      </p>
+      <div class="btn-row">
+        <a class="btn" href="https://github.com/amansoomro062/handrail">Read the method</a>
+        <a class="btn btn--ghost" href="https://github.com/amansoomro062/handrail/blob/main/docs/DECISIONS.md">Decision log</a>
+      </div>
+    </div>
+
+    <div class="board">
+      <div class="board__head"><span>Status</span><span>${componentOrder.length} components each</span></div>
+      ${withheld
+        .map(
+          (t) => `
+      <div class="board__row" style="grid-template-columns:1fr auto">
+        <span class="board__name">${escapeHtml(t.name)}
+          <span class="board__sub">measured, awaiting maintainer review</span>
+        </span>
+        <span class="chip chip--na"><span class="chip__dot"></span>withheld</span>
+      </div>`,
+        )
+        .join("")}
+    </div>
+  </div>
+</section>
+
+<section class="prose" aria-labelledby="why-h">
+  <div class="section-head">
+    <h2 id="why-h">Why there are no scores here yet</h2>
+    <p>
+      Every maintainer gets their results privately, fourteen days before anything is published,
+      along with the exact adapter used to test them so they can tell us we measured it wrongly.
+      If they ship a fix first, the fixed score is what gets published.
+    </p>
+    <p>
+      That is the whole point. A finding nobody has been able to check is a claim, not a result,
+      and a maintainer should never learn about one from a public page. Until those fourteen days
+      are up, this page has nothing to report and says so.
+    </p>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="stat__n">${withheld.length}</span><span class="stat__l">libraries measured</span></div>
+    <div class="stat"><span class="stat__n">${componentsMeasured}</span><span class="stat__l">components tested</span></div>
+    <div class="stat"><span class="stat__n">${checksRun.toLocaleString("en-GB")}</span><span class="stat__l">checks run</span></div>
+    <div class="stat"><span class="stat__n">0</span><span class="stat__l">published so far</span></div>
+  </div>
+</section>
+
+<section class="prose" aria-labelledby="how-h">
+  <div class="section-head">
+    <h2 id="how-h">How it works</h2>
+    <p>
+      Three things make a result worth publishing: it measures the same thing everywhere, it cites
+      a specification, and it has been checked for being wrong.
+    </p>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <span class="card__mark" aria-hidden="true"></span>
+      <h3>Every library introduces itself the same way</h3>
+      <p>
+        A dialog is written differently in every library, so no single test can drive them all.
+        Each library gets a small adapter that mounts its components into a fixed harness. The
+        runner never learns which library it is testing.
+      </p>
+    </div>
+    <div class="card">
+      <span class="card__mark" aria-hidden="true"></span>
+      <h3>Every check cites a clause</h3>
+      <p>
+        Each one points at the W3C ARIA Authoring Practices Guide or a WCAG success criterion.
+        Disagree with a result and you are disagreeing with the standards body. Checks that cannot
+        cite a clause do not ship.
+      </p>
+    </div>
+    <div class="card">
+      <span class="card__mark" aria-hidden="true"></span>
+      <h3>The tests are tested</h3>
+      <p>
+        A known-good library is measured first, and a failure there is assumed to be our bug. A
+        deliberately broken component is measured too, so missed defects are a number rather than
+        a hope. Everything runs repeatedly and is discarded if the answer changes.
+      </p>
+    </div>
+  </div>
+  <div class="note">
+    <p class="note__t">What this cannot tell you</p>
+    <p>${escapeHtml(ceiling)}</p>
+  </div>
+</section>
+
+<section class="prose" aria-labelledby="add-h">
+  <div class="section-head">
+    <h2 id="add-h">Add your library</h2>
+    <p>
+      An adapter is about fifty lines and needs no knowledge of the test engine. If you maintain a
+      library and want it measured, that is the most useful thing you can send.
+    </p>
+  </div>
+  <div class="btn-row" style="margin-top:0">
+    <a class="btn" href="https://github.com/amansoomro062/handrail/blob/main/docs/ADAPTERS.md">Write an adapter</a>
   </div>
 </section>
 `;

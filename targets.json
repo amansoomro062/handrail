@@ -1,5 +1,5 @@
 {
-  "$comment": "The registry of libraries under test. `status` is the state of the ADAPTER, not the library's accessibility. `published` means every failure has been confirmed against the DOM by hand; `draft` means measured but not verified, and must never be cited.",
+  "$comment": "The registry of libraries under test. `status` is the state of the ADAPTER. `notifiedOn` is the date the maintainer received their results privately; results are withheld from the site until 14 days after it, per docs/DECISIONS.md 004. A null value means they have not been contacted and nothing about them may be published.",
   "schemaVersion": 1,
   "targets": [
     {
@@ -13,7 +13,8 @@
       "homepage": "https://react-spectrum.adobe.com/",
       "role": "control",
       "status": "published",
-      "notes": "Calibration control. Widely regarded as the accessibility gold standard, and measured first so that a failure it produces is presumed to be a fault in our assertion. Scores 100% on all five components."
+      "notes": "Calibration control. Widely regarded as the accessibility gold standard, and measured first so that a failure it produces is presumed to be a fault in our assertion. Scores 100% on all five components.",
+      "notifiedOn": null
     },
     {
       "id": "radix",
@@ -29,7 +30,8 @@
       "homepage": "https://www.radix-ui.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Reference adapter implementation. Read this one first when writing a new adapter. Ships no combobox primitive, which is recorded as n/a rather than zero."
+      "notes": "Reference adapter implementation. Read this one first when writing a new adapter. Ships no combobox primitive, which is recorded as n/a rather than zero.",
+      "notifiedOn": null
     },
     {
       "id": "shadcn",
@@ -46,7 +48,8 @@
       "notes": "Generated with shadcn@4.16.1 on 2026-08-04 rather than installed, so it is identified by CLI version and generation date. Dialog, menu, tabs and accordion are Radix; the combobox is Base UI.",
       "unverified": {
         "combobox": "Base UI treats the combobox input as a search field: selecting an option commits to the component's value (confirmed: it becomes \"Banana\") but never writes it into the input. That may be a legitimate variant of the pattern rather than a defect, and this spec is written for the APG editable combobox where the input carries the value. Not published until the pattern match is settled."
-      }
+      },
+      "notifiedOn": null
     },
     {
       "id": "mui",
@@ -60,7 +63,8 @@
       "homepage": "https://mui.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Failures verified against the DOM. MUI ships the behaviour and leaves several ARIA relationships to the developer, which its documentation instructs you to write yourself. Tab panels come from @mui/lab because @mui/material exports none."
+      "notes": "Failures verified against the DOM. MUI ships the behaviour and leaves several ARIA relationships to the developer, which its documentation instructs you to write yourself. Tab panels come from @mui/lab because @mui/material exports none.",
+      "notifiedOn": null
     },
     {
       "id": "chakra",
@@ -73,7 +77,8 @@
       "homepage": "https://chakra-ui.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Chakra v3, built on Ark UI. Failures verified against the DOM."
+      "notes": "Chakra v3, built on Ark UI. Failures verified against the DOM.",
+      "notifiedOn": null
     },
     {
       "id": "antd",
@@ -91,7 +96,8 @@
         "combobox": "Only one option is in the DOM at a time under virtualisation. That is legitimate when the library carries aria-setsize and aria-posinset, which this spec does not yet check, so the failure is most likely ours.",
         "menu": "Six failures, none confirmed against the DOM.",
         "dialog": "Focus passes through <body> for one Tab before returning. Real, but less serious than reaching background content, and the severity should probably distinguish the two."
-      }
+      },
+      "notifiedOn": null
     },
     {
       "id": "headlessui",
@@ -104,7 +110,8 @@
       "homepage": "https://headlessui.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Failures verified against the DOM. Headless UI ships no accordion component, only Disclosure, so its section headers have no heading wrapper."
+      "notes": "Failures verified against the DOM. Headless UI ships no accordion component, only Disclosure, so its section headers have no heading wrapper.",
+      "notifiedOn": null
     }
   ]
 }
