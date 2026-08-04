@@ -36,3 +36,5 @@ notifications/
 web/out
 web/.next
 web/public/api
+web/next-env.d.ts
+web/tsconfig.tsbuildinfo

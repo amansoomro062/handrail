@@ -332,7 +332,11 @@ th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(
 thead th {
   font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.11em;
   font-weight: 700; color: var(--ink-3); background: var(--surface-2);
-  position: sticky; top: 60px; z-index: 1;
+  /* .tablewrap sets overflow-x, which makes it the scroll container the sticky
+     header measures against, not the viewport. Offsetting by the masthead
+     height therefore pushed the header 60px down into the table, on top of the
+     first row. Zero pins it to the top of the table, which is what it is for. */
+  position: sticky; top: 0; z-index: 1;
 }
 tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover td { background: color-mix(in oklab, var(--safety) 7%, transparent); }
@@ -428,4 +432,133 @@ footer.foot { border-top: 1px solid var(--rule); background: var(--surface); mar
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+/* ------------------------------------------------------------------ *
+ * Written pages: method, scoring, contributing, protocol, disclosure
+ * ------------------------------------------------------------------ */
+
+.prose > :first-child { margin-top: 0; }
+.prose h2 { margin-top: 2.8rem; }
+.prose h3 { margin-top: 1.9rem; }
+.prose h4 { margin-top: 1.4rem; font-size: 1rem; }
+.prose blockquote {
+  margin: 1.3rem 0;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--safety);
+}
+.prose blockquote p { font-style: italic; max-width: 62ch; }
+.prose pre { margin: 1.1rem 0; }
+.prose .tablewrap { margin: 1.3rem 0; }
+.prose hr.rule { margin: 2.4rem 0; border: 0; border-top: 1px solid var(--rule); }
+
+/* Source attribution, so any page can be checked against the repository. */
+.srcnote {
+  margin-top: 3.5rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.88rem;
+  color: var(--ink-3);
+  max-width: 62ch;
+}
+
+/* On this page */
+.toc {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 1rem 1.2rem 1.1rem;
+  margin: 2rem 0 2.6rem;
+  max-width: 62ch;
+}
+.toc__h {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--ink-3);
+  margin: 0 0 0.6rem;
+}
+.toc__list {
+  margin: 0;
+  padding-left: 1.3rem;
+  columns: 2;
+  column-gap: 2rem;
+  font-size: 0.94rem;
+}
+.toc__list li { margin-bottom: 0.28rem; break-inside: avoid; }
+@media (max-width: 620px) { .toc__list { columns: 1; } }
+
+/* ------------------------------------------------------------------ *
+ * Decision log
+ * ------------------------------------------------------------------ */
+
+.declist { margin-top: 2.5rem; }
+.dec {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0 2rem;
+  padding: 2.2rem 0;
+  border-top: 1px solid var(--rule);
+}
+.dec:last-child { border-bottom: 1px solid var(--rule); }
+.dec__side { position: sticky; top: 5.5rem; align-self: start; }
+.dec__n {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+/* Safety yellow reads at 2.7:1 on paper, which is below the 3:1 this size
+   needs. It marks the entry instead of setting it. */
+.dec__n::before {
+  content: "";
+  display: block;
+  width: 26px;
+  height: 4px;
+  border-radius: 99px;
+  background: var(--safety);
+  margin-bottom: 0.6rem;
+}
+.dec__date {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+.dec__t { font-size: 1.28rem; margin: 0 0 0.9rem; line-height: 1.3; }
+.dec__t a { color: inherit; text-decoration: none; }
+.dec__t a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.dec__main .prose p:last-child { margin-bottom: 0; }
+.dec__main .prose h3,
+.dec__main .prose h4 { margin-top: 1.3rem; font-size: 0.98rem; }
+/* An entry's own trailing rule would double the one between entries. */
+.dec__main .prose hr.rule { display: none; }
+
+@media (max-width: 720px) {
+  .dec { grid-template-columns: 1fr; gap: 0.6rem; }
+  .dec__side {
+    position: static;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .dec__n { font-size: 1.3rem; }
+  .dec__n::before { display: none; }
+  .dec__date { margin-top: 0; }
+}
+
+/* Available to assistive technology, absent from the visual design. */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

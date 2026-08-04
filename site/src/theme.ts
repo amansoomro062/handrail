@@ -39,8 +39,9 @@ function nav(base: string): string {
     </button>
     <nav aria-label="Primary">
       <a href="${base}results.html">Results</a>
-      <a href="https://github.com/amansoomro062/handrail/blob/main/docs/ADAPTERS.md">Add a library</a>
-      <a href="https://github.com/amansoomro062/handrail/blob/main/docs/DECISIONS.md">Method</a>
+      <a href="${base}method.html">Method</a>
+      <a href="${base}decisions.html">Decisions</a>
+      <a href="${base}contribute.html">Contribute</a>
       <a href="https://github.com/amansoomro062/handrail">GitHub</a>
     </nav>
   </div>
@@ -66,13 +67,15 @@ function foot(base: string): string {
       </nav>
       <nav aria-label="Method">
         <p class="foot__h">Method</p>
-        <a href="https://github.com/amansoomro062/handrail/blob/main/docs/SCORING.md">How scoring works</a>
-        <a href="https://github.com/amansoomro062/handrail/blob/main/docs/DECISIONS.md">Decision log</a>
-        <a href="https://github.com/amansoomro062/handrail/blob/main/docs/HARNESS-PROTOCOL.md">Harness protocol</a>
+        <a href="${base}method.html">How it works</a>
+        <a href="${base}scoring.html">How scoring works</a>
+        <a href="${base}decisions.html">Decision log</a>
+        <a href="${base}protocol.html">Harness protocol</a>
       </nav>
       <nav aria-label="Contribute">
         <p class="foot__h">Contribute</p>
-        <a href="https://github.com/amansoomro062/handrail/blob/main/docs/ADAPTERS.md">Write an adapter</a>
+        <a href="${base}contribute.html">Add a library</a>
+        <a href="${base}disclosure.html">Disclosure policy</a>
         <a href="https://github.com/amansoomro062/handrail">Source on GitHub</a>
       </nav>
     </div>
