@@ -4,7 +4,7 @@ import { TEXT } from "@handrail/harness-kit";
 /**
  * Headless UI accordion, built from three Disclosures.
  *
- * Headless UI ships no accordion component — Disclosure is a single collapsible
+ * Headless UI ships no accordion component: Disclosure is a single collapsible
  * section, and stacking them is the documented way to build one. That is
  * recorded here because it bears on the heading requirement: the library gives
  * you a button and a panel, and nothing that would wrap them in a heading.

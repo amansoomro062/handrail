@@ -1,5 +1,5 @@
 /**
- * Editable combobox with listbox popup — conformance spec.
+ * Editable combobox with listbox popup: conformance spec.
  *
  * Derived from the W3C ARIA Authoring Practices Guide combobox pattern:
  * https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
@@ -64,7 +64,7 @@ function attrSelector(name: string, value: string): string {
  * CSS visibility is the wrong measure. Ant Design renders role=listbox on a
  * zero-height virtual-scroll container, which Playwright calls invisible while a
  * screen reader reaches it perfectly well. Falling back to accessibility-tree
- * exposure keeps this consistent with decision 002 — the tree is what we measure.
+ * exposure keeps this consistent with decision 002, the tree is what we measure.
  */
 async function popupIsOpen(ctx: RunContext, timeoutMs: number): Promise<boolean> {
   try {
@@ -79,7 +79,7 @@ async function openPopup(ctx: RunContext, key?: string): Promise<boolean> {
   await ctx.keyboard.focus("hr-combobox");
   // With no key, try each route in turn. A shared setup helper must not fail
   // for the reason a dedicated assertion is testing, or one defect cascades
-  // into a dozen unrelated failures — see docs/DECISIONS.md 012.
+  // into a dozen unrelated failures, see docs/DECISIONS.md 012.
   for (const attempt of key ? [key] : ["ArrowDown", "Alt+ArrowDown"]) {
     await ctx.keyboard.press(attempt);
     if (await popupIsOpen(ctx, 1000)) {
@@ -483,7 +483,7 @@ export const comboboxSpec: ComponentSpec = {
   version: "1.0.0",
   apgPattern: APG,
   description:
-    "An editable combobox with a listbox popup. The pattern requires a role, a managed expanded state, an ownership relationship to the popup, and an active option distinct from DOM focus — all driven from the keyboard. It is the most frequently mis-implemented pattern in the APG.",
+    "An editable combobox with a listbox popup. The pattern requires a role, a managed expanded state, an ownership relationship to the popup, and an active option distinct from DOM focus, all driven from the keyboard. It is the most frequently mis-implemented pattern in the APG.",
   requiredElements: [
     { testId: "hr-before", description: "Focusable button before the combobox", requiredAtLoad: true },
     { testId: "hr-combobox", description: `The combobox input, labelled "${TEXT.comboboxLabel}"`, requiredAtLoad: true },

@@ -25,7 +25,7 @@ expected: focus remains within the dialog
 actual:   [data-testid="hr-after"] named "After"
 ```
 
-**Pick severity from the definitions in [`SCORING.md`](SCORING.md)**, based on what a user cannot do — not on how egregious the code looks. `blocker` means the task is impossible by that input method. It is not a synonym for "bad".
+**Pick severity from the definitions in [`SCORING.md`](SCORING.md)**, based on what a user cannot do, not on how egregious the code looks. `blocker` means the task is impossible by that input method. It is not a synonym for "bad".
 
 **Handle absence deliberately.** If the component genuinely does not apply, return `notApplicable` with a reason. Never return `fail` for something a library never claimed to implement.
 
@@ -35,7 +35,7 @@ actual:   [data-testid="hr-after"] named "After"
 
 New elements go in `requiredElements` and in [`HARNESS-PROTOCOL.md`](HARNESS-PROTOCOL.md) *before* the spec is written, so adapter authors can work ahead. Mark elements that only exist after activation with `requiredAtLoad: false`.
 
-Prefer interactive elements over generic containers for anything the accessibility tree is asked about — a `<button>` is reliably present in the tree, a `<div>` is not.
+Prefer interactive elements over generic containers for anything the accessibility tree is asked about, a `<button>` is reliably present in the tree, a `<div>` is not.
 
 ## Validating a new spec
 

@@ -20,7 +20,7 @@ export interface AssertionResult {
   actual?: string;
   /** Populated only for `not-applicable`. */
   reason?: string;
-  /** Populated only for `error` — a runner or harness fault, never scored. */
+  /** Populated only for `error`, a runner or harness fault, never scored. */
   error?: string;
   durationMs: number;
   logs: string[];
@@ -49,7 +49,7 @@ export interface RunResult {
   startedAt: string;
   finishedAt: string;
   /**
-   * Set when the harness itself was invalid — a missing required element, a
+   * Set when the harness itself was invalid: a missing required element, a
    * protocol mismatch, a page that never signalled readiness. A run with this
    * set is an adapter bug and is never scored: a library must not lose points
    * because of an incomplete adapter.

@@ -4,7 +4,7 @@ packages:
   - "site"
 
 # ---------------------------------------------------------------------------
-# Version policy — see docs/VERSIONING.md
+# Version policy: see docs/VERSIONING.md
 #
 # Anything that can change a measured result is pinned EXACTLY. Everything else
 # takes a caret range.
@@ -16,13 +16,13 @@ packages:
 # difference between the libraries.
 # ---------------------------------------------------------------------------
 catalog:
-  # Exact — affects measured behaviour.
+  # Exact: affects measured behaviour.
   react: 18.3.1
   react-dom: 18.3.1
   playwright: 1.62.1
   playwright-core: 1.62.1
 
-  # Ranged — build and type tooling, cannot reach a result.
+  # Ranged: build and type tooling, cannot reach a result.
   "@types/node": ^20.19.0
   "@types/react": ^18.3.0
   "@types/react-dom": ^18.3.0
@@ -33,7 +33,7 @@ catalog:
   yaml: ^2.6.0
 
 # The libraries under test. This is the single declaration of what the index
-# measures — every entry must be an exact version, enforced by `pnpm
+# measures, every entry must be an exact version, enforced by `pnpm
 # check:versions`.
 catalogs:
   subjects:

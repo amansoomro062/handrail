@@ -206,8 +206,8 @@ export async function createHarness(
     await page.goto(url, { waitUntil: "domcontentloaded" });
     try {
       // `attached`, not the default `visible`. The ready signal is about the
-      // attribute existing, and an adapter that renders nothing — one declaring
-      // the component unsupported — has a zero-size <body> that Playwright would
+      // attribute existing, and an adapter that renders nothing, one declaring
+      // the component unsupported, has a zero-size <body> that Playwright would
       // never call visible, producing a bogus "adapter never signalled" error.
       await page.waitForSelector(`body[${READY_ATTRIBUTE}="true"]`, {
         state: "attached",

@@ -3,11 +3,11 @@ import { ActionButton, defaultTheme, Item, Menu, MenuTrigger, Provider } from "@
 import { stampTestIds, TEXT } from "@handrail/harness-kit";
 
 /**
- * Adobe React Spectrum menu button — calibration control for this pattern.
+ * Adobe React Spectrum menu button: calibration control for this pattern.
  *
  * The menu and its items are portalled in only when opened, and Spectrum does
  * not forward attributes to the elements carrying the roles, so ids are stamped
- * by structural selector. Markers only — no ARIA, no handlers.
+ * by structural selector. Markers only, no ARIA, no handlers.
  */
 export function MenuHarness() {
   useEffect(

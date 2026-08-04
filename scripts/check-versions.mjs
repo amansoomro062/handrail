@@ -4,7 +4,7 @@
  *
  * A published conformance score names a version. If the repository declares a
  * range, a reader who clones it next month installs something different and
- * cannot reproduce the number — which would make "reproducible" a false claim
+ * cannot reproduce the number, which would make "reproducible" a false claim
  * in our own README rather than a property of the project.
  *
  * This closes the loop across four places a version appears:
@@ -182,7 +182,7 @@ if (existsSync(resultsDir)) {
       if (subjects[pkg] !== version) {
         fail(
           `results/${file}: reports ${pkg}@${version} but the catalog pins ${subjects[pkg]}.\n` +
-            `      The result is stale — re-run it before publishing, or it describes a version nobody can install.`,
+            `      The result is stale, re-run it before publishing, or it describes a version nobody can install.`,
         );
       }
     }
@@ -213,7 +213,7 @@ if (existsSync(resultsDir)) {
     if (missing.length > 0) {
       fail(
         `results/${file}: does not report ${missing.join(", ")}, which adapters/${targetId} depends on.\n` +
-          `      Version reporting has gone stale — the result names the wrong library.`,
+          `      Version reporting has gone stale, the result names the wrong library.`,
       );
     }
   }

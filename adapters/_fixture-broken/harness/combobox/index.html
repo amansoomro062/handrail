@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Handrail — deliberately broken combobox</title>
+    <title>Handrail, deliberately broken combobox</title>
   </head>
   <body>
     <!--
@@ -28,7 +28,7 @@
       const input = document.querySelector('[data-testid="hr-combobox"]');
       const listbox = document.querySelector('[data-testid="hr-listbox"]');
 
-      // DEFECT: opens on Down Arrow and does nothing else — no active option,
+      // DEFECT: opens on Down Arrow and does nothing else, no active option,
       // no Enter to select, no Escape to close, no state communicated.
       input.addEventListener("keydown", (event) => {
         if (event.key === "ArrowDown") listbox.hidden = false;

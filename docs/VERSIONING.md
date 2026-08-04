@@ -14,7 +14,7 @@ Everything below exists to make that claim true.
 | `react`, `react-dom` | `tsx`, `@types/*`, `yaml` |
 | `playwright`, `playwright-core` | |
 
-`react` and `playwright` are on the left for the same reason the subject libraries are. A component's focus behaviour can change between React versions, and the accessibility tree is computed by the browser that Playwright ships — so if two adapters ran different Reacts, or two runs used different browsers, a difference between two libraries would no longer be attributable to the libraries.
+`react` and `playwright` are on the left for the same reason the subject libraries are. A component's focus behaviour can change between React versions, and the accessibility tree is computed by the browser that Playwright ships, so if two adapters ran different Reacts, or two runs used different browsers, a difference between two libraries would no longer be attributable to the libraries.
 
 ## One declaration, in one file
 
@@ -60,7 +60,7 @@ It fails on any disagreement, and specifically catches:
 - A manifest re-declaring a catalogued version instead of using `catalog:`
 - An installed version that disagrees with the pin
 - Adapters running different React versions
-- A result file naming a version the catalog no longer pins — i.e. a **stale result**, which is the one a human would never notice
+- A result file naming a version the catalog no longer pins, i.e. a **stale result**, which is the one a human would never notice
 
 That last check is the important one. A stale result is not obviously wrong; it is a plausible-looking number describing a version nobody can install any more.
 
@@ -73,7 +73,7 @@ An upgrade is a deliberate act, because it changes what a published score means.
 1. Edit the pin in the `subjects` catalog
 2. `pnpm install`
 3. Re-run every spec for that target
-4. `pnpm check:versions` — this is what catches results you forgot to re-run
+4. `pnpm check:versions`, this is what catches results you forgot to re-run
 5. Commit the pin bump and the new results together
 
 Never bump a pin without re-running. A result carrying the old version alongside a manifest carrying the new one is precisely the inconsistency this whole document exists to prevent, and the index gains its value from version history being trustworthy over time.

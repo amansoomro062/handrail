@@ -20,7 +20,7 @@ import { META_GLOBAL, READY_ATTRIBUTE, TEST_ID_ATTRIBUTE, type HarnessMeta } fro
  * text identifies it.
  *
  * `textIncludes` exists for components that render one element at a time and
- * reuse the same DOM node — React Spectrum's tab panels, for example. Index is
+ * reuse the same DOM node, React Spectrum's tab panels, for example. Index is
  * meaningless there because there is only ever one match, so the only way to
  * know *which* logical panel is on screen is its content.
  */
@@ -39,7 +39,7 @@ export type StampTarget =
  * untestable.
  *
  * **This places a marker and nothing else.** It must never be used to add ARIA
- * attributes, roles, labels or event handlers — that would be forging a pass.
+ * attributes, roles, labels or event handlers, that would be forging a pass.
  * Selectors should be structural (`input[role="combobox"]`) so that if the
  * library stops producing that element the stamp fails loudly and the run errors
  * on a missing element, rather than quietly measuring the wrong node.
@@ -64,8 +64,8 @@ export function stampTestIds(map: Record<string, StampTarget>): () => void {
       const element = resolve(target);
 
       // Clear the id from anything that is no longer the match. Without this, a
-      // component that reuses one DOM node for different content — a tab panel,
-      // say — would keep an id describing what used to be there, and the runner
+      // component that reuses one DOM node for different content, a tab panel,
+      // say, would keep an id describing what used to be there, and the runner
       // would confidently measure the wrong element.
       for (const stale of document.querySelectorAll(`[${TEST_ID_ATTRIBUTE}="${testId}"]`)) {
         if (stale !== element) stale.removeAttribute(TEST_ID_ATTRIBUTE);
@@ -78,7 +78,7 @@ export function stampTestIds(map: Record<string, StampTarget>): () => void {
   };
 
   apply();
-  // childList only — observing attributes would re-trigger on our own writes.
+  // childList only, observing attributes would re-trigger on our own writes.
   const observer = new MutationObserver(apply);
   observer.observe(document.body, { childList: true, subtree: true });
   return () => observer.disconnect();
@@ -87,7 +87,7 @@ export function stampTestIds(map: Record<string, StampTarget>): () => void {
 /**
  * Publish adapter metadata and signal readiness.
  *
- * Call this once the component has mounted and is interactive — not before.
+ * Call this once the component has mounted and is interactive, not before.
  * Signalling too early is the single most common cause of flaky results,
  * because the runner starts pressing keys at a component that is still
  * settling.

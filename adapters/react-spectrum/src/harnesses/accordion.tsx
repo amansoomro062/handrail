@@ -10,7 +10,7 @@ import {
 import { stampTestIds, TEXT } from "@handrail/harness-kit";
 
 /**
- * Adobe React Spectrum accordion — calibration control for this pattern.
+ * Adobe React Spectrum accordion: calibration control for this pattern.
  *
  * Spectrum's DisclosureTitle renders the heading and the button itself, so the
  * harness ids are stamped onto the buttons by index and onto the panels by
@@ -25,7 +25,7 @@ export function AccordionHarness() {
         "hr-header-3": { selector: "button[aria-expanded]", index: 2 },
         // Spectrum exposes disclosure panels as role=group. The APG lists
         // role=region for accordion panels as optional, so this is a legitimate
-        // choice and not a defect — it was our selector that was wrong.
+        // choice and not a defect, it was our selector that was wrong.
         "hr-panel-1": { selector: "[role=group]", textIncludes: TEXT.accordionPanel1 },
         "hr-panel-2": { selector: "[role=group]", textIncludes: TEXT.accordionPanel2 },
         "hr-panel-3": { selector: "[role=group]", textIncludes: TEXT.accordionPanel3 },

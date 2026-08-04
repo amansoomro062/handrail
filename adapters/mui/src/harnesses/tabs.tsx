@@ -7,7 +7,7 @@ import { stampTestIds, TEXT } from "@handrail/harness-kit";
  * MUI tabs.
  *
  * `@mui/material` exports Tabs and Tab but no tab panel, so the panel comes
- * from `@mui/lab` — which is MUI's own package, though explicitly pre-stable.
+ * from `@mui/lab`, which is MUI's own package, though explicitly pre-stable.
  * That is recorded in meta.ts and travels with the result: a reader deciding
  * whether to adopt MUI's tabs should know the panel half is not in the stable
  * package.

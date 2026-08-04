@@ -14,7 +14,7 @@ interface Args {
   headed: boolean;
   /** Run N times and fail if any assertion's status varies. */
   repeat: number;
-  /** Path to a catalogue of expected statuses — see adapters/_fixture-broken. */
+  /** Path to a catalogue of expected statuses, see adapters/_fixture-broken. */
   expect?: string;
 }
 
@@ -61,22 +61,22 @@ function compareToExpectations(
     seen.add(assertion.id);
     const want = expected[assertion.id];
     if (want === undefined) {
-      lines.push(`  UNCATALOGUED  ${assertion.id} — got ${assertion.status}, no expectation recorded`);
+      lines.push(`  UNCATALOGUED  ${assertion.id}, got ${assertion.status}, no expectation recorded`);
       continue;
     }
     if (want !== assertion.status) {
       const direction =
         want === "fail" && assertion.status === "pass"
-          ? "FALSE NEGATIVE — a catalogued defect went undetected"
+          ? "FALSE NEGATIVE, a catalogued defect went undetected"
           : want === "pass" && assertion.status === "fail"
-            ? "FALSE POSITIVE — correct behaviour was reported as a violation"
+            ? "FALSE POSITIVE, correct behaviour was reported as a violation"
             : "MISMATCH";
       lines.push(`  ${direction}\n    ${assertion.id}: expected ${want}, got ${assertion.status}`);
     }
   }
 
   for (const id of Object.keys(expected)) {
-    if (!seen.has(id)) lines.push(`  MISSING  ${id} — expected but never ran`);
+    if (!seen.has(id)) lines.push(`  MISSING  ${id}, expected but never ran`);
   }
 
   return { ok: lines.length === 0, lines };
@@ -171,7 +171,7 @@ async function main(): Promise<void> {
       if (unstable.length === 0) {
         console.log(`  Stable across ${args.repeat} runs.\n`);
       } else {
-        console.error(`  UNSTABLE across ${args.repeat} runs — not publishable\n`);
+        console.error(`  UNSTABLE across ${args.repeat} runs, not publishable\n`);
         for (const [id, seen] of unstable) {
           console.error(`    ${id}: ${[...seen].join(" / ")}`);
         }
@@ -195,7 +195,7 @@ async function main(): Promise<void> {
       const { ok, lines } = compareToExpectations(result, expectations);
       if (ok) {
         console.log(
-          `  Calibration passed — all ${result.assertions.length} assertions matched the catalogue.\n`,
+          `  Calibration passed, all ${result.assertions.length} assertions matched the catalogue.\n`,
         );
       } else {
         console.error("  CALIBRATION FAILED\n");
@@ -208,7 +208,7 @@ async function main(): Promise<void> {
 
     const publishable = isPublishable(result);
     if (!publishable.ok) {
-      console.error(`  NOT PUBLISHABLE — ${publishable.reason}\n`);
+      console.error(`  NOT PUBLISHABLE, ${publishable.reason}\n`);
       process.exitCode = 1;
       return;
     }

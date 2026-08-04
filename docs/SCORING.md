@@ -9,7 +9,7 @@ The scoring model exists to be argued with. Every input is published, so anyone 
 | `pass`           | Behaviour matched the assertion                                               | Yes                 |
 | `fail`           | Behaviour did not match                                                       | Yes                 |
 | `not-applicable` | The pattern genuinely does not apply to this library                          | No                  |
-| `error`          | The assertion could not be evaluated — harness or runner fault                | No                  |
+| `error`          | The assertion could not be evaluated, harness or runner fault                | No                  |
 
 `error` never counts. If we could not run a check, that is our problem and we do not get to score someone down for it. A run with any `error` is flagged in the UI and is not eligible for publication until resolved.
 
@@ -30,7 +30,7 @@ Severity is a property of the assertion, fixed at authoring time, not adjusted p
 score = 100 × (Σ weight of passed assertions) / (Σ weight of applicable assertions)
 ```
 
-Applicable = `pass` + `fail`. That is the whole calculation. It is deliberately simple enough to verify by hand from the published JSON — a scoring model nobody can check is a scoring model nobody should trust.
+Applicable = `pass` + `fail`. That is the whole calculation. It is deliberately simple enough to verify by hand from the published JSON, a scoring model nobody can check is a scoring model nobody should trust.
 
 ## Presentation rules
 

@@ -75,7 +75,7 @@ export async function runSpec(options: RunOptions): Promise<RunResult> {
     }
 
     // The library does not ship this component. Every assertion is recorded as
-    // not-applicable, which scores n/a rather than zero — see the note on
+    // not-applicable, which scores n/a rather than zero, see the note on
     // `supported` in the protocol. Not implementing a component is a scope
     // decision, not an accessibility failure.
     if (harness.meta.supported === false) {

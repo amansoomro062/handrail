@@ -9,8 +9,8 @@ export { announceReady, stampTestIds, TEXT, type StampTarget } from "./index.js"
 /**
  * Mount a React harness and announce readiness.
  *
- * Deliberately does nothing else. Anything this helper adds — a wrapper, a
- * style, a key handler — would be measured as if the library provided it, and
+ * Deliberately does nothing else. Anything this helper adds, a wrapper, a
+ * style, a key handler, would be measured as if the library provided it, and
  * the entire value of the project rests on that not happening.
  *
  * StrictMode is off on purpose: its double-invocation changes focus behaviour

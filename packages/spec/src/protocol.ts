@@ -1,5 +1,5 @@
 /**
- * The harness protocol — the contract between adapters and the runner.
+ * The harness protocol: the contract between adapters and the runner.
  *
  * Adapters import these constants (re-exported from `@handrail/harness-kit`) so
  * that a protocol change is a version bump rather than a scavenger hunt through
@@ -70,12 +70,12 @@ export interface HarnessMeta {
   protocolVersion: number;
   /** Target id, matching an entry in targets.json (e.g. "radix"). */
   library: string;
-  /** Resolved versions of the packages under test — never semver ranges. */
+  /** Resolved versions of the packages under test, never semver ranges. */
   libraryVersions: Record<string, string>;
   adapterVersion: string;
   component: string;
   /**
-   * Anything the runner should record about how this was mounted — non-default
+   * Anything the runner should record about how this was mounted, non-default
    * configuration, extra focusable nodes the library injects, known caveats.
    * Published alongside the result.
    */
@@ -85,7 +85,7 @@ export interface HarnessMeta {
    *
    * The runner then records every assertion as `not-applicable` and the target
    * scores `n/a` rather than zero. A library must never be marked down for not
-   * implementing something it never claimed to — Radix has no combobox
+   * implementing something it never claimed to, Radix has no combobox
    * primitive, and that is a scope decision rather than an accessibility
    * failure.
    */

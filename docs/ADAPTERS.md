@@ -11,7 +11,7 @@ A small web app that mounts one library's components into the fixed harness desc
 ## Steps
 
 1. Copy `adapters/radix` to `adapters/<your-library>`
-2. Update `package.json` — name it `@handrail/adapter-<id>`, swap the library dependency, pick an unused port
+2. Update `package.json`, name it `@handrail/adapter-<id>`, swap the library dependency, pick an unused port
 3. Rewrite `src/harnesses/dialog.tsx` using your library's components
 4. Update `src/meta.ts` with the library id and resolved versions
 5. Add your target to `targets.json` at the repository root with `"status": "draft"`
@@ -24,7 +24,7 @@ pnpm handrail run --target <id> --component dialog --base-url http://localhost:<
 
 ## The rules that matter
 
-**Mount the library as its own documentation tells you to.** Not the most accessible configuration you can construct — the one a competent developer following the official guide would arrive at. If accessibility requires opt-in, mount it *without* the opt-in and record that in `notes`. Defaults are what ship to real users, and measuring the defaults is the point.
+**Mount the library as its own documentation tells you to.** Not the most accessible configuration you can construct, the one a competent developer following the official guide would arrive at. If accessibility requires opt-in, mount it *without* the opt-in and record that in `notes`. Defaults are what ship to real users, and measuring the defaults is the point.
 
 **Add nothing.** No `onKeyDown`, no `aria-*`, no focus management, no wrapper that "just fixes" something. If you catch yourself adding code to make an assertion pass, you have found a defect and are in the process of hiding it. Stop, and open an issue instead.
 
@@ -36,7 +36,7 @@ pnpm handrail run --target <id> --component dialog --base-url http://localhost:<
 
 ## Sanity-checking your own adapter
 
-Before opening a PR, break it on purpose. Remove something the library provides — the trigger's label, say — and confirm the relevant assertion flips to `fail`. If nothing changes, your adapter is not wired to the harness correctly and every result it produces is meaningless.
+Before opening a PR, break it on purpose. Remove something the library provides, the trigger's label, say, and confirm the relevant assertion flips to `fail`. If nothing changes, your adapter is not wired to the harness correctly and every result it produces is meaningless.
 
 ## Review
 

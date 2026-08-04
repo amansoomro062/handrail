@@ -30,7 +30,7 @@ packages/report     scores and renders results      (library-agnostic)
 
 The runner receives a base URL and a component name. It navigates to `/harness/dialog`, waits for the ready signal, and executes the Dialog spec against whatever it finds. It has no idea whether that page is powered by Radix or MUI, and it must never be able to tell.
 
-**This is the load-bearing constraint of the codebase.** If the runner ever needs a special case for a specific library, the design has failed and the fix belongs in the adapter or the protocol — never in the runner.
+**This is the load-bearing constraint of the codebase.** If the runner ever needs a special case for a specific library, the design has failed and the fix belongs in the adapter or the protocol, never in the runner.
 
 ## Packages
 
@@ -64,9 +64,9 @@ Adapters depend on this so that a protocol change is a version bump rather than 
 
 Playwright-based execution engine.
 
-- `driver.ts` — primitives: keyboard traversal, focus tracking, accessibility-tree queries via the Chrome DevTools Protocol
-- `execute.ts` — runs a spec against a base URL, produces a `RunResult`
-- `cli.ts` — the `handrail run` command
+- `driver.ts`, primitives: keyboard traversal, focus tracking, accessibility-tree queries via the Chrome DevTools Protocol
+- `execute.ts`, runs a spec against a base URL, produces a `RunResult`
+- `cli.ts`, the `handrail run` command
 
 The accessibility tree comes from CDP `Accessibility.getFullAXTree`, not from the DOM. This matters: it gives us the *computed* role, name and state as the browser exposes them to assistive technology, including whether a node is ignored or hidden. A DOM-level check cannot answer "is the background actually hidden from a screen reader"; the accessibility tree can.
 
@@ -74,7 +74,7 @@ The cost is that v1 is Chromium-only. That is an accepted, documented limitation
 
 ### `@handrail/report`
 
-Scoring, JSON output, Markdown summaries, and the shields.io badge endpoint. Kept separate from the runner so that anyone can re-score raw results with different weightings — which is the whole point of publishing them.
+Scoring, JSON output, Markdown summaries, and the shields.io badge endpoint. Kept separate from the runner so that anyone can re-score raw results with different weightings, which is the whole point of publishing them.
 
 ## The harness protocol
 
@@ -96,7 +96,7 @@ The project's central technical risk is not a bug in the runner. It is **an adap
 Three controls:
 
 1. **A calibration control.** React Spectrum is tested first. A failure there is treated as evidence that our assertion is wrong until proven otherwise.
-2. **A broken fixture.** `adapters/_fixture-broken` has deliberate, catalogued defects. The runner must detect exactly those and no others — this makes the false-positive rate a measured number rather than an assumption.
+2. **A broken fixture.** `adapters/_fixture-broken` has deliberate, catalogued defects. The runner must detect exactly those and no others, this makes the false-positive rate a measured number rather than an assumption.
 3. **Maintainer review.** Adapter source is sent to maintainers before publication, specifically so they can tell us we mounted their component wrong.
 
 ## Result shape

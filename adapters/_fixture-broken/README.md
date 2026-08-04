@@ -19,8 +19,8 @@ A test suite that has never failed has not been validated, it has only been run.
 
 It measures both error directions, and they are not equally serious:
 
-- **A false negative** — a defect we fail to detect — means the index misses something. Bad.
-- **A false positive** — an assertion that fails against correct behaviour — means we accuse a maintainer of a defect that does not exist. That is the mistake this project cannot recover from.
+- **A false negative**, a defect we fail to detect, means the index misses something. Bad.
+- **A false positive**, an assertion that fails against correct behaviour, means we accuse a maintainer of a defect that does not exist. That is the mistake this project cannot recover from.
 
 The catalogued defects:
 
@@ -38,4 +38,4 @@ Everything else must still pass. An assertion that fails here **and** on React S
 
 ## It is vanilla HTML on purpose
 
-No React, no build step, no components — and the runner cannot tell. That is the proof that the harness protocol is genuinely HTTP and HTML, which is what will let Vue, Svelte and Web Component adapters slot in later without the engine changing.
+No React, no build step, no components: and the runner cannot tell. That is the proof that the harness protocol is genuinely HTTP and HTML, which is what will let Vue, Svelte and Web Component adapters slot in later without the engine changing.

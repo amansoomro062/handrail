@@ -14,6 +14,6 @@ export function metaFor(component: string): HarnessMeta {
     component,
     notes:
       "Calibration control, not a subject. Mounted with default configuration per the React Spectrum documentation. " +
-      "A failure here is presumed to be a fault in our assertion until proven otherwise — see docs/DECISIONS.md 003.",
+      "A failure here is presumed to be a fault in our assertion until proven otherwise, see docs/DECISIONS.md 003.",
   };
 }

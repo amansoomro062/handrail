@@ -21,7 +21,7 @@ An assertion is publishable only if it:
 - cites an APG clause or WCAG success criterion
 - passes against React Spectrum, or has a written justification for why not
 - fails against the broken fixture, if the fixture covers its defect
-- reports enough detail — expected, actual, selector — for a stranger to reproduce it
+- reports enough detail, expected, actual, selector, for a stranger to reproduce it
 - has a severity matching the [definitions in `SCORING.md`](docs/SCORING.md)
 
 "This would be better if" is not an assertion. It is an opinion, and opinions are not publishable as conformance results.

@@ -28,7 +28,7 @@ export function renderTerminal(result: RunResult): string {
   lines.push("");
 
   if (result.harnessError) {
-    lines.push(`  HARNESS ERROR — not scored`);
+    lines.push(`  HARNESS ERROR, not scored`);
     lines.push(`  ${result.harnessError}`);
     lines.push("");
     return lines.join("\n");
@@ -53,7 +53,7 @@ export function renderTerminal(result: RunResult): string {
       (s.counts.error ? `, ${s.counts.error} errored` : ""),
   );
   if (s.blockersFailed > 0) {
-    lines.push(`  ${s.blockersFailed} blocker(s) failed — the score alone understates this.`);
+    lines.push(`  ${s.blockersFailed} blocker(s) failed, the score alone understates this.`);
   }
   lines.push("");
   lines.push("  A high score means no violations were detected by automated testing.");
@@ -68,7 +68,7 @@ export function renderMarkdown(result: RunResult): string {
   const s = scoreRun(result);
   const lines: string[] = [];
 
-  lines.push(`### ${result.target.id} — ${result.component}`);
+  lines.push(`### ${result.target.id}, ${result.component}`);
   lines.push("");
   lines.push(`**${formatScore(s)}** · ${s.counts.pass} passed, ${s.counts.fail} failed` +
     (s.blockersFailed ? ` · **${s.blockersFailed} blocker(s)**` : ""));
@@ -83,7 +83,7 @@ export function renderMarkdown(result: RunResult): string {
     for (const a of failures) {
       const ref = a.refs.wcag ? `[${a.refs.wcag}](${a.refs.wcagUrl ?? a.refs.apg ?? ""})` : "APG";
       lines.push(
-        `| \`${a.id}\` | ${a.severity} | ${a.expected ?? "—"} | ${a.actual ?? "—"} | ${ref} |`,
+        `| \`${a.id}\` | ${a.severity} | ${a.expected ?? "-"} | ${a.actual ?? "-"} | ${ref} |`,
       );
     }
   }
@@ -95,7 +95,7 @@ export function renderMarkdown(result: RunResult): string {
   return lines.join("\n");
 }
 
-/** shields.io endpoint payload. This is the growth loop — see docs/LAUNCH.md. */
+/** shields.io endpoint payload. This is the growth loop, see docs/LAUNCH.md. */
 export function renderBadge(result: RunResult): Record<string, unknown> {
   const s = scoreRun(result);
   const value = s.value;

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import { stampTestIds, TEXT } from "@handrail/harness-kit";
 
-/** MUI Autocomplete — its combobox implementation. Default configuration. */
+/** MUI Autocomplete, its combobox implementation. Default configuration. */
 export function ComboboxHarness() {
   useEffect(
     () =>

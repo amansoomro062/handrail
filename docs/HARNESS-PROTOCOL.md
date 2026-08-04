@@ -2,7 +2,7 @@
 
 Version 1.
 
-This is the contract between an adapter and the runner. It is deliberately minimal, transport-level, and free of any reference to a framework — the runner speaks HTTP and HTML, nothing else.
+This is the contract between an adapter and the runner. It is deliberately minimal, transport-level, and free of any reference to a framework, the runner speaks HTTP and HTML, nothing else.
 
 If you are writing an adapter, this document plus [`adapters/radix`](../adapters/radix) is everything you need.
 
@@ -26,7 +26,7 @@ Set the attribute once the component has mounted and is interactive:
 <body data-handrail-ready="true">
 ```
 
-The runner waits for this before it touches anything. Setting it too early is the most common cause of flaky results — set it after mount and after any first paint your library defers.
+The runner waits for this before it touches anything. Setting it too early is the most common cause of flaky results, set it after mount and after any first paint your library defers.
 
 ## 3. Expose metadata
 
@@ -37,11 +37,11 @@ window.__HANDRAIL__ = {
   libraryVersions: { "@radix-ui/react-dialog": "1.1.4" },
   adapterVersion: "0.1.0",
   component: "dialog",
-  notes: "optional — anything the runner should record about how this was mounted"
+  notes: "optional, anything the runner should record about how this was mounted"
 };
 ```
 
-`libraryVersions` is read straight into the result file. It must be the **resolved** version, not the semver range from `package.json` — a result that cannot name the exact version it tested is not reproducible.
+`libraryVersions` is read straight into the result file. It must be the **resolved** version, not the semver range from `package.json`, a result that cannot name the exact version it tested is not reproducible.
 
 ## 4. Render the required elements
 
@@ -81,17 +81,17 @@ APG pattern: <https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/>
 
 ### Required initial state
 
-The dialog is **closed** on load. `hr-dialog` and its children need not exist in the DOM until opened — most libraries portal them in, and that is fine.
+The dialog is **closed** on load. `hr-dialog` and its children need not exist in the DOM until opened, most libraries portal them in, and that is fine.
 
 ### Structural requirements
 
 - `hr-before`, `hr-trigger`, `hr-outside-content` and `hr-after` are in DOM order, all outside the dialog
 - `hr-outside-content` remains in the document when the dialog opens
 
-`hr-outside-content` is a button rather than a paragraph on purpose. Interactive elements are always present in the accessibility tree unless something deliberately hides them, so their absence — or their `ignored` flag — is an unambiguous signal. A generic `<div>` can be dropped from the tree for reasons that have nothing to do with the modal, which would make the inertness check quietly unreliable.
+`hr-outside-content` is a button rather than a paragraph on purpose. Interactive elements are always present in the accessibility tree unless something deliberately hides them, so their absence, or their `ignored` flag, is an unambiguous signal. A generic `<div>` can be dropped from the tree for reasons that have nothing to do with the modal, which would make the inertness check quietly unreliable.
 - The dialog contains exactly three focusable elements: `hr-field-1`, `hr-field-2`, `hr-close`, in that DOM order
 
-That last point matters. The focus-trap assertions count Tab presses, so a library that injects extra focusable elements (a sentinel node, a decorative close icon that is also tabbable) will produce different traversal. If your library does that legitimately, say so in `notes` and open an issue — do not paper over it in the adapter.
+That last point matters. The focus-trap assertions count Tab presses, so a library that injects extra focusable elements (a sentinel node, a decorative close icon that is also tabbable) will produce different traversal. If your library does that legitimately, say so in `notes` and open an issue, do not paper over it in the adapter.
 
 ### Do not
 
@@ -112,19 +112,19 @@ An editable combobox with a listbox popup.
 | `data-testid`  | What it must be                                                          |
 | -------------- | ------------------------------------------------------------------------ |
 | `hr-before`    | A focusable `<button>` before the combobox                                |
-| `hr-combobox`  | The **input element itself** — the one carrying `role="combobox"`         |
+| `hr-combobox`  | The **input element itself**, the one carrying `role="combobox"`         |
 | `hr-after`     | A focusable `<button>` after the combobox                                 |
 | `hr-listbox`   | The popup listbox (need not exist until opened)                           |
 | `hr-option-1`  | First option, `Apple`                                                     |
 | `hr-option-2`  | Second option, `Banana`                                                   |
 | `hr-option-3`  | Third option, `Cherry`                                                    |
 
-`hr-combobox` must be the input, **not** a wrapper around it. Assertions read its role, `aria-expanded`, `aria-activedescendant`, `aria-controls` and value. Most libraries will not let you place an attribute there directly — use `stampTestIds` (below).
+`hr-combobox` must be the input, **not** a wrapper around it. Assertions read its role, `aria-expanded`, `aria-activedescendant`, `aria-controls` and value. Most libraries will not let you place an attribute there directly, use `stampTestIds` (below).
 
 ### Required content and state
 
 - The combobox is labelled `Choose a fruit`
-- Exactly three options, in the order above — distinct initial letters, so typeahead cannot make traversal ambiguous, and already alphabetical, so sorting cannot reorder them
+- Exactly three options, in the order above: distinct initial letters, so typeahead cannot make traversal ambiguous, and already alphabetical, so sorting cannot reorder them
 - The popup is **closed** on load
 - The combobox is **empty** on load, so a selection assertion can tell that something was committed
 
@@ -132,7 +132,7 @@ An editable combobox with a listbox popup.
 
 - Do not pre-select an option
 - Do not filter, sort or transform the option list
-- Do not add key handlers. The spec opens the popup with Down Arrow, per APG — if that does nothing, that *is* the finding
+- Do not add key handlers. The spec opens the popup with Down Arrow, per APG, if that does nothing, that *is* the finding
 
 ---
 
@@ -150,7 +150,7 @@ stampTestIds({
 });
 ```
 
-**It places a marker and nothing else.** Never use it to add ARIA attributes, roles, labels or handlers — that is forging a pass, and it is the one thing that would make this project worthless.
+**It places a marker and nothing else.** Never use it to add ARIA attributes, roles, labels or handlers, that is forging a pass, and it is the one thing that would make this project worthless.
 
 Prefer structural selectors (`input[role="combobox"]`) over cosmetic ones (`.css-1x2y3z`). If the library stops producing that element, a structural selector fails loudly as a missing required element, whereas a class-based one may silently match the wrong node and measure something that is not the component.
 
@@ -199,13 +199,13 @@ A button that opens a menu.
 
 Unlike a combobox, a menu **moves focus into itself**. Either mechanism the APG permits is accepted: DOM focus on a menu item via roving tabindex, or `aria-activedescendant` on the menu.
 
-The assertions wait for the active item to change rather than reading it immediately. Roving focus is commonly moved in an effect or an animation frame, and reading it synchronously produces false blocker-level failures against libraries that are behaving correctly — see [`DECISIONS.md`](DECISIONS.md) 007.
+The assertions wait for the active item to change rather than reading it immediately. Roving focus is commonly moved in an effect or an animation frame, and reading it synchronously produces false blocker-level failures against libraries that are behaving correctly, see [`DECISIONS.md`](DECISIONS.md) 007.
 
 ---
 
 ## Components: `tabs`, `accordion`
 
-Specifications pending — see [`PLAN.md`](PLAN.md) Phase 2. Element tables will be added here before the specs are written, so adapter authors can work ahead.
+Specifications pending: see [`PLAN.md`](PLAN.md) Phase 2. Element tables will be added here before the specs are written, so adapter authors can work ahead.
 
 ---
 
@@ -213,4 +213,4 @@ Specifications pending — see [`PLAN.md`](PLAN.md) Phase 2. Element tables will
 
 The protocol is versioned by `protocolVersion`. A breaking change increments it, and the runner refuses to execute adapters declaring an unsupported version rather than producing a subtly wrong result.
 
-Additive changes — a new component, a new optional field — do not increment it.
+Additive changes: a new component, a new optional field, do not increment it.

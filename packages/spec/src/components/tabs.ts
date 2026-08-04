@@ -1,5 +1,5 @@
 /**
- * Tabs — conformance spec.
+ * Tabs: conformance spec.
  *
  * Derived from the W3C ARIA Authoring Practices Guide tabs pattern:
  * https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
@@ -397,7 +397,7 @@ export const tabsSpec: ComponentSpec = {
   version: "1.0.0",
   apgPattern: APG,
   description:
-    "A tablist with associated panels. The defining requirement is that the whole tablist is one stop in the tab sequence, with arrow keys moving between tabs — the part that implementations built from a row of buttons almost always miss, and that is completely invisible to a mouse user.",
+    "A tablist with associated panels. The defining requirement is that the whole tablist is one stop in the tab sequence, with arrow keys moving between tabs, the part that implementations built from a row of buttons almost always miss, and that is completely invisible to a mouse user.",
   requiredElements: [
     { testId: "hr-before", description: "Focusable button before the tablist", requiredAtLoad: true },
     { testId: "hr-tablist", description: "The tab list container", requiredAtLoad: true },
@@ -406,8 +406,8 @@ export const tabsSpec: ComponentSpec = {
     { testId: "hr-tab-3", description: `Third tab, "${TEXT.tab3}"`, requiredAtLoad: true },
     { testId: "hr-after", description: "Focusable button after the tabs", requiredAtLoad: true },
     { testId: "hr-panel-1", description: `First panel, "${TEXT.panel1}"`, requiredAtLoad: true },
-    { testId: "hr-panel-2", description: `Second panel — may be unmounted while unselected`, requiredAtLoad: false },
-    { testId: "hr-panel-3", description: `Third panel — may be unmounted while unselected`, requiredAtLoad: false },
+    { testId: "hr-panel-2", description: `Second panel, may be unmounted while unselected`, requiredAtLoad: false },
+    { testId: "hr-panel-3", description: `Third panel, may be unmounted while unselected`, requiredAtLoad: false },
   ],
   assertions,
 };

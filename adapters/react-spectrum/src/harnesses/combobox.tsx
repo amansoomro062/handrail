@@ -3,12 +3,12 @@ import { ComboBox, defaultTheme, Item, Provider } from "@adobe/react-spectrum";
 import { stampTestIds, TEXT } from "@handrail/harness-kit";
 
 /**
- * Adobe React Spectrum combobox — the calibration control for this pattern.
+ * Adobe React Spectrum combobox: the calibration control for this pattern.
  *
  * React Spectrum's ComboBox forwards `data-testid` to its wrapper rather than to
  * the `input[role="combobox"]` inside it, and the listbox and options are
  * portalled in only when the popup opens. So the harness ids are stamped onto
- * the real semantic elements by structural selector — see the note on
+ * the real semantic elements by structural selector, see the note on
  * `stampTestIds`. That places markers and nothing else: no ARIA, no handlers,
  * no focus management.
  */

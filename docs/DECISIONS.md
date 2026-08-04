@@ -2,11 +2,11 @@
 
 Every methodological decision that could affect a published score goes here, with its reasoning and date. When a maintainer disputes a result, this file is the answer.
 
-Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequence**
+Format: `## NNN: Title` · date · **Decision** · **Reasoning** · **Consequence**
 
 ---
 
-## 001 — Assertions are grounded in the W3C APG, not our own judgement
+## 001, Assertions are grounded in the W3C APG, not our own judgement
 *3 August 2026*
 
 **Decision.** Every assertion cites a clause of the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/) or a WCAG success criterion. Assertions that cannot cite one are not published.
@@ -17,18 +17,18 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
-## 002 — The accessibility tree is read via CDP, not inferred from the DOM
+## 002, The accessibility tree is read via CDP, not inferred from the DOM
 *3 August 2026*
 
 **Decision.** Role, name, state and hidden-ness come from Chrome DevTools Protocol `Accessibility.getFullAXTree`.
 
-**Reasoning.** DOM inspection cannot answer the questions that matter. "Is the background hidden from assistive technology" depends on computed accessibility-tree exposure — `aria-hidden`, `inert`, sibling visibility, browser heuristics — not on which attributes happen to be present. The accessibility tree is what assistive technology consumes, so it is what we should measure.
+**Reasoning.** DOM inspection cannot answer the questions that matter. "Is the background hidden from assistive technology" depends on computed accessibility-tree exposure, `aria-hidden`, `inert`, sibling visibility, browser heuristics, not on which attributes happen to be present. The accessibility tree is what assistive technology consumes, so it is what we should measure.
 
 **Consequence.** v1 is Chromium-only. Documented prominently. Firefox and WebKit differ in real, interesting ways, and cross-browser divergence is a v2 feature rather than a v1 blocker.
 
 ---
 
-## 003 — React Spectrum is a calibration control, not a subject
+## 003, React Spectrum is a calibration control, not a subject
 *3 August 2026*
 
 **Decision.** React Spectrum is implemented first. Any assertion it fails is presumed wrong until proven otherwise, and no results for any library are published until it scores ≥ 95%.
@@ -39,7 +39,7 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
-## 004 — Maintainers are notified before publication and get a right of reply
+## 004, Maintainers are notified before publication and get a right of reply
 *3 August 2026*
 
 **Decision.** Fourteen days' private notice with full results and adapter source. Responses published alongside scores. Pre-launch fixes are reflected in the published score.
@@ -50,18 +50,18 @@ Format: `## NNN — Title` · date · **Decision** · **Reasoning** · **Consequ
 
 ---
 
-## 005 — Adapters mount libraries with default configuration
+## 005, Adapters mount libraries with default configuration
 *3 August 2026*
 
 **Decision.** Adapters use the library as its own documentation recommends. Where accessible behaviour requires opt-in, we mount without the opt-in and record it.
 
-**Reasoning.** Defaults are what ships to real users. A library that can be made accessible with sufficient expertise, but is not accessible as documented, produces inaccessible applications at scale — and that is the outcome the project cares about.
+**Reasoning.** Defaults are what ships to real users. A library that can be made accessible with sufficient expertise, but is not accessible as documented, produces inaccessible applications at scale, and that is the outcome the project cares about.
 
 **Consequence.** Some libraries will object that they support the correct behaviour. The `notes` field and the right of reply exist for exactly this, and "accessible behaviour is available but not the default" is itself a publishable, useful finding.
 
 ---
 
-## 017 — Focus containment is a DOM question, not a test-id question
+## 017, Focus containment is a DOM question, not a test-id question
 *4 August 2026*
 
 **Decision.** The focus-trap assertions ask the DOM whether the focused element is inside the dialog. They no longer infer it from whether the element carries a harness test id.
@@ -78,7 +78,7 @@ It also means the protocol's "exactly three focusable elements" is a description
 
 ---
 
-## 016 — A first run against a new library is an adapter draft, not a result
+## 016, A first run against a new library is an adapter draft, not a result
 *4 August 2026*
 
 **Decision.** Ant Design is marked `draft` and none of its scores may be published until each remaining failure has been confirmed against the DOM by hand. No library's first run is publishable.
@@ -92,26 +92,26 @@ It also means the protocol's "exactly three focusable elements" is a description
 
 A 27% would have been the headline finding of the entire index. It was a selector.
 
-Two spec corrections came out of it as well. "Is the popup open" is now answered from the accessibility tree rather than CSS visibility — consistent with decision 002, and the more honest question. And an accessible name now only has to *contain* the label rather than equal it: Ant Design's is `"collapsed Shipping"`, which folds state into the name. Redundant, but it identifies the section, and identifying it is what the APG requires. Demanding equality was our preference.
+Two spec corrections came out of it as well. "Is the popup open" is now answered from the accessibility tree rather than CSS visibility, consistent with decision 002, and the more honest question. And an accessible name now only has to *contain* the label rather than equal it: Ant Design's is `"collapsed Shipping"`, which folds state into the name. Redundant, but it identifies the section, and identifying it is what the APG requires. Demanding equality was our preference.
 
 **Consequence.** The rule that adapters are reviewed harder than test code is now evidenced rather than asserted. A first run tells you your adapter is wrong; the second tells you something about the library.
 
 **Still unresolved for Ant Design**, and the reason it stays unpublishable:
 
-- `combobox.options-have-option-role` — only one option is in the DOM at a time under virtualisation. Virtualised lists are legitimate when they carry `aria-setsize` and `aria-posinset`, which this spec does not yet check. This is most likely **our** limitation, not a defect.
-- `menu` at 52% — six failures, none yet confirmed by hand. Plausible, given Ant Design's Dropdown is built around pointer interaction, but plausible is not verified.
-- `dialog.focus-trapped-*` — focus passes through `<body>` for one Tab before returning. Real, but materially less serious than reaching background content, and the severity should probably distinguish the two.
+- `combobox.options-have-option-role`, only one option is in the DOM at a time under virtualisation. Virtualised lists are legitimate when they carry `aria-setsize` and `aria-posinset`, which this spec does not yet check. This is most likely **our** limitation, not a defect.
+- `menu` at 52%, six failures, none yet confirmed by hand. Plausible, given Ant Design's Dropdown is built around pointer interaction, but plausible is not verified.
+- `dialog.focus-trapped-*`, focus passes through `<body>` for one Tab before returning. Real, but materially less serious than reaching background content, and the severity should probably distinguish the two.
 
 **Confirmed by direct DOM inspection** and safe to carry forward: the dialog does not hide background content from assistive technology, the accordion header carries no `aria-controls`, and the accordion header is not a heading.
 
 ---
 
-## 015 — We test at human speed, and a race no person could hit is not a finding
+## 015, We test at human speed, and a race no person could hit is not a finding
 *3 August 2026*
 
 **Decision.** Setup helpers call `harness.settle()` after a component opens: two animation frames plus a 60ms floor. Sub-60ms interaction sequences are not tested, and any race that only appears within that window is not published as a finding.
 
-**Reasoning.** Chakra's combobox failed `escape-closes` intermittently — roughly half the time. It reproduced cleanly, and it was real: focus was correctly on the input, Escape was correctly delivered, and the popup stayed open.
+**Reasoning.** Chakra's combobox failed `escape-closes` intermittently, roughly half the time. It reproduced cleanly, and it was real: focus was correctly on the input, Escape was correctly delivered, and the popup stayed open.
 
 Measuring it settled the question:
 
@@ -121,26 +121,26 @@ Measuring it settled the question:
 | 50ms | 0 / 12 |
 | 100ms and above | 0 / 12 |
 
-A sub-50ms race. **No person can press two keys that fast**, and the sequence in question — open a list and instantly dismiss it — is not one a human would produce at all. There is a genuine race in Chakra's state machine, and it has no bearing on whether anyone can use the component.
+A sub-50ms race. **No person can press two keys that fast**, and the sequence in question, open a list and instantly dismiss it, is not one a human would produce at all. There is a genuine race in Chakra's state machine, and it has no bearing on whether anyone can use the component.
 
 Publishing it would have been indefensible in a specific and damaging way: technically accurate, reproducible on demand, and *completely irrelevant to the people this project exists for*. A maintainer would have been asked to answer for a defect no user can experience, in an index that claims to describe user experience.
 
 **Consequence.** This draws a boundary the project needed and did not have: **the index measures what a person could encounter.** Faster than that, we are inspecting internals, and internals are not our subject.
 
-It also generalises the lesson from 007 in the other direction. Decision 007 says *do not read state before the library has produced it*. This says *do not act on a component before it is ready to be acted on*. Both are the same underlying error — treating "visible" as "finished" — and it has now cost us four false findings across both directions.
+It also generalises the lesson from 007 in the other direction. Decision 007 says *do not read state before the library has produced it*. This says *do not act on a component before it is ready to be acted on*. Both are the same underlying error, treating "visible" as "finished", and it has now cost us four false findings across both directions.
 
 One honest loose end: Chakra's tabs reported unstable once and did not reproduce across 24 subsequent runs. Not chased further, and recorded here rather than quietly forgotten, because a rare instability is exactly the kind of thing that becomes obvious in hindsight after it embarrasses you.
 
 ---
 
-## 014 — An intermittent result is not publishable, and instability must be measurable
+## 014, An intermittent result is not publishable, and instability must be measurable
 *3 August 2026*
 
 **Decision.** `handrail run --repeat <n>` runs a spec n times and fails if any assertion's status varies. No result is published without it passing.
 
-**Reasoning.** Headless UI's dialog scored 100% twice and 94% three times in a row. The failing assertion was `dialog.has-accessible-name`, and it was neither right nor wrong — it was a coin flip. Headless UI's `DialogTitle` registers its id into the dialog's `aria-labelledby` a tick after the dialog becomes visible, so reading the name immediately caught it roughly half the time.
+**Reasoning.** Headless UI's dialog scored 100% twice and 94% three times in a row. The failing assertion was `dialog.has-accessible-name`, and it was neither right nor wrong, it was a coin flip. Headless UI's `DialogTitle` registers its id into the dialog's `aria-labelledby` a tick after the dialog becomes visible, so reading the name immediately caught it roughly half the time.
 
-An intermittent result is worse than a consistently wrong one. A consistent failure is a claim a maintainer can check and refute. An intermittent one is indistinguishable from a real finding, and whichever run happened to be published is the one they have to argue against — while it passes on their machine.
+An intermittent result is worse than a consistently wrong one. A consistent failure is a claim a maintainer can check and refute. An intermittent one is indistinguishable from a real finding, and whichever run happened to be published is the one they have to argue against, while it passes on their machine.
 
 Running it once and eyeballing the number would never have caught this, because each individual run looked entirely reasonable.
 
@@ -148,11 +148,11 @@ Running it once and eyeballing the number would never have caught this, because 
 
 All 20 target/spec pairs are now stable across repeated runs.
 
-The deeper point: decision 007 has now recurred as timing (three times), as state, as name, and as relationship. It is not a bug that keeps happening — it is the *shape* of this entire problem domain. Anything a library computes after an interaction must be waited for, and the only reliable way to find the ones we missed is to run things repeatedly and watch for disagreement.
+The deeper point: decision 007 has now recurred as timing (three times), as state, as name, and as relationship. It is not a bug that keeps happening, it is the *shape* of this entire problem domain. Anything a library computes after an interaction must be waited for, and the only reliable way to find the ones we missed is to run things repeatedly and watch for disagreement.
 
 ---
 
-## 013 — Adapters use only what the library exports, with no hand-written ARIA
+## 013, Adapters use only what the library exports, with no hand-written ARIA
 *3 August 2026*
 
 **Decision.** An adapter may use any component, prop or configuration the library exports. It may not hand-write ARIA attributes, ids or relationships, even when the library's own documentation instructs the developer to.
@@ -170,27 +170,27 @@ A library that documents the fix is genuinely better than one that does not. If 
 
 ---
 
-## 012 — A shared setup helper must not fail for the reason an assertion is testing
+## 012, A shared setup helper must not fail for the reason an assertion is testing
 *3 August 2026*
 
-**Decision.** Helpers that put a component into a state — `openMenu`, `openPopup`, `expandFirst` — try every route the APG permits. Only the assertion whose *subject* is a particular key pins that key.
+**Decision.** Helpers that put a component into a state, `openMenu`, `openPopup`, `expandFirst`, try every route the APG permits. Only the assertion whose *subject* is a particular key pins that key.
 
-**Reasoning.** MUI's menu scored **19%** on its first run. The actual defect was singular: its trigger does not open the menu on Down Arrow. But `openMenu` used Down Arrow, so nine further assertions failed with "the menu did not open" — none of them measuring what they claimed. Role, focus management, arrow navigation, Escape and focus restoration are all correct in MUI, and all were reported as failures.
+**Reasoning.** MUI's menu scored **19%** on its first run. The actual defect was singular: its trigger does not open the menu on Down Arrow. But `openMenu` used Down Arrow, so nine further assertions failed with "the menu did not open", none of them measuring what they claimed. Role, focus management, arrow navigation, Escape and focus restoration are all correct in MUI, and all were reported as failures.
 
 With the fix, the same library scores **78%** and the four remaining failures are all real.
 
-A 19% would have been catastrophically unfair, and nothing about it looked wrong: every failure message was specific and every one was, narrowly, true — the menu really had not opened.
+A 19% would have been catastrophically unfair, and nothing about it looked wrong: every failure message was specific and every one was, narrowly, true, the menu really had not opened.
 
 **Consequence.** The same flaw existed in the combobox and accordion specs and was fixed in both before it produced a result. The general rule for spec authors: **if an assertion can fail because of setup rather than its subject, it is not measuring what its id says it measures.** Assertions must be independent, and shared helpers are where that independence quietly breaks.
 
 ---
 
-## 011 — An APG "Optional" clause is not a requirement
+## 011, An APG "Optional" clause is not a requirement
 *3 August 2026*
 
-**Decision.** `accordion.panel-labelled-by-header` — asserting that an accordion panel has `role="region"` and takes its name from its header — has been removed. Assertions may only cite clauses the APG states as requirements.
+**Decision.** `accordion.panel-labelled-by-header`, asserting that an accordion panel has `role="region"` and takes its name from its header, has been removed. Assertions may only cite clauses the APG states as requirements.
 
-**Reasoning.** It failed the React Spectrum control, which uses `role="group"` and no `aria-labelledby`. Under decision 003 that makes our assertion the suspect, and on checking, the APG lists both properties for this pattern under **Optional** — and explicitly warns against `role="region"` where it would proliferate landmarks in an accordion with many panels. Spectrum's choice is a correct reading of the specification.
+**Reasoning.** It failed the React Spectrum control, which uses `role="group"` and no `aria-labelledby`. Under decision 003 that makes our assertion the suspect, and on checking, the APG lists both properties for this pattern under **Optional**, and explicitly warns against `role="region"` where it would proliferate landmarks in an accordion with many panels. Spectrum's choice is a correct reading of the specification.
 
 The assertion was therefore our preference wearing the costume of a conformance result, which is exactly what decision 001 exists to prevent. Had it shipped, every library making the same legitimate choice would have carried a public failure for it.
 
@@ -200,34 +200,34 @@ This is the first time the calibration control caught a defect in an assertion's
 
 ---
 
-## 010 — Anything that can change a result is pinned exactly
+## 010, Anything that can change a result is pinned exactly
 *3 August 2026*
 
 **Decision.** Every library under test, plus `react`, `react-dom` and `playwright`, is pinned to an exact version in a pnpm catalog. Build and type tooling may use ranges. `pnpm check:versions` enforces it and must pass before publication.
 
-**Reasoning.** The project had been running on caret ranges, and the drift was already large: `^1.1.4` was resolving to `1.1.23`, `^3.38.0` to `3.47.3`. Results were being written naming exact versions against a repository declaring ranges — so a clone a month later would install something different and produce a different score for what appeared to be the same commit. "Reproducible" was in the README as a claim rather than a property.
+**Reasoning.** The project had been running on caret ranges, and the drift was already large: `^1.1.4` was resolving to `1.1.23`, `^3.38.0` to `3.47.3`. Results were being written naming exact versions against a repository declaring ranges, so a clone a month later would install something different and produce a different score for what appeared to be the same commit. "Reproducible" was in the README as a claim rather than a property.
 
-React and Playwright are on the exact list for the same reason as the subject libraries. Focus behaviour differs across React versions, and the accessibility tree is computed by the bundled browser. If two adapters ran different Reacts, a difference between two libraries would no longer be attributable to the libraries — which is the only thing the index is for.
+React and Playwright are on the exact list for the same reason as the subject libraries. Focus behaviour differs across React versions, and the accessibility tree is computed by the bundled browser. If two adapters ran different Reacts, a difference between two libraries would no longer be attributable to the libraries, which is the only thing the index is for.
 
-**Consequence.** Upgrades become deliberate: bump the pin, re-run every affected spec, commit the results with the bump. The check specifically catches a **stale result** — a plausible-looking number describing a version nobody can install any more — which is the failure a human reviewer would never spot.
+**Consequence.** Upgrades become deliberate: bump the pin, re-run every affected spec, commit the results with the bump. The check specifically catches a **stale result**, a plausible-looking number describing a version nobody can install any more, which is the failure a human reviewer would never spot.
 
 ---
 
-## 009 — Not shipping a component scores `n/a`, never zero
+## 009, Not shipping a component scores `n/a`, never zero
 *3 August 2026*
 
 **Decision.** An adapter may announce `supported: false` for a component its library does not provide. Every assertion is then recorded as `not-applicable`, excluded from the denominator, and the target scores `n/a`.
 
-**Reasoning.** Radix has no combobox primitive. Its Select implements the APG *select-only* pattern, which has different requirements — running the combobox spec against it would measure the wrong thing, and scoring a zero would say something false about Radix's accessibility. Choosing not to ship a component is a scope decision.
+**Reasoning.** Radix has no combobox primitive. Its Select implements the APG *select-only* pattern, which has different requirements, running the combobox spec against it would measure the wrong thing, and scoring a zero would say something false about Radix's accessibility. Choosing not to ship a component is a scope decision.
 
 **Consequence.** The index has gaps, and gaps are honest. The guard against abuse is that this may not be used for a component the library does ship but implements badly; adapter review is where that is caught.
 
 ---
 
-## 008 — Harness ids may be stamped onto elements the adapter does not control
+## 008, Harness ids may be stamped onto elements the adapter does not control
 *3 August 2026*
 
-**Decision.** `stampTestIds` attaches `data-testid` attributes by structural selector, maintained by a `MutationObserver`. It may place markers only — never ARIA attributes, roles, labels or event handlers.
+**Decision.** `stampTestIds` attaches `data-testid` attributes by structural selector, maintained by a `MutationObserver`. It may place markers only, never ARIA attributes, roles, labels or event handlers.
 
 **Reasoning.** Forced by React Spectrum's combobox: `data-testid` lands on a wrapper rather than the `input[role="combobox"]` the spec must address, and the listbox and options are portalled in only when the popup opens. Without stamping, whole categories of library are untestable, and "we could not adapt it" would quietly become "we only test libraries with convenient DOM".
 
@@ -235,12 +235,12 @@ React and Playwright are on the exact list for the same reason as the subject li
 
 ---
 
-## 007 — Focus assertions wait; they never sample once
+## 007, Focus assertions wait; they never sample once
 *3 August 2026*
 
 **Decision.** Every assertion about where focus has landed polls until it arrives or a timeout expires (`waitForFocus`, `waitForFocusWithin`). Reading `document.activeElement` a single time immediately after an interaction is forbidden.
 
-**Reasoning.** Found the hard way on the very first run. `dialog.focus-restored-on-close` reported a failure against Radix, which restores focus correctly — the runner was simply reading focus before Radix had finished, because restoration happens after the exit transition rather than synchronously with the close.
+**Reasoning.** Found the hard way on the very first run. `dialog.focus-restored-on-close` reported a failure against Radix, which restores focus correctly, the runner was simply reading focus before Radix had finished, because restoration happens after the exit transition rather than synchronously with the close.
 
 Had that shipped, we would have published a false accusation against a well-built library in our first result set, which is precisely the failure mode this project cannot survive.
 
@@ -250,15 +250,15 @@ Had that shipped, we would have published a false accusation against a well-buil
 
 Twice in one day, in the same shape, in code written by someone who had already written this entry. Treat "read state immediately after a keypress" as a defect on sight during review, not as something to catch by testing.
 
-**Third recurrence — and the most serious.** `menu.arrow-moves-between-items` reported a **blocker** against Radix's dropdown menu: "Down Arrow did not move to a different item". Radix moves roving focus in an effect rather than synchronously in the keydown handler, and the runner read the active item before it moved. With the wait, Radix scores 13/13.
+**Third recurrence, and the most serious.** `menu.arrow-moves-between-items` reported a **blocker** against Radix's dropdown menu: "Down Arrow did not move to a different item". Radix moves roving focus in an effect rather than synchronously in the keydown handler, and the runner read the active item before it moved. With the wait, Radix scores 13/13.
 
-This one would have published a blocker-level accusation, against a named library, in the first result set that contained a finding at all. It was caught only because a calibration control existed to make the result suspicious. Nothing about the failure looked wrong on its face — the message was specific, the expected and actual were populated, and the claim was plausible.
+This one would have published a blocker-level accusation, against a named library, in the first result set that contained a finding at all. It was caught only because a calibration control existed to make the result suspicious. Nothing about the failure looked wrong on its face, the message was specific, the expected and actual were populated, and the claim was plausible.
 
 The generalisation now has teeth: **an assertion that reads state after an interaction without waiting is broken, whether or not it currently passes.** The three that have appeared so far were found by luck and discipline, not by design. Auditing the remaining specs for this pattern is worth more than adding new assertions.
 
 ---
 
-## 006 — The headline unit is a component, not a library
+## 006, The headline unit is a component, not a library
 *3 August 2026*
 
 **Decision.** Scores are presented per component. Library-level aggregates are shown only as secondary, always beside a blocker count.

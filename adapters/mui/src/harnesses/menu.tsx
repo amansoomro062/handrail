@@ -7,7 +7,7 @@ import { stampTestIds, TEXT } from "@handrail/harness-kit";
  *
  * MUI's documented example has the developer write aria-haspopup, aria-controls
  * and aria-expanded onto the trigger Button by hand. Those are not written here
- * — see the note in meta.ts and docs/DECISIONS.md 012.
+ *, see the note in meta.ts and docs/DECISIONS.md 012.
  */
 export function MenuHarness() {
   const [anchor, setAnchor] = useState<null | HTMLElement>(null);

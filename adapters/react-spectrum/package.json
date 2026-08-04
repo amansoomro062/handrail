@@ -1,7 +1,7 @@
 {
   "name": "@handrail/adapter-react-spectrum",
   "version": "0.1.0",
-  "description": "Calibration control. Widely regarded as the accessibility gold standard — a failure here is presumed to be our bug until proven otherwise.",
+  "description": "Calibration control. Widely regarded as the accessibility gold standard, a failure here is presumed to be our bug until proven otherwise.",
   "license": "MIT",
   "private": true,
   "type": "module",

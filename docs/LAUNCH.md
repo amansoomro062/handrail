@@ -16,13 +16,13 @@ Working title: **"We tested seven component libraries against the W3C's own acce
 
 Structure:
 
-1. **The problem** — you choose a component library on vibes, and its combobox may be unusable by keyboard in ways nobody has checked
-2. **Why libraries and not sites** — the leverage argument: fix once, fix everywhere downstream
-3. **Method** — APG grounding, the adapter inversion, the React Spectrum control, the broken fixture, the false-positive rate as a measured number
-4. **What we found** — per component, evidence-linked
-5. **What maintainers said** — their responses, including where they told us we were wrong and we agreed
-6. **What this cannot tell you** — the honest ceiling of automated testing
-7. **How to add your library** — the contribution call
+1. **The problem**, you choose a component library on vibes, and its combobox may be unusable by keyboard in ways nobody has checked
+2. **Why libraries and not sites**, the leverage argument: fix once, fix everywhere downstream
+3. **Method**, APG grounding, the adapter inversion, the React Spectrum control, the broken fixture, the false-positive rate as a measured number
+4. **What we found**, per component, evidence-linked
+5. **What maintainers said**, their responses, including where they told us we were wrong and we agreed
+6. **What this cannot tell you**, the honest ceiling of automated testing
+7. **How to add your library**, the contribution call
 
 Sections 3 and 6 are what make it credible to the people whose opinion carries weight in this field. Lead with method, not with the ranking. The people who will amplify this have seen a hundred accessibility tools that overclaim, and the fastest way to be dismissed is to look like the hundred and first.
 
@@ -42,9 +42,9 @@ Ask for critique, not promotion. "Will you tell me where this methodology is wro
 
 ## Channels, in order
 
-1. The site and writeup — the canonical artefacts
+1. The site and writeup, the canonical artefacts
 2. Endorser amplification
-3. Mastodon / Bluesky accessibility communities — where this field actually lives
+3. Mastodon / Bluesky accessibility communities, where this field actually lives
 4. Hacker News, Lobsters, r/reactjs
 5. Newsletters: Smashing, Frontend Focus, A11y Weekly
 6. Direct to each maintainer's community, with the fixes they shipped credited

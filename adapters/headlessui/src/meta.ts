@@ -14,6 +14,6 @@ export function metaFor(component: string): HarnessMeta {
     component,
     notes:
       "Mounted with default configuration, using only components Headless UI exports and no hand-written ARIA. " +
-      "Headless UI ships no styles by design, so the harness is unstyled — that is the library working as intended, not a missing step.",
+      "Headless UI ships no styles by design, so the harness is unstyled, that is the library working as intended, not a missing step.",
   };
 }

@@ -14,7 +14,7 @@ Handrail answers that question with evidence, in public, on every release.
 
 Testing individual websites is retail. Testing the libraries they are built from is wholesale.
 
-One broken combobox in a popular library is a broken combobox in tens of thousands of downstream applications. Fix it once upstream and it is fixed everywhere at once — including in the apps whose teams will never run an accessibility audit of their own.
+One broken combobox in a popular library is a broken combobox in tens of thousands of downstream applications. Fix it once upstream and it is fixed everywhere at once, including in the apps whose teams will never run an accessibility audit of their own.
 
 ## What makes this different from an audit blog post
 
@@ -32,7 +32,7 @@ That last row is the one that compounds. *"This library was compliant in v2 and 
 
 ## How it works
 
-The hard problem is that you cannot write one test that runs everywhere. `<Dialog>` in Radix is not `<Modal>` in MUI is not `<AlertDialog>` in Chakra — different props, different DOM, different everything.
+The hard problem is that you cannot write one test that runs everywhere. `<Dialog>` in Radix is not `<Modal>` in MUI is not `<AlertDialog>` in Chakra, different props, different DOM, different everything.
 
 So we invert it.
 
@@ -60,13 +60,13 @@ So we invert it.
                                        └────────────────────────┘
 ```
 
-1. **Component specs** define canonical contracts — Dialog, Combobox, Tabs, Menu, Accordion — with assertions derived directly from the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/).
+1. **Component specs** define canonical contracts, Dialog, Combobox, Tabs, Menu, Accordion, with assertions derived directly from the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/).
 2. **Adapters** mount a given library's version of that component into a fixed harness at a fixed URL with fixed test IDs.
 3. **The runner** navigates to the URL and executes the spec. It never knows which library it is testing.
 
 Three consequences fall out of this design, and they are the whole project:
 
-- **Grounding assertions in APG makes the rubric defensible.** When a maintainer objects, they are not arguing with our opinion — they are arguing with the W3C.
+- **Grounding assertions in APG makes the rubric defensible.** When a maintainer objects, they are not arguing with our opinion, they are arguing with the W3C.
 - **Adapters are tiny, so the community can write them.** Fifty lines is a first-contribution-sized task. We scale by adapters, not by writing more tests ourselves.
 - **The runner speaks HTTP, not React.** Vue, Svelte, Angular and Web Component libraries slot in later without touching the engine.
 
@@ -93,7 +93,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | Chakra UI adapter                                       | 4 green, accordion 97% |
 | Ant Design adapter                                      | draft, not publishable |
 | shadcn/ui adapter                                       | 3 green, dialog 100%, combobox 85% |
-| Broken fixture — false positives/negatives measured     | Calibrated on both  |
+| Broken fixture, false positives/negatives measured     | Calibrated on both  |
 | Public site, badges, CI                                 | Built               |
 
 Read [`docs/PLAN.md`](docs/PLAN.md) for the route from here to launch.
@@ -109,10 +109,10 @@ nvm use
 pnpm install
 pnpm exec playwright install chromium
 
-# Terminal 1 — serve the Radix adapter
+# Terminal 1: serve the Radix adapter
 pnpm --filter @handrail/adapter-radix run dev
 
-# Terminal 2 — run the Dialog spec against it
+# Terminal 2: run the Dialog spec against it
 pnpm handrail run --target radix --component dialog --base-url http://localhost:5180
 ```
 
@@ -124,7 +124,7 @@ Every version this index measures is pinned exactly, in one place, and cross-che
 pnpm check:versions
 ```
 
-That verifies the catalog, `node_modules`, `targets.json` and any existing results all name the same versions — including catching a **stale result**, a plausible-looking score describing a version nobody can install any more. See [`docs/VERSIONING.md`](docs/VERSIONING.md).
+That verifies the catalog, `node_modules`, `targets.json` and any existing results all name the same versions, including catching a **stale result**, a plausible-looking score describing a version nobody can install any more. See [`docs/VERSIONING.md`](docs/VERSIONING.md).
 
 Build the public index from whatever results are on disk:
 
@@ -154,7 +154,7 @@ The highest-value contribution is **an adapter for a library we do not cover yet
 
 The second highest is **auditing an existing adapter**. An unfair result caused by a badly written adapter is the single biggest risk to this project's credibility, so adapters get reviewed harder than test code does.
 
-Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) — in particular the rule that **we notify maintainers before we publish anything about their library.**
+Please read [`CONTRIBUTING.md`](CONTRIBUTING.md), in particular the rule that **we notify maintainers before we publish anything about their library.**
 
 ## A note on fairness
 

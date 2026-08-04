@@ -7,7 +7,7 @@ import type { HarnessMeta } from "./protocol.js";
 
 /**
  * Severity is a property of the assertion, fixed at authoring time. It is never
- * adjusted per library after seeing results — see docs/SCORING.md.
+ * adjusted per library after seeing results, see docs/SCORING.md.
  */
 export type Severity = "blocker" | "serious" | "moderate" | "minor";
 
@@ -45,7 +45,7 @@ export interface Refs {
 /**
  * A node of the computed accessibility tree, as exposed to assistive
  * technology. Sourced from CDP `Accessibility.getFullAXTree` rather than
- * inferred from the DOM — see docs/DECISIONS.md 002.
+ * inferred from the DOM, see docs/DECISIONS.md 002.
  */
 export interface AxNode {
   nodeId: string;
@@ -67,7 +67,7 @@ export interface A11yTools {
    * Computed node for an arbitrary selector.
    *
    * Needed for assertions that follow an ARIA relationship to an element the
-   * harness does not name — `aria-activedescendant` points at an id the library
+   * harness does not name, `aria-activedescendant` points at an id the library
    * generated, not at one of our test ids.
    */
   nodeForSelector(selector: string): Promise<AxNode | null>;
@@ -81,7 +81,7 @@ export interface A11yTools {
    * subcomponent registers its id into the container's `aria-labelledby` on
    * mount, which lands a tick after the container becomes visible. Reading the
    * name the instant something opens produces an *intermittent* failure, which
-   * is worse than a consistent one — see docs/DECISIONS.md 014.
+   * is worse than a consistent one, see docs/DECISIONS.md 014.
    */
   waitForName(testId: string, expected: string, timeoutMs?: number): Promise<string | null>;
   /** Computed role, or null if the element is absent or ignored. */
@@ -106,7 +106,7 @@ export interface FocusInfo {
   name: string | null;
   /** Best-effort selector, for failure messages. */
   selector: string;
-  /** True when focus is on <body> — i.e. nothing meaningful is focused. */
+  /** True when focus is on <body>, i.e. nothing meaningful is focused. */
   isBody: boolean;
 }
 
@@ -126,7 +126,7 @@ export interface KeyboardTools {
   /**
    * Wait until focus lands on an element, returning false on timeout.
    *
-   * Focus movement is frequently asynchronous — libraries restore focus after an
+   * Focus movement is frequently asynchronous: libraries restore focus after an
    * exit animation or a microtask. Sampling focus once, immediately, produces
    * false failures against libraries that are behaving correctly. Always wait.
    */
@@ -136,7 +136,7 @@ export interface KeyboardTools {
   /**
    * Is focus currently inside this element? Asked of the DOM, not of test ids.
    *
-   * Libraries inject their own focusable elements — shadcn/ui's generated dialog
+   * Libraries inject their own focusable elements, shadcn/ui's generated dialog
    * ships a close button of its own. Judging containment by test id treats every
    * such element as "outside" and reports a focus trap as broken when it is
    * working perfectly. See docs/DECISIONS.md 017.
@@ -157,7 +157,7 @@ export interface HarnessHandle {
   el(testId: string): Locator;
   exists(testId: string): Promise<boolean>;
   visible(testId: string): Promise<boolean>;
-  /** DOM containment — is `testId` inside `ancestorTestId`? */
+  /** DOM containment, is `testId` inside `ancestorTestId`? */
   isWithin(testId: string, ancestorTestId: string): Promise<boolean>;
   click(testId: string): Promise<void>;
   text(testId: string): Promise<string>;
@@ -166,7 +166,7 @@ export interface HarnessHandle {
    *
    * A person cannot press two keys inside 60ms. A test that does is measuring a
    * library's internal state machine rather than anything a user could
-   * encounter, and any race it finds there is not an accessibility finding —
+   * encounter, and any race it finds there is not an accessibility finding -
    * see docs/DECISIONS.md 015.
    */
   settle(ms?: number): Promise<void>;
@@ -196,7 +196,7 @@ export interface HarnessHandle {
    * whatever is there on timeout, so the assertion reports the real state.
    *
    * Selection commonly commits a tick or two after the keypress. Reading the
-   * value immediately fails libraries that are behaving correctly — see
+   * value immediately fails libraries that are behaving correctly, see
    * docs/DECISIONS.md 007.
    */
   waitForValue(testId: string, timeoutMs?: number): Promise<string>;

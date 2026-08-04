@@ -12,7 +12,7 @@ import {
 import { TEXT } from "@handrail/harness-kit";
 
 /**
- * Adobe React Spectrum modal dialog — the calibration control.
+ * Adobe React Spectrum modal dialog: the calibration control.
  *
  * This adapter is not here to measure React Spectrum. It is here to measure
  * *us*. React Spectrum is widely regarded as the accessibility gold standard,
@@ -21,7 +21,7 @@ import { TEXT } from "@handrail/harness-kit";
  * published until this one scores at least 95%.
  *
  * As with every adapter: nothing here manages focus, adds ARIA, or handles
- * keys. The two plain inputs are harness furniture — deliberately plain rather
+ * keys. The two plain inputs are harness furniture, deliberately plain rather
  * than Spectrum TextFields, so that both adapters traverse an identical set of
  * three focusable elements and the focus-trap counts stay comparable.
  */

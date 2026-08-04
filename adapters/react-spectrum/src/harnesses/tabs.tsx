@@ -3,7 +3,7 @@ import { defaultTheme, Item, Provider, TabList, TabPanels, Tabs } from "@adobe/r
 import { stampTestIds, TEXT } from "@handrail/harness-kit";
 
 /**
- * Adobe React Spectrum tabs — calibration control for this pattern.
+ * Adobe React Spectrum tabs: calibration control for this pattern.
  *
  * Spectrum renders only the selected panel, so `hr-panel-2` and `hr-panel-3`
  * will not exist until their tab is chosen. The protocol allows that: the spec

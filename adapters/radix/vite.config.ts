@@ -27,7 +27,7 @@ function resolvedVersion(pkg: string): string {
 /**
  * Derive the versions under test from this adapter's own dependencies.
  *
- * This was a hand-maintained list, and it silently went stale twice — adding a
+ * This was a hand-maintained list, and it silently went stale twice, adding a
  * component meant adding a package, and forgetting to add it here produced
  * results that named the wrong library's version. A result that misnames what
  * it tested is worse than no result, and nothing downstream can detect it.

@@ -1,12 +1,12 @@
 /**
- * Menu button with menu — conformance spec.
+ * Menu button with menu: conformance spec.
  *
  * Derived from the W3C ARIA Authoring Practices Guide menu button pattern:
  * https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
  *
  * Where a combobox keeps DOM focus on the input and tracks a separate active
  * option, a menu moves focus into itself. That difference is the thing most
- * often got wrong — menus built by adapting a dropdown usually keep focus
+ * often got wrong, menus built by adapting a dropdown usually keep focus
  * outside, leaving a keyboard user with a visible menu they cannot enter.
  */
 
@@ -52,7 +52,7 @@ function attrSelector(name: string, value: string): string {
 /**
  * Open the menu from the keyboard.
  *
- * With an explicit key, tests exactly that key — used by the two assertions
+ * With an explicit key, tests exactly that key, used by the two assertions
  * whose subject *is* the opening key. With no key, tries every route the APG
  * permits and reports success if any works.
  *
@@ -60,7 +60,7 @@ function attrSelector(name: string, value: string): string {
  * with Down Arrow only, so against a library whose trigger ignores Down Arrow,
  * nine unrelated assertions failed with "the menu did not open" and the target
  * scored 19% off a single defect. A shared setup helper must never fail for the
- * reason a dedicated assertion is testing — see docs/DECISIONS.md 012.
+ * reason a dedicated assertion is testing, see docs/DECISIONS.md 012.
  */
 async function openMenu(ctx: RunContext, key?: string): Promise<boolean> {
   await ctx.keyboard.focus("hr-trigger");
@@ -68,7 +68,7 @@ async function openMenu(ctx: RunContext, key?: string): Promise<boolean> {
     await ctx.keyboard.press(attempt);
     try {
       await ctx.harness.el("hr-menu").waitFor({ state: "visible", timeout: 1000 });
-      // Visible is not ready — wait, best-effort, for focus to enter the menu
+      // Visible is not ready: wait, best-effort, for focus to enter the menu
       // before the caller interacts with it.
       await ctx.keyboard.waitForFocusWithin("hr-menu", 700);
       await ctx.harness.settle();
@@ -111,7 +111,7 @@ async function activeItem(
  * Roving-focus implementations frequently move focus in an effect or an
  * animation frame rather than synchronously in the keydown handler. Reading the
  * active item immediately after a keypress fails libraries that are behaving
- * correctly — this is the third time that mistake has appeared in this codebase,
+ * correctly, this is the third time that mistake has appeared in this codebase,
  * see docs/DECISIONS.md 007.
  */
 async function waitForActiveItemChange(

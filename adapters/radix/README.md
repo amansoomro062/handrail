@@ -25,14 +25,14 @@ The two things worth internalising before writing your own:
 
 **Nothing is added.** No focus management, no ARIA, no key handlers, no styling. The assertions measure what Radix does unaided. An adapter that helps its library pass is worse than no adapter, because it produces a confident wrong answer.
 
-**Versions are resolved, not ranged.** `vite.config.ts` reads the real installed version out of `node_modules` and injects it. `^1.1.4` in a result file would be useless — nobody could tell which version was actually tested.
+**Versions are resolved, not ranged.** `vite.config.ts` reads the real installed version out of `node_modules` and injects it. `^1.1.4` in a result file would be useless, nobody could tell which version was actually tested.
 
 ## Checking your work
 
 Break it deliberately and confirm the runner notices:
 
 ```tsx
-// Remove the title — dialog.has-accessible-name should now fail.
+// Remove the title: dialog.has-accessible-name should now fail.
 <Dialog.Title data-testid="hr-title">{TEXT.dialogTitle}</Dialog.Title>
 ```
 

@@ -1,4 +1,4 @@
-# React Spectrum adapter — calibration control
+# React Spectrum adapter: calibration control
 
 **This adapter exists to measure the harness, not the library.**
 
@@ -27,14 +27,14 @@ Reach for 3 last, and only with evidence. The prior that Adobe got it right and 
 
 ## Current state
 
-`dialog` — **12/12**, against `@adobe/react-spectrum@3.47.3`.
+`dialog`, **12/12**, against `@adobe/react-spectrum@3.47.3`.
 
 ## A caveat worth keeping in view
 
-React Spectrum and Radix both score 12/12. That is the correct result, and it also means **the Dialog spec does not yet discriminate between good implementations** — so far it only separates good from catastrophic, which is what the broken fixture confirms from the other end.
+React Spectrum and Radix both score 12/12. That is the correct result, and it also means **the Dialog spec does not yet discriminate between good implementations**, so far it only separates good from catastrophic, which is what the broken fixture confirms from the other end.
 
 That is normal for a first spec and not a reason to add assertions for their own sake. The real test of whether these twelve assertions are useful comes from the middle of the distribution, when MUI, Chakra and Ant Design are measured in Phase 2. If everything lands at either 100% or 37%, the spec needs sharpening.
 
 ## Harness note
 
-The two text inputs are plain `<input>` elements rather than Spectrum `TextField`s. That is deliberate: it keeps the set of focusable elements inside the dialog identical across every adapter, so the focus-trap assertions — which count Tab presses — stay comparable. Spectrum's own components are used for everything the spec actually asserts against.
+The two text inputs are plain `<input>` elements rather than Spectrum `TextField`s. That is deliberate: it keeps the set of focusable elements inside the dialog identical across every adapter, so the focus-trap assertions, which count Tab presses, stay comparable. Spectrum's own components are used for everything the spec actually asserts against.

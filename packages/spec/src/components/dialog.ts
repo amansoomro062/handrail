@@ -5,7 +5,7 @@
  * https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/
  *
  * Every assertion below cites a clause of that pattern or a WCAG success
- * criterion. Assertions that cannot cite one do not belong here — see
+ * criterion. Assertions that cannot cite one do not belong here, see
  * docs/DECISIONS.md 001.
  */
 
@@ -40,7 +40,7 @@ const WCAG = {
   },
 } as const;
 
-/** Compare accessible names forgivingly — whitespace and case are not the point. */
+/** Compare accessible names forgivingly, whitespace and case are not the point. */
 function nameMatches(actual: string | null, expected: string): boolean {
   if (!actual) return false;
   return actual.trim().replace(/\s+/g, " ").toLowerCase() === expected.toLowerCase();

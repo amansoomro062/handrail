@@ -22,7 +22,7 @@ const harnesses: Record<string, () => JSX.Element> = {
  * Radix has no combobox primitive. Its Select is a different APG pattern with
  * different requirements, and testing it against the combobox spec would be
  * measuring the wrong thing. Declaring it unsupported records `not-applicable`
- * rather than a zero — not shipping a component is a scope decision, not an
+ * rather than a zero, not shipping a component is a scope decision, not an
  * accessibility failure.
  */
 const unsupported: Record<string, string> = {

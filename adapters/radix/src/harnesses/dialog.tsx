@@ -5,7 +5,7 @@ import { TEXT } from "@handrail/harness-kit";
  * Radix UI modal dialog, mounted exactly as the Radix documentation describes.
  *
  * Nothing here manages focus, adds ARIA attributes, or handles keys. That is the
- * entire point — we are measuring what the library does unaided. If you find
+ * entire point, we are measuring what the library does unaided. If you find
  * yourself adding an onKeyDown to make an assertion pass, you have found a
  * defect and are in the process of hiding it.
  *

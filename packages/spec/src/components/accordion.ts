@@ -1,5 +1,5 @@
 /**
- * Accordion — conformance spec.
+ * Accordion: conformance spec.
  *
  * Derived from the W3C ARIA Authoring Practices Guide accordion pattern:
  * https://www.w3.org/WAI/ARIA/apg/patterns/accordion/
@@ -68,7 +68,7 @@ function attrSelector(name: string, value: string): string {
  * Expand the first section, waiting for the state to settle.
  *
  * With an explicit key, tests exactly that key. With none, tries each documented
- * activation route — a shared setup helper must not fail for the reason a
+ * activation route, a shared setup helper must not fail for the reason a
  * dedicated assertion is testing, or one defect cascades into many unrelated
  * failures. See docs/DECISIONS.md 012.
  */
@@ -142,7 +142,7 @@ const assertions: Assertion[] = [
         const want = expected[index] as string;
         // Containment, not equality. Some libraries fold state into the name
         // ("collapsed Shipping"), which is redundant but does identify the
-        // section — and identifying it is what the APG requires.
+        // section, and identifying it is what the APG requires.
         if (!nameContains(name, want)) {
           wrong.push(`${testId}: expected "${want}", got ${name === null ? "no name" : `"${name}"`}`);
         }
@@ -317,7 +317,7 @@ const assertions: Assertion[] = [
    * uses role=group and no aria-labelledby, which is a legitimate reading of the
    * specification rather than a defect.
    *
-   * It was written, it failed the calibration control, and it was removed —
+   * It was written, it failed the calibration control, and it was removed -
    * see docs/DECISIONS.md 011. An optional clause is not a requirement, and
    * asserting one would have made this our preference dressed as conformance.
    */
@@ -326,7 +326,7 @@ const assertions: Assertion[] = [
     id: "accordion.headers-are-tab-stops",
     title: "Tab moves between accordion headers",
     rationale:
-      "Accordion headers are each a stop in the tab sequence — the opposite of a tablist, which is a single stop navigated with arrows. Implementations that copy tab behaviour here strand the user on the first header.",
+      "Accordion headers are each a stop in the tab sequence, the opposite of a tablist, which is a single stop navigated with arrows. Implementations that copy tab behaviour here strand the user on the first header.",
     severity: "serious",
     refs: { apg: APG_KEYBOARD, ...WCAG.focusOrder },
     async run(ctx) {
@@ -382,9 +382,9 @@ export const accordionSpec: ComponentSpec = {
     { testId: "hr-header-2", description: `Second header control, "${TEXT.accordionHeader2}"`, requiredAtLoad: true },
     { testId: "hr-header-3", description: `Third header control, "${TEXT.accordionHeader3}"`, requiredAtLoad: true },
     { testId: "hr-after", description: "Focusable button after the accordion", requiredAtLoad: true },
-    { testId: "hr-panel-1", description: "First panel — may be unmounted while collapsed", requiredAtLoad: false },
-    { testId: "hr-panel-2", description: "Second panel — may be unmounted while collapsed", requiredAtLoad: false },
-    { testId: "hr-panel-3", description: "Third panel — may be unmounted while collapsed", requiredAtLoad: false },
+    { testId: "hr-panel-1", description: "First panel, may be unmounted while collapsed", requiredAtLoad: false },
+    { testId: "hr-panel-2", description: "Second panel, may be unmounted while collapsed", requiredAtLoad: false },
+    { testId: "hr-panel-3", description: "Third panel, may be unmounted while collapsed", requiredAtLoad: false },
   ],
   assertions,
 };

@@ -20,7 +20,7 @@ function resolvedVersion(pkg: string): string {
 
 /**
  * Derived from this adapter's own dependencies rather than hand-maintained.
- * See the note in adapters/radix/vite.config.ts — the hand-written list went
+ * See the note in adapters/radix/vite.config.ts, the hand-written list went
  * stale twice, producing results that named the wrong library's version.
  */
 const EXCLUDED = new Set(["react", "react-dom"]);
