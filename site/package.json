@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@handrail/markdown": "workspace:*",
     "@handrail/report": "workspace:*",
     "@handrail/spec": "workspace:*"
   },
