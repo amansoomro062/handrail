@@ -19,7 +19,8 @@
     "clean": "rm -rf packages/*/dist adapters/*/dist node_modules/.cache results",
     "check:versions": "node scripts/check-versions.mjs",
     "site:build": "pnpm --filter @handrail/site run build",
-    "check:site": "node scripts/audit-site.mjs"
+    "check:site": "node scripts/audit-site.mjs",
+    "restore:docs": "node scripts/restore-docs.mjs"
   },
   "devDependencies": {
     "typescript": "catalog:",

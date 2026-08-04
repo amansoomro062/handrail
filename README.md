@@ -88,11 +88,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | Accordion spec (11 assertions)                          | Implemented         |
 | React Spectrum calibration control                      | 5 specs, all green  |
 | Radix reference adapter                                 | 4 green, combobox n/a |
-| MUI adapter                                             | 3 green, menu 78%, accordion 97% |
-| Headless UI adapter                                     | 4 green, accordion 97% |
-| Chakra UI adapter                                       | 4 green, accordion 97% |
-| Ant Design adapter                                      | draft, not publishable |
-| shadcn/ui adapter                                       | 3 green, dialog 100%, combobox 85% |
+| Five subject adapters                                   | measured, results withheld |
 | Broken fixture, false positives/negatives measured     | Calibrated on both  |
 | Public site, badges, CI                                 | Built               |
 

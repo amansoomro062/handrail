@@ -63,7 +63,7 @@
       "homepage": "https://mui.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Failures verified against the DOM. MUI ships the behaviour and leaves several ARIA relationships to the developer, which its documentation instructs you to write yourself. Tab panels come from @mui/lab because @mui/material exports none.",
+      "notes": "Measured. Findings withheld until the maintainer has been notified, per docs/DECISIONS.md 004.",
       "notifiedOn": null
     },
     {
@@ -77,7 +77,7 @@
       "homepage": "https://chakra-ui.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Chakra v3, built on Ark UI. Failures verified against the DOM.",
+      "notes": "Chakra v3, built on Ark UI. Findings withheld until the maintainer has been notified.",
       "notifiedOn": null
     },
     {
@@ -110,7 +110,7 @@
       "homepage": "https://headlessui.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Failures verified against the DOM. Headless UI ships no accordion component, only Disclosure, so its section headers have no heading wrapper.",
+      "notes": "Measured. Findings withheld until the maintainer has been notified.",
       "notifiedOn": null
     }
   ]
