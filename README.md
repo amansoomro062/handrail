@@ -6,6 +6,8 @@ Pick a component library today and you are choosing on vibes. Nobody can tell yo
 
 Handrail answers that question with evidence, in public, on every release.
 
+**[handrail.tech](https://handrail.tech)** &nbsp;·&nbsp; [How it works](https://handrail.tech/method) &nbsp;·&nbsp; [Scoring](https://handrail.tech/scoring) &nbsp;·&nbsp; [Decision log](https://handrail.tech/decisions) &nbsp;·&nbsp; [Add a library](https://handrail.tech/contribute)
+
 > A handrail is installed for the people who cannot manage the stairs without one. Everybody carrying shopping, everybody in a hurry, everybody who has ever missed a step, ends up holding it too. Accessibility work is rarely only for the people it was built for.
 
 ---
@@ -76,7 +78,11 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 
 ## Status
 
-**Pre-alpha. Nothing has been published and no scores exist yet.**
+**Pre-launch. Seven libraries are measured and every result is withheld.**
+
+Nothing is published until each maintainer has had their findings privately, with the
+adapter used to produce them and fourteen days to reply. That is
+[the disclosure policy](https://handrail.tech/disclosure), and it is enforced in code.
 
 | Milestone                                              | State       |
 | ------------------------------------------------------ | ----------- |
@@ -90,7 +96,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | Radix reference adapter                                 | 4 green, combobox n/a |
 | Five subject adapters                                   | measured, results withheld |
 | Broken fixture, false positives/negatives measured     | Calibrated on both  |
-| Public site, badges, CI                                 | Built               |
+| Public site, badges, CI                                 | Live at [handrail.tech](https://handrail.tech) |
 
 Read [`docs/PLAN.md`](docs/PLAN.md) for the route from here to launch.
 
@@ -134,10 +140,16 @@ Build the public index from whatever results are on disk:
 pnpm site:build
 ```
 
-That emits `site/dist` with the index, a page per library and component listing every
-check and the clause it cites, a shields.io badge endpoint per published result, and the
-raw JSON. Targets marked `draft` are listed separately, labelled, and get no badge, so an
-unverified number cannot be mistaken for a finding.
+That emits `web/out`: the index, the written pages generated from `docs/`, a shields.io
+badge endpoint per published result, and the raw JSON. Nothing about a library appears
+until its maintainer has been notified and fourteen days have passed, which is enforced
+in the build and in the tests rather than left to whoever runs it.
+
+To work on the site itself:
+
+```bash
+pnpm site:dev
+```
 
 To check the runner itself rather than a library:
 

@@ -10,7 +10,7 @@
  * and paths to audit anything else, which is how the maintainer reports get
  * held to the same standard as the pages they eventually appear on.
  *
- *   npx serve site/dist -p 8097 && node scripts/audit-site.mjs
+ *   pnpm site:build && npx serve web/out -l 8097 && node scripts/audit-site.mjs
  *   node scripts/audit-site.mjs http://localhost:5199 /index.html /antd.html
  */
 import { chromium } from 'playwright';
@@ -26,13 +26,14 @@ import { join, relative } from 'node:path';
  */
 function discover(dir, base = dir) {
   if (!existsSync(dir)) return [];
-  return readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
-    e.isDirectory()
-      ? discover(join(dir, e.name), base)
-      : e.name.endsWith('.html')
-        ? ['/' + relative(base, join(dir, e.name))]
-        : [],
-  );
+  return readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    // An error document answers 404 by design, and a framework internal is not
+    // a page anyone visits. Auditing either reports a failure that is correct
+    // behaviour.
+    if (e.name.startsWith('_') || e.name === '404' || e.name === '404.html') return [];
+    if (e.isDirectory()) return discover(join(dir, e.name), base);
+    return e.name.endsWith('.html') ? ['/' + relative(base, join(dir, e.name))] : [];
+  });
 }
 
 const lum = ([r,g,b]) => { const f=(c)=>{c/=255;return c<=0.03928?c/12.92:((c+0.055)/1.055)**2.4}; return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b); };
@@ -41,7 +42,7 @@ const parse = (s) => (s.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
 
 const [baseArg, ...pathArgs] = process.argv.slice(2);
 const BASE = baseArg ?? 'http://localhost:8097';
-const PATHS = pathArgs.length > 0 ? pathArgs : discover('site/dist').sort();
+const PATHS = pathArgs.length > 0 ? pathArgs : discover('web/out').sort();
 if (PATHS.length === 0) { console.error('  Nothing to audit. Build the site first.'); process.exit(1); }
 
 const b = await chromium.launch();
