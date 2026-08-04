@@ -420,6 +420,25 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  site:
+    dependencies:
+      '@handrail/report':
+        specifier: workspace:*
+        version: link:../packages/report
+      '@handrail/spec':
+        specifier: workspace:*
+        version: link:../packages/spec
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.19.43
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.5
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
 packages:
 
   '@adobe/react-spectrum-ui@1.2.1':

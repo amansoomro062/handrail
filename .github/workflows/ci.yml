@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  check:
+    name: Typecheck and version consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r run typecheck
+      # Catches a version claim that disagrees with what is installed, and a
+      # stale result naming a version nobody can install any more.
+      - run: pnpm check:versions
+
+  calibrate:
+    name: Calibration against the broken fixture
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      # The fixture has a catalogued list of deliberate defects. The runner must
+      # detect exactly those and no others. This is what stops a false positive
+      # or a false negative reaching a published result, so it gates everything.
+      - name: Serve the broken fixture
+        run: pnpm --filter @handrail/fixture-broken run dev &
+      - name: Wait for it
+        run: npx --yes wait-on http://localhost:5199/harness/dialog --timeout 60000
+
+      - name: Calibrate every spec
+        run: |
+          for spec in dialog combobox menu tabs accordion; do
+            pnpm handrail run --target _fixture-broken --component "$spec" \
+              --base-url http://localhost:5199 \
+              --expect adapters/_fixture-broken/expected.json
+          done

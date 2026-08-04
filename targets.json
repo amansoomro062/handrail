@@ -1,5 +1,5 @@
 {
-  "$comment": "The registry of libraries under test. `status` is the state of the ADAPTER, not the library's accessibility. Never publish a score for a target whose adapter has not been reviewed.",
+  "$comment": "The registry of libraries under test. `status` is the state of the ADAPTER, not the library's accessibility. `published` means every failure has been confirmed against the DOM by hand; `draft` means measured but not verified, and must never be cited.",
   "schemaVersion": 1,
   "targets": [
     {
@@ -12,8 +12,8 @@
       ],
       "homepage": "https://react-spectrum.adobe.com/",
       "role": "control",
-      "status": "calibrated",
-      "notes": "Calibration control. Widely regarded as the accessibility gold standard. If the harness does not score this near-perfect, the harness is wrong. Scores 12/12 on dialog against 3.47.3."
+      "status": "published",
+      "notes": "Calibration control. Widely regarded as the accessibility gold standard, and measured first so that a failure it produces is presumed to be a fault in our assertion. Scores 100% on all five components."
     },
     {
       "id": "radix",
@@ -28,8 +28,8 @@
       ],
       "homepage": "https://www.radix-ui.com/",
       "role": "subject",
-      "status": "reference",
-      "notes": "Reference adapter implementation. Read this one first when writing a new adapter."
+      "status": "published",
+      "notes": "Reference adapter implementation. Read this one first when writing a new adapter. Ships no combobox primitive, which is recorded as n/a rather than zero."
     },
     {
       "id": "shadcn",
@@ -42,8 +42,8 @@
       ],
       "homepage": "https://ui.shadcn.com/",
       "role": "subject",
-      "status": "draft",
-      "notes": "Not installed — generated. Identified by CLI version and generation date (shadcn@4.16.1, 2026-08-04, new-york style) rather than a package version. Dialog, menu, tabs and accordion are built on Radix; the combobox is built on Base UI."
+      "status": "published",
+      "notes": "Generated with shadcn@4.16.1 on 2026-08-04 rather than installed, so it is identified by CLI version and generation date. Dialog, menu, tabs and accordion are Radix; the combobox is Base UI."
     },
     {
       "id": "mui",
@@ -56,8 +56,8 @@
       ],
       "homepage": "https://mui.com/",
       "role": "subject",
-      "status": "draft",
-      "notes": "Mounted with library exports only and no hand-written ARIA. MUI documents several ARIA attributes as the developer’s responsibility; see the adapter notes carried on every result."
+      "status": "published",
+      "notes": "Failures verified against the DOM. MUI ships the behaviour and leaves several ARIA relationships to the developer, which its documentation instructs you to write yourself. Tab panels come from @mui/lab because @mui/material exports none."
     },
     {
       "id": "chakra",
@@ -69,7 +69,8 @@
       ],
       "homepage": "https://chakra-ui.com/",
       "role": "subject",
-      "status": "draft"
+      "status": "published",
+      "notes": "Chakra v3, built on Ark UI. Failures verified against the DOM."
     },
     {
       "id": "antd",
@@ -94,7 +95,8 @@
       ],
       "homepage": "https://headlessui.com/",
       "role": "subject",
-      "status": "draft"
+      "status": "published",
+      "notes": "Failures verified against the DOM. Headless UI ships no accordion component, only Disclosure, so its section headers have no heading wrapper."
     }
   ]
 }

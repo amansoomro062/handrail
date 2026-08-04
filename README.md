@@ -94,7 +94,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 | Ant Design adapter                                      | draft, not publishable |
 | shadcn/ui adapter                                       | 3 green, dialog 100%, combobox 85% |
 | Broken fixture — false positives/negatives measured     | Calibrated on both  |
-| Public site + badges                                    | Not started         |
+| Public site, badges, CI                                 | Built               |
 
 Read [`docs/PLAN.md`](docs/PLAN.md) for the route from here to launch.
 
@@ -125,6 +125,17 @@ pnpm check:versions
 ```
 
 That verifies the catalog, `node_modules`, `targets.json` and any existing results all name the same versions — including catching a **stale result**, a plausible-looking score describing a version nobody can install any more. See [`docs/VERSIONING.md`](docs/VERSIONING.md).
+
+Build the public index from whatever results are on disk:
+
+```bash
+pnpm site:build
+```
+
+That emits `site/dist` with the index, a page per library and component listing every
+check and the clause it cites, a shields.io badge endpoint per published result, and the
+raw JSON. Targets marked `draft` are listed separately, labelled, and get no badge, so an
+unverified number cannot be mistaken for a finding.
 
 To check the runner itself rather than a library:
 

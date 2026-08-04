@@ -17,3 +17,7 @@ traces/
 # Editor
 .vscode/
 .idea/
+
+# Generated site
+site/dist/
+site/dist-ts/
