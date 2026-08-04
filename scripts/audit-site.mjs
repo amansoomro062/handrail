@@ -17,11 +17,12 @@ const parse = (s) => (s.match(/[\d.]+/g)||[]).slice(0,3).map(Number);
 const b = await chromium.launch();
 const problems = [];
 for (const scheme of ['light','dark']) {
-  const ctx = await b.newContext({ colorScheme: scheme, viewport:{width:1280,height:1000} });
+  const ctx = await b.newContext({ viewport:{width:1280,height:1000} });
   const p = await ctx.newPage();
   p.on('pageerror', e => problems.push(`[${scheme}] page error: ${e.message}`));
   for (const path of ['/index.html','/results.html','/mui/menu.html']) {
     await p.goto('http://localhost:8097'+path, { waitUntil:'networkidle' });
+    await p.evaluate((s)=>{document.documentElement.setAttribute('data-theme',s)}, scheme);
 
     const r = await p.evaluate(() => {
       const out = { headings:[], noName:[], lang:document.documentElement.lang, title:document.title,

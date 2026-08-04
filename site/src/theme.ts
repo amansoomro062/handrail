@@ -15,7 +15,7 @@
 
 export const CSS = `
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   --paper: #F6F5F1;
   --surface: #FFFFFF;
@@ -44,18 +44,8 @@ export const CSS = `
   --radius: 3px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #131311; --surface: #1B1B18; --surface-2: #232320;
-  --ink: #F3F2ED; --ink-2: #C7C5BC; --ink-3: #99978D;
-  --rule: #2E2E29; --rule-2: #43423B;
-  --safety: #E9B949; --safety-bright: #F2C75B;
-  --pass: #6FC49A; --pass-bg: #14291F;
-  --fail: #F09077; --fail-bg: #331A13;
-  --warn: #E0B45F; --warn-bg: #302509;
-  }
-}
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --paper: #131311; --surface: #1B1B18; --surface-2: #232320;
   --ink: #F3F2ED; --ink-2: #C7C5BC; --ink-3: #99978D;
   --rule: #2E2E29; --rule-2: #43423B;
@@ -166,6 +156,28 @@ body {
 
 .pagehead { padding-block: clamp(2.25rem, 5vw, 3.25rem) 0.5rem; }
 .pagehead .lede { max-width: 52ch; }
+
+.themetoggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  border: 1px solid var(--rule-2);
+  border-radius: 99px;
+  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+  cursor: pointer;
+  line-height: 1;
+}
+.themetoggle:hover { color: var(--ink); border-color: var(--ink-3); }
+.themetoggle svg { width: 15px; height: 15px; flex: none; }
+.themetoggle .icon-sun { display: none; }
+:root[data-theme="dark"] .themetoggle .icon-sun { display: block; }
+:root[data-theme="dark"] .themetoggle .icon-moon { display: none; }
+@media (max-width: 520px) { .themetoggle__label { display: none; } .themetoggle { padding: 0.35rem; } }
 
 /* ---------------- type ---------------- */
 
@@ -440,6 +452,11 @@ function nav(base: string): string {
 <header class="masthead">
   <div class="shell masthead__inner">
     <a class="brand" href="${base}index.html">Handrail</a>
+    <button type="button" class="themetoggle" data-theme-toggle aria-pressed="false">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <span class="themetoggle__label">Dark</span>
+    </button>
     <nav aria-label="Primary">
       <a href="${base}results.html">Results</a>
       <a href="https://github.com/amansoomro062/handrail/blob/main/docs/ADAPTERS.md">Add a library</a>
@@ -501,6 +518,13 @@ export function layout(
 <title>${title}</title>
 ${description ? `<meta name="description" content="${description}">` : ""}
 <meta name="color-scheme" content="light dark">
+<script>
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem("handrail-theme"); } catch (e) {}
+  document.documentElement.setAttribute("data-theme", saved === "dark" ? "dark" : "light");
+})();
+</script>
 <style>${CSS}</style>
 </head>
 <body>
@@ -513,6 +537,31 @@ ${body}
   </div>
 </main>
 ${foot(base)}
+<script>
+(function () {
+  var root = document.documentElement;
+  var buttons = document.querySelectorAll("[data-theme-toggle]");
+  function apply(theme) {
+    root.setAttribute("data-theme", theme);
+    try { localStorage.setItem("handrail-theme", theme); } catch (e) {}
+    buttons.forEach(function (b) {
+      var dark = theme === "dark";
+      b.setAttribute("aria-pressed", String(dark));
+      // The label names the current theme; the accessible name says what
+      // pressing it will do, which is what a screen reader user needs.
+      b.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+      var label = b.querySelector(".themetoggle__label");
+      if (label) label.textContent = dark ? "Light" : "Dark";
+    });
+  }
+  apply(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      apply(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    });
+  });
+})();
+</script>
 </body>
 </html>`;
 }
