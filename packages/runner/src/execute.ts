@@ -61,6 +61,22 @@ export async function runSpec(options: RunOptions): Promise<RunResult> {
     runnerVersion: RUNNER_VERSION,
   };
 
+  // Refuse rather than mislead. Role, name and hidden-ness come from the Chrome
+  // DevTools Protocol (decision 002), which no other engine implements. Under
+  // Firefox or WebKit the accessibility queries would fail or, worse, return
+  // something plausible from a different computation, and the result would look
+  // like a finding about the library.
+  if (environment.browser !== "chromium") {
+    return emptyResult(
+      options,
+      startedAt,
+      environment,
+      `This runner is Chromium-only and was given ${environment.browser}. The accessibility ` +
+        `tree is read over the Chrome DevTools Protocol, which no other engine implements. ` +
+        `Supporting Firefox or WebKit needs a second driver, not a flag. See docs/DECISIONS.md 002.`,
+    );
+  }
+
   const cdp = await Cdp.attach(page);
 
   try {
