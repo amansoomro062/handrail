@@ -46,32 +46,23 @@ export const CSS = `
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #121309;
-    --surface: #1B1D13;
-    --surface-2: #23261A;
-    --ink: #F1F1E6;
-    --ink-2: #C3C7B5;
-    --ink-3: #A2A88E;
-    --rule: #2F3324;
-    --rule-2: #434834;
-    --safety: #F0C04A;
-    --safety-bright: #F5C94F;
-    --pass: #74C79A;
-    --pass-bg: #16301F;
-    --fail: #EE9375;
-    --fail-bg: #351A11;
-    --warn: #E4B65F;
-    --warn-bg: #33280C;
+    --paper: #131311; --surface: #1B1B18; --surface-2: #232320;
+  --ink: #F3F2ED; --ink-2: #C7C5BC; --ink-3: #99978D;
+  --rule: #2E2E29; --rule-2: #43423B;
+  --safety: #E9B949; --safety-bright: #F2C75B;
+  --pass: #6FC49A; --pass-bg: #14291F;
+  --fail: #F09077; --fail-bg: #331A13;
+  --warn: #E0B45F; --warn-bg: #302509;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #121309; --surface: #1B1D13; --surface-2: #23261A;
-  --ink: #F1F1E6; --ink-2: #C3C7B5; --ink-3: #A2A88E;
-  --rule: #2F3324; --rule-2: #434834;
-  --safety: #F0C04A; --safety-bright: #F5C94F;
-  --pass: #74C79A; --pass-bg: #16301F;
-  --fail: #EE9375; --fail-bg: #351A11;
-  --warn: #E4B65F; --warn-bg: #33280C;
+  --paper: #131311; --surface: #1B1B18; --surface-2: #232320;
+  --ink: #F3F2ED; --ink-2: #C7C5BC; --ink-3: #99978D;
+  --rule: #2E2E29; --rule-2: #43423B;
+  --safety: #E9B949; --safety-bright: #F2C75B;
+  --pass: #6FC49A; --pass-bg: #14291F;
+  --fail: #F09077; --fail-bg: #331A13;
+  --warn: #E0B45F; --warn-bg: #302509;
 }
 :root[data-theme="light"] {
   --paper: #F6F5F1; --surface: #FFFFFF; --surface-2: #EFEEE8;
