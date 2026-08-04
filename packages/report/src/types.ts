@@ -63,6 +63,13 @@ export interface RunResult {
    * because of an incomplete adapter.
    */
   harnessError?: string;
+  /**
+   * Path to a replayable Playwright trace of exactly the run these assertions
+   * came from, relative to the directory the result was written to. Open with
+   * `npx playwright show-trace <path>`. The trace covers the published run
+   * only, not the stability repeats, so what it replays is what was scored.
+   */
+  trace?: string;
   assertions: AssertionResult[];
 }
 

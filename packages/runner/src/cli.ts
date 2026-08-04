@@ -16,6 +16,11 @@ interface Args {
   repeat: number;
   /** Path to a catalogue of expected statuses, see adapters/_fixture-broken. */
   expect?: string;
+  /**
+   * Run a single assertion by id. Reproduction mode: nothing is written, so a
+   * partial run can never overwrite a full result.
+   */
+  only?: string;
 }
 
 interface ExpectationFile {
@@ -116,9 +121,16 @@ function parseArgs(argv: string[]): Args {
         "    --headed         Show the browser",
         "    --expect <file>  Compare against a catalogue of expected statuses",
         "    --repeat <n>     Run n times and fail if any assertion is unstable",
+        "    --only <id>      Run a single assertion, e.g. menu.arrow-moves-between-items.",
+        "                     Prints the outcome and writes nothing.",
         "",
       ].join("\n"),
     );
+    process.exit(2);
+  }
+
+  if (typeof args.only === "string" && typeof args.expect === "string") {
+    console.error("\n  --only and --expect cannot be combined: calibration needs the full catalogue.\n");
     process.exit(2);
   }
 
@@ -130,17 +142,43 @@ function parseArgs(argv: string[]): Args {
     headed: args.headed === true,
     repeat: Math.max(1, Number(args.repeat ?? 1) || 1),
     ...(typeof args.expect === "string" ? { expect: args.expect } : {}),
+    ...(typeof args.only === "string" ? { only: args.only } : {}),
   };
 }
 
 async function main(): Promise<void> {
   const argv = process.argv.slice(2).filter((a) => a !== "run");
   const args = parseArgs(argv);
-  const spec = getSpec(args.component);
+  let spec = getSpec(args.component);
+
+  // Reproduction mode: one assertion, nothing written. This is the command a
+  // report puts under every finding, so a maintainer replays exactly the check
+  // that failed rather than sitting through the whole spec.
+  if (args.only) {
+    const match = spec.assertions.filter(
+      (a) => a.id === args.only || a.id === `${args.component}.${args.only}`,
+    );
+    if (match.length === 0) {
+      console.error(`\n  No assertion "${args.only}" in the ${args.component} spec. Available:\n`);
+      for (const a of spec.assertions) console.error(`    ${a.id}`);
+      console.error("");
+      process.exit(2);
+    }
+    spec = { ...spec, assertions: match };
+  }
 
   const browser = await chromium.launch({ headless: !args.headed });
   try {
     const context = await browser.newContext();
+
+    // Trace the run that gets published, and only that run. The stability
+    // repeats are deliberately outside the chunk: what the trace replays must
+    // be what was scored, not three interleaved copies of it.
+    await context.tracing.start({ screenshots: true, snapshots: true, sources: true });
+    await context.tracing.startChunk({
+      title: `${args.target} ${args.component}${args.only ? ` (${args.only})` : ""}`,
+    });
+
     const page = await context.newPage();
 
     const result = await runSpec({
@@ -149,6 +187,15 @@ async function main(): Promise<void> {
       spec,
       targetId: args.target,
     });
+
+    const outDir = fromInvocationDir(args.outDir);
+    const traceRelative = args.only
+      ? join("traces", `${args.target}.${args.component}.only.zip`)
+      : join("traces", `${args.target}.${args.component}.zip`);
+    const tracePath = join(outDir, traceRelative);
+    await mkdir(join(outDir, "traces"), { recursive: true });
+    await context.tracing.stopChunk({ path: tracePath });
+    if (!args.only) result.trace = traceRelative;
 
     console.log(renderTerminal(result));
 
@@ -181,12 +228,32 @@ async function main(): Promise<void> {
       }
     }
 
-    const outDir = fromInvocationDir(args.outDir);
+    // Reproduction mode ends here. A single-assertion run must never overwrite
+    // a full result, and its outcome is the terminal output plus the trace.
+    if (args.only) {
+      console.log(`  Reproduction run, nothing written. Trace: ${tracePath}\n`);
+      return;
+    }
+
     await mkdir(outDir, { recursive: true });
     const filename = `${args.target}.${args.component}.json`;
     const path = join(outDir, filename);
-    await writeFile(path, `${JSON.stringify(result, null, 2)}\n`, "utf8");
-    console.log(`  Result written to ${path}\n`);
+    const serialised = `${JSON.stringify(result, null, 2)}\n`;
+    await writeFile(path, serialised, "utf8");
+
+    // The latest file is what the site and the reports read, but on its own it
+    // is amnesiac: the weekly re-run overwrites it, and with it the one thing
+    // no single audit can produce, which version a regression arrived in. The
+    // archive keeps every run, dated; the versions it measured are inside the
+    // file, so the history can be keyed by whatever a future view needs.
+    const day = result.startedAt.slice(0, 10);
+    const historyDir = join(outDir, "history", `${args.target}.${args.component}`);
+    await mkdir(historyDir, { recursive: true });
+    await writeFile(join(historyDir, `${day}.json`), serialised, "utf8");
+
+    console.log(`  Result written to ${path}`);
+    console.log(`  Archived to history/${args.target}.${args.component}/${day}.json`);
+    console.log(`  Trace written to ${tracePath}, open with: npx playwright show-trace ${tracePath}\n`);
 
     if (args.expect) {
       const expectations = JSON.parse(
