@@ -1,0 +1,1125 @@
+/**
+ * The design system.
+ *
+ * A site about accessibility has to pass its own checks, so the guarantees live
+ * here alongside the look: focus visible at 3:1, text at 4.5:1, status carried
+ * by shape and word as well as colour, and motion that respects a preference
+ * against it. Every colour below was measured rather than picked by eye; see
+ * scripts/audit-site.mjs, which fails the build if any of it drifts.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Ink is a dark slate rather than black, so panels read as material. */
+  --ink: #121c22;
+  --ink-2: #56636b;
+  --ink-3: #636b70; /* 4.58:1 on the page ground, 5.43:1 on white */
+  --paper: #e9ecef; /* the page ground */
+  --surface: #ffffff; /* panels sitting on it */
+  --wash: #f3f5f6;
+  --line: #dbe0e4;
+
+  --amber: #ffb43c;
+  --rust: #d65630;
+  --pass: #1f7a4d;
+  --fail: #c24a32;
+  --warn: #8e6200; /* 4.54:1 on the ground, 5.39:1 on white */
+
+  --sans: system-ui, -apple-system, "Inter", "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-panel: 40px;
+  --radius-card: 26px;
+  --gutter: clamp(20px, 3.4vw, 44px);
+  --max: 1560px;
+
+  --glass: linear-gradient(148deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.045));
+  --glass-edge: 1px solid rgba(255, 255, 255, 0.16);
+  --glass-lift:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34), inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    0 26px 64px rgba(6, 12, 18, 0.42);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* An ambient wash on the page itself, so the glass bar has something to pick
+   up while the page is at rest. Anchored to the document, not the viewport:
+   fixed, it would travel with the bar and tint it identically at every scroll
+   position, which is the opposite of the point. */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 360px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 100% at 12% 0%, rgba(255, 178, 60, 0.3) 0%, rgba(255, 178, 60, 0) 70%),
+    radial-gradient(46% 100% at 88% 0%, rgba(214, 86, 48, 0.26) 0%, rgba(214, 86, 48, 0) 72%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 560;
+  letter-spacing: -0.045em;
+  line-height: 1.03;
+  text-wrap: balance;
+}
+h1 {
+  font-size: clamp(36px, 5vw, 74px);
+}
+h2 {
+  font-size: clamp(30px, 3.9vw, 54px);
+}
+h3 {
+  font-size: 21px;
+  letter-spacing: -0.028em;
+  line-height: 1.2;
+}
+h4 {
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+p {
+  margin: 0;
+}
+a {
+  color: inherit;
+}
+:focus-visible {
+  outline: 3px solid var(--rust);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 14px var(--gutter) 0;
+}
+.dim {
+  color: var(--ink-3);
+}
+
+/* Available to assistive technology, absent from the visual design. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 0 0 12px 0;
+}
+.skip:focus {
+  left: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * The field
+ * Amber and rust over deep ink: the colours of safety infrastructure,
+ * handrails and tactile paving, rather than a decorative wash.
+ * ------------------------------------------------------------------ */
+
+.field {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(34% 26% at 20% 2%, rgba(255, 206, 120, 0.34) 0%, rgba(255, 206, 120, 0) 70%),
+    radial-gradient(62% 50% at 12% 6%, rgba(255, 168, 44, 0.46) 0%, rgba(255, 168, 44, 0) 64%),
+    radial-gradient(56% 48% at 88% 12%, rgba(220, 78, 40, 0.44) 0%, rgba(220, 78, 40, 0) 66%),
+    radial-gradient(74% 60% at 54% 110%, rgba(34, 138, 112, 0.34) 0%, rgba(34, 138, 112, 0) 68%),
+    radial-gradient(42% 36% at 76% 66%, rgba(126, 92, 232, 0.2) 0%, rgba(126, 92, 232, 0) 72%),
+    linear-gradient(168deg, #17222b 0%, #0c1218 100%);
+}
+/* Grain, so the blends do not band on wide screens. */
+.field::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+/* Tread: the grip on a real handrail. */
+.field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0 1px,
+    transparent 1px 52px
+  );
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 58%);
+}
+
+/* ------------------------------------------------------------------ *
+ * Liquid glass
+ * ------------------------------------------------------------------ */
+
+.glass {
+  position: relative;
+  background: var(--glass);
+  backdrop-filter: blur(26px) saturate(175%);
+  -webkit-backdrop-filter: blur(26px) saturate(175%);
+  border: var(--glass-edge);
+  box-shadow: var(--glass-lift);
+  border-radius: var(--radius-card);
+}
+/* Specular sweep across the top-left, the way light catches real glass. */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.04) 26%,
+    rgba(255, 255, 255, 0) 46%
+  );
+}
+.glass > * {
+  position: relative;
+}
+
+/* ------------------------------------------------------------------ *
+ * Nav
+ * ------------------------------------------------------------------ */
+
+.nav {
+  position: sticky;
+  top: 12px;
+  z-index: 60;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 9px 10px 9px 20px;
+  border-radius: 999px;
+  color: var(--ink);
+  overflow: hidden;
+  /* Genuinely translucent: it has no colour of its own and takes whatever is
+     behind it. Alpha is high enough that dark text stays legible over both the
+     page ground and a dark panel. */
+  background: linear-gradient(146deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.48));
+  backdrop-filter: blur(22px) saturate(210%);
+  -webkit-backdrop-filter: blur(22px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+    0 1px 2px rgba(18, 28, 34, 0.05), 0 12px 34px rgba(18, 28, 34, 0.1);
+}
+.nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.12) 26%,
+    rgba(255, 255, 255, 0) 48%
+  );
+}
+.nav > * {
+  position: relative;
+}
+.mark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: inherit;
+}
+.logo {
+  width: 26px;
+  height: 24px;
+  display: block;
+  flex: none;
+}
+.nav ul {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.nav ul a {
+  text-decoration: none;
+}
+.nav ul a:hover {
+  color: var(--ink);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 500;
+  background: var(--ink);
+  color: #fff;
+  border: 1px solid transparent;
+}
+.pill--paper {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+}
+.pill--glass {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* ------------------------------------------------------------------ *
+ * Hero
+ * ------------------------------------------------------------------ */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  min-height: min(880px, calc(100vh - 96px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(44px, 6.5vh, 82px) 40px 0;
+  text-align: center;
+  color: #fff;
+}
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 24px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.eyebrow i {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--amber);
+  box-shadow: 0 0 10px var(--amber);
+}
+.hero h1 {
+  max-width: 20ch;
+  margin: 0 auto 16px;
+}
+.hero h1 .soft {
+  /* 0.56 clears 3:1 at the lightest point of the field; 0.42 did not. */
+  color: rgba(255, 255, 255, 0.56);
+}
+.hero .lede {
+  max-width: 46ch;
+  margin: 0 auto 26px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(16px, 1.35vw, 19px);
+}
+.btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero .btns {
+  margin-bottom: 40px;
+}
+
+/* The stack: findings fanned, the front one cropped by the panel edge. */
+.stack {
+  margin-top: auto;
+  width: min(880px, 100%);
+  position: relative;
+  height: clamp(170px, 24vh, 260px);
+}
+.doc {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(700px, 92vw);
+  text-align: left;
+  border-radius: 22px;
+  transform-origin: 50% 100%;
+}
+.doc--b2 {
+  transform: translateX(-50%) translateY(-24px) scale(0.9) rotate(-3.2deg);
+  opacity: 0.5;
+}
+.doc--b1 {
+  transform: translateX(-50%) translateY(-12px) scale(0.95) rotate(2deg);
+  opacity: 0.72;
+}
+.doc--f {
+  transform: translateX(-50%);
+}
+.doc__h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  color: #ff9a7a;
+}
+.tag i {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: currentColor;
+  box-shadow: 0 0 9px currentColor;
+}
+.doc__b {
+  padding: 20px 22px 26px;
+}
+.doc__b h3 {
+  margin-bottom: 16px;
+  color: #fff;
+  font-size: 19px;
+}
+.doc dl {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 9px 16px;
+  margin: 0;
+  font-size: 14px;
+}
+.doc dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  padding-top: 3px;
+}
+.doc dd {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+}
+.doc dd code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ------------------------------------------------------------------ *
+ * Sections
+ * ------------------------------------------------------------------ */
+
+.section {
+  padding: 104px 0;
+}
+.section--tight {
+  padding-top: 0;
+}
+.stmt {
+  margin-bottom: 44px;
+}
+/* ch resolves against the element's own font-size, so this belongs on the
+   heading and not on a wrapper using the 17px body size. */
+.stmt h2 {
+  max-width: 20ch;
+}
+.stmt h2 span {
+  display: block;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr 1.18fr 0.82fr;
+  gap: 14px;
+}
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 2px rgba(18, 28, 34, 0.05);
+  padding: 26px 24px 24px;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(18, 28, 34, 0.07);
+}
+/* Each tint is a crop of the same field, so the page holds together. */
+.card--1 {
+  background: radial-gradient(120% 100% at 12% 0%, #ffebcd 0%, #fef8f0 58%, #fffdfa 100%);
+}
+.card--2 {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.1);
+  background: radial-gradient(120% 110% at 18% 0%, #2a3a46 0%, #16212a 55%, #0e151b 100%);
+}
+.card--3 {
+  background: radial-gradient(120% 100% at 10% 0%, #ddefe8 0%, #f1f8f5 60%, #fbfdfc 100%);
+}
+.card--4 {
+  background: radial-gradient(120% 100% at 14% 0%, #fadfd5 0%, #fef2ed 58%, #fffbf9 100%);
+}
+.card .n {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  opacity: 0.62;
+  margin-bottom: 14px;
+}
+.card h3 {
+  margin-bottom: 9px;
+}
+.card p {
+  font-size: 14.8px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.card--2 p {
+  color: rgba(255, 255, 255, 0.82);
+}
+.card .go {
+  margin-top: auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  background: rgba(18, 28, 34, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.card--2 .go {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.band {
+  border-radius: 34px;
+  padding: 46px 40px;
+}
+.band .row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+.band b {
+  display: block;
+  font-size: 48px;
+  font-weight: 560;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+.band span {
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.panel {
+  border-radius: 34px;
+  padding: 40px;
+}
+.panel--wash {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(18, 28, 34, 0.04);
+}
+.panel h2 {
+  font-size: clamp(26px, 2.6vw, 36px);
+  margin-bottom: 16px;
+}
+.panel > p {
+  font-size: 16px;
+  margin-bottom: 22px;
+}
+.panel--glass > p {
+  color: rgba(255, 255, 255, 0.78);
+}
+.panel--wash > p {
+  color: var(--ink-2);
+}
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.steps li {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  font-size: 15.5px;
+}
+.panel--glass .steps li {
+  border-color: rgba(255, 255, 255, 0.13);
+  color: rgba(255, 255, 255, 0.92);
+}
+.steps li b {
+  font-family: var(--mono);
+  font-size: 12px;
+  opacity: 0.6;
+  padding-top: 3px;
+  font-weight: 400;
+  flex: none;
+}
+
+.decs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.dec-card {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 26px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(18, 28, 34, 0.04);
+}
+.dec-card .n {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 12px;
+}
+.dec-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+.dec-card p {
+  font-size: 14.6px;
+  color: var(--ink-2);
+}
+
+/* ------------------------------------------------------------------ *
+ * Footer, carrying the closing call to action
+ * ------------------------------------------------------------------ */
+
+.foot {
+  border-radius: var(--radius-panel);
+  padding: 76px 44px 30px;
+  margin-bottom: 26px;
+  color: #fff;
+}
+.foot__cta {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 62px;
+}
+.foot__cta h2 {
+  margin-bottom: 16px;
+}
+.foot__cta p {
+  color: rgba(255, 255, 255, 0.78);
+  margin-bottom: 26px;
+}
+.foot__top {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr 1fr;
+  gap: 32px;
+  padding-top: 34px;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+}
+.foot__brand .mark {
+  color: #fff;
+  margin-bottom: 12px;
+}
+.foot__brand p {
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 34ch;
+}
+.foot h2.foot__h {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  margin: 4px 0 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.foot ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.foot ul a {
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+}
+.foot ul a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+.foot__base {
+  margin-top: 34px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  display: flex;
+  gap: 10px 22px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.78);
+}
+.foot__base b {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+.foot__base .sep {
+  opacity: 0.4;
+}
+
+/* ------------------------------------------------------------------ *
+ * Written pages
+ * ------------------------------------------------------------------ */
+
+.pagehead {
+  padding: 56px 0 8px;
+}
+.pagehead .lede {
+  max-width: 54ch;
+  color: var(--ink-2);
+  font-size: 19px;
+  margin-top: 18px;
+}
+.eyebrow--ink {
+  color: var(--warn);
+  background: none;
+  border: 0;
+  padding: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  margin-bottom: 18px;
+}
+
+.prose p,
+.prose li {
+  max-width: 68ch;
+  color: var(--ink-2);
+}
+.prose > :first-child {
+  margin-top: 0;
+}
+.prose h2 {
+  margin-top: 2.8rem;
+  font-size: clamp(24px, 2.4vw, 34px);
+}
+.prose h3 {
+  margin-top: 1.9rem;
+}
+.prose h4 {
+  margin-top: 1.4rem;
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 1rem;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.3rem;
+}
+.prose li {
+  margin-bottom: 0.4rem;
+}
+.prose blockquote {
+  margin: 1.3rem 0;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--amber);
+}
+.prose blockquote p {
+  font-style: italic;
+  max-width: 62ch;
+}
+.prose hr.rule {
+  margin: 2.4rem 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.prose a {
+  color: var(--ink);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+pre {
+  background: var(--ink);
+  color: #e8eef2;
+  border-radius: 16px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin: 1.1rem 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+pre code {
+  font-family: var(--mono);
+}
+:not(pre) > code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--wash);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  border-radius: 6px;
+}
+
+.tablewrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  margin: 1.3rem 0;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 15px;
+}
+th,
+td {
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+thead th {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  font-weight: 700;
+  color: var(--ink-3);
+  background: var(--wash);
+  /* .tablewrap sets overflow-x, which makes it the scroll container a sticky
+     header measures against. Offsetting by a masthead height would push the
+     header down into the table, on top of the first row. */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.srcnote {
+  margin: 3.5rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--ink-3);
+  max-width: 62ch;
+}
+
+.toc {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  padding: 18px 22px;
+  margin: 28px 0 34px;
+  max-width: 62ch;
+}
+.toc__h {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 10px;
+}
+.toc ol {
+  margin: 0;
+  padding-left: 1.3rem;
+  columns: 2;
+  column-gap: 2rem;
+  font-size: 14.5px;
+}
+.toc li {
+  margin-bottom: 0.3rem;
+  break-inside: avoid;
+}
+
+.note {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--amber);
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 20px 22px;
+  margin: 26px 0;
+  max-width: 74ch;
+}
+.note__t {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+.note p:last-child {
+  margin-bottom: 0;
+  color: var(--ink-2);
+}
+
+/* Decision log */
+.declist {
+  margin-top: 34px;
+}
+.dec {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0 2rem;
+  padding: 2.2rem 0;
+  border-top: 1px solid var(--line);
+}
+.dec:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.dec__side {
+  position: sticky;
+  top: 5.5rem;
+  align-self: start;
+}
+.dec__n {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+/* Amber reads at 2.7:1 on the page, below the 3:1 this size needs. It marks
+   the entry rather than setting it. */
+.dec__n::before {
+  content: "";
+  display: block;
+  width: 26px;
+  height: 4px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--amber), var(--rust));
+  margin-bottom: 0.6rem;
+}
+.dec__date {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+.dec__t {
+  font-size: 1.28rem;
+  margin: 0 0 0.9rem;
+  line-height: 1.3;
+}
+.dec__t a {
+  color: inherit;
+  text-decoration: none;
+}
+.dec__t a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.dec__main .prose hr.rule {
+  display: none;
+}
+
+/* Status chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.chip__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: currentColor;
+  flex: none;
+}
+.chip--pass {
+  color: var(--pass);
+  border-color: rgba(31, 122, 77, 0.3);
+}
+.chip--fail {
+  color: var(--fail);
+  border-color: rgba(194, 74, 50, 0.3);
+}
+.chip--warn {
+  color: var(--warn);
+  border-color: rgba(142, 98, 0, 0.3);
+}
+.chip--na {
+  color: var(--ink-3);
+}
+
+@media (max-width: 980px) {
+  .cards,
+  .decs,
+  .split,
+  .band .row,
+  .foot__top {
+    grid-template-columns: 1fr 1fr;
+  }
+  .nav ul {
+    display: none;
+  }
+}
+@media (max-width: 720px) {
+  .dec {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .dec__side {
+    position: static;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .dec__n {
+    font-size: 1.3rem;
+  }
+  .dec__n::before {
+    display: none;
+  }
+  .dec__date {
+    margin-top: 0;
+  }
+  .toc ol {
+    columns: 1;
+  }
+}
+@media (max-width: 620px) {
+  .cards,
+  .decs,
+  .split,
+  .band .row,
+  .foot__top {
+    grid-template-columns: 1fr;
+  }
+  .hero {
+    padding: 60px 20px 0;
+    border-radius: 28px;
+  }
+  .section {
+    padding: 72px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* A figure on a card, not a section heading: it names no content below it. */
+.stat-n {
+  font-size: 21px;
+  font-weight: 560;
+  letter-spacing: -0.028em;
+  line-height: 1.2;
+  color: var(--ink);
+}
