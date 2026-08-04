@@ -14,7 +14,7 @@
  * URL is published, whatever the page above it says.
  */
 
-import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -62,6 +62,7 @@ function score(assertions) {
 await rm(out, { recursive: true, force: true });
 await mkdir(join(out, "results"), { recursive: true });
 await mkdir(join(out, "badge"), { recursive: true });
+await mkdir(join(out, "traces"), { recursive: true });
 
 const targets = JSON.parse(await readFile(join(root, "targets.json"), "utf8")).targets;
 const resultsDir = join(root, "results");
@@ -97,6 +98,15 @@ for (const target of targets) {
       `${JSON.stringify(run, null, 2)}\n`,
       "utf8",
     );
+    // The replayable trace ships beside the result it replays, and only once
+    // the result itself is released. Same artefact, same gate.
+    if (run.trace) {
+      const src = join(resultsDir, run.trace);
+      if (existsSync(src)) {
+        await copyFile(src, join(out, "traces", `${target.id}.${run.component}.zip`));
+        files += 1;
+      }
+    }
     await mkdir(join(out, "badge", target.id), { recursive: true });
     const shown = s.value === null ? "n/a" : `${Math.floor(s.value)}%`;
     await writeFile(
