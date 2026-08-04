@@ -45,18 +45,20 @@ interface Target {
 const COMPONENT_ORDER = ["dialog", "combobox", "menu", "tabs", "accordion"];
 
 function scoreCell(result: RunResult | undefined, href: string, unverified = false): string {
-  if (!result) return `<span class="na mono">not run</span>`;
+  if (!result) return `<span class="chip chip--na"><span class="chip__dot"></span>not run</span>`;
   const s = scoreRun(result);
   if (s.value === null) {
-    return `<a href="${href}"><span class="cell na"><b>n/a</b><small>not shipped</small></span></a>`;
+    return `<a href="${href}" class="chip chip--na"><span class="chip__dot"></span>n/a</a>`;
   }
-  const cls = s.blockersFailed > 0 || s.value < 100 ? "bad" : "ok";
-  const sub =
-    s.blockersFailed > 0
-      ? `${s.blockersFailed} blocker${s.blockersFailed === 1 ? "" : "s"}`
-      : `${s.counts.pass}/${s.counts.pass + s.counts.fail}`;
-  const label = unverified ? "unverified" : sub;
-  return `<a href="${href}"><span class="cell ${unverified ? "na" : cls}"><b>${displayScore(s.value)}</b><small>${label}</small></span></a>`;
+  if (unverified) {
+    return `<a href="${href}" class="chip chip--warn"><span class="chip__dot"></span>${displayScore(s.value)} unverified</a>`;
+  }
+  const failing = s.counts.fail > 0;
+  const cls = failing ? "chip--fail" : "chip--pass";
+  const suffix = failing
+    ? ` ${s.counts.fail} failing`
+    : "";
+  return `<a href="${href}" class="chip ${cls}"><span class="chip__dot"></span>${displayScore(s.value)}${suffix}</a>`;
 }
 
 function detailPage(target: Target, result: RunResult): string {
@@ -68,7 +70,7 @@ function detailPage(target: Target, result: RunResult): string {
 
   const assertions = result.assertions
     .map((a) => {
-      const statusClass = a.status === "pass" ? "ok" : a.status === "fail" ? "bad" : "na";
+      const statusClass = a.status === "pass" ? "chip--pass" : a.status === "fail" ? "chip--fail" : "chip--na";
       const refs: string[] = [];
       if (a.refs.apg) refs.push(`<a href="${escapeHtml(a.refs.apg)}">APG pattern</a>`);
       if (a.refs.wcag) {
@@ -80,7 +82,7 @@ function detailPage(target: Target, result: RunResult): string {
       }
       const body =
         a.status === "fail"
-          ? `<div class="assertion__body">
+          ? `<div class="check__body">
                <p style="margin:0 0 .4rem">${escapeHtml(a.detail ?? "")}</p>
                <dl class="kv">
                  <dt>expected</dt><dd>${escapeHtml(a.expected ?? "not recorded")}</dd>
@@ -90,26 +92,26 @@ function detailPage(target: Target, result: RunResult): string {
                </dl>
              </div>`
           : a.status === "not-applicable"
-            ? `<div class="assertion__body">${escapeHtml(a.reason ?? "")}</div>`
+            ? `<div class="check__body">${escapeHtml(a.reason ?? "")}</div>`
             : "";
-      return `<div class="assertion ${a.status === "fail" ? "assertion--fail" : ""}">
-        <div class="assertion__head">
-          <span class="assertion__status ${statusClass}">${a.status === "not-applicable" ? "n/a" : a.status}</span>
-          <span class="assertion__id">${escapeHtml(a.id)}</span>
-          <span class="assertion__sev">${escapeHtml(a.severity)}</span>
+      return `<div class="check ${a.status === "fail" ? "check--fail" : ""}">
+        <div class="check__head">
+          <span class="chip ${statusClass}"><span class="chip__dot"></span>${a.status === "not-applicable" ? "n/a" : a.status}</span>
+          <span class="check__id">${escapeHtml(a.id)}</span>
+          <span class="check__sev">${escapeHtml(a.severity)}</span>
         </div>${body}
       </div>`;
     })
     .join("\n");
 
   const body = `
-<header class="masthead">
+<header class="pagehead">
   <p class="eyebrow">${escapeHtml(target.name)}</p>
   <h1>${escapeHtml(spec.title)}</h1>
   <p class="lede">${s.value === null ? "Not shipped by this library." : `${displayScore(s.value)}. ${s.counts.pass} of ${s.counts.pass + s.counts.fail} checks passed${s.blockersFailed ? `, including ${s.blockersFailed} blocker-level failure${s.blockersFailed === 1 ? "" : "s"}` : ""}.`}</p>
 </header>
 
-<div class="meta-grid">
+<div class="meta">
   <div><dt>Versions tested</dt><dd>${versions || "not recorded"}</dd></div>
   <div><dt>Specification</dt><dd><a href="${escapeHtml(spec.apgPattern)}">W3C APG</a><br>spec v${escapeHtml(result.specVersion)}</dd></div>
   <div><dt>Browser</dt><dd>${escapeHtml(result.environment.browser)} ${escapeHtml(result.environment.browserVersion)}</dd></div>
@@ -118,7 +120,7 @@ function detailPage(target: Target, result: RunResult): string {
 
 ${
   result.target.notes
-    ? `<div class="note"><strong>How this was mounted</strong><p>${escapeHtml(result.target.notes)}</p></div>`
+    ? `<div class="note"><p class="note__t">How this was mounted</p><p>${escapeHtml(result.target.notes)}</p></div>`
     : ""
 }
 
@@ -133,13 +135,13 @@ pnpm handrail run --target ${escapeHtml(target.id)} --component ${escapeHtml(res
   --base-url http://localhost:5180 --repeat 3</code></pre>
 <p><a href="../api/results/${escapeHtml(target.id)}.${escapeHtml(result.component)}.json">Raw result JSON</a> &middot; <a href="../results.html">Back to the results</a></p>
 
-<div class="note"><strong>What this cannot tell you</strong><p>${CEILING}</p></div>
+<div class="note"><p class="note__t">What this cannot tell you</p><p>${CEILING}</p></div>
 `;
-  return layout(
-    `${target.name}: ${spec.title} | Handrail`,
-    body,
-    `<a href="../results.html">Results</a> / ${escapeHtml(target.name)} / ${escapeHtml(result.component)}`,
-  );
+  return layout(`${target.name}: ${spec.title} | Handrail`, body, {
+    description: `Accessibility conformance results for ${target.name}'s ${spec.title.toLowerCase()}, measured against the W3C ARIA Authoring Practices Guide.`,
+    crumb: `<a href="../index.html">Handrail</a> / <a href="../results.html">Results</a> / ${escapeHtml(target.name)} / ${escapeHtml(result.component)}`,
+    base: "../",
+  });
 }
 
 async function main(): Promise<void> {
@@ -183,11 +185,11 @@ async function main(): Promise<void> {
       const r = results?.get(component);
       return `<td>${scoreCell(r, `${t.id}/${component}.html`, Boolean(t.unverified?.[component]))}</td>`;
     }).join("");
-    const label = t.role === "control" ? ` <span class="pill pill--control">control</span>` : "";
+    const label = t.role === "control" ? ` <span class="tag">control</span>` : "";
     const name = t.homepage
       ? `<a href="${escapeHtml(t.homepage)}">${escapeHtml(t.name)}</a>`
       : escapeHtml(t.name);
-    return `<tr><td>${name}${label}</td>${cells}</tr>`;
+    return `<tr><th scope="row"><span class="libname">${name}${label}</span></th>${cells}</tr>`;
   };
 
   // Detail pages, raw JSON and badges for everything we have, drafts included.
@@ -204,18 +206,18 @@ async function main(): Promise<void> {
       const unverifiedReason = target.unverified?.[component];
       if (unverifiedReason) {
         html = html.replace(
-          '<div class="meta-grid">',
-          `<div class="note note--warn"><strong>Not verified, do not cite</strong><p>${escapeHtml(
+          '<div class="meta">',
+          `<div class="note note--warn"><p class="note__t">Not verified, do not cite</p><p>${escapeHtml(
             unverifiedReason,
-          )}</p></div><div class="meta-grid">`,
+          )}</p></div><div class="meta">`,
         );
       }
       if (target.status === "draft") {
         html = html.replace(
-          '<div class="meta-grid">',
-          `<div class="note note--warn"><strong>Draft, not a published result</strong><p>${escapeHtml(
+          '<div class="meta">',
+          `<div class="note note--warn"><p class="note__t">Draft, not a published result</p><p>${escapeHtml(
             target.notes ?? "This adapter has not been verified. Do not cite these numbers.",
-          )}</p></div><div class="meta-grid">`,
+          )}</p></div><div class="meta">`,
         );
       }
       await writeFile(join(outDir, targetId, `${component}.html`), html, "utf8");
@@ -239,7 +241,7 @@ async function main(): Promise<void> {
   }
 
   const indexBody = `
-<header class="masthead">
+<header class="pagehead">
   <h1>Handrail</h1>
   <p class="lede">
     Every major UI component library, run against the W3C's own accessibility
@@ -254,9 +256,10 @@ async function main(): Promise<void> {
 </p>
 
 <h2>Results</h2>
-<div class="scroll-x">
+<div class="tablewrap">
 <table>
-  <thead><tr><th>Library</th>${COMPONENT_ORDER.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
+  <caption>Conformance by library and component. Each cell links to every check behind it.</caption>
+  <thead><tr><th scope="col">Library</th>${COMPONENT_ORDER.map((c) => `<th scope="col">${c}</th>`).join("")}</tr></thead>
   <tbody>${published.map(rowFor).join("\n")}</tbody>
 </table>
 </div>
@@ -271,9 +274,10 @@ ${
 <p>These have been measured but not verified. A first run against a new library tells you your
 adapter is wrong more often than it tells you anything about the library, so nothing here is a
 finding until each failure has been confirmed by hand.</p>
-<div class="scroll-x">
+<div class="tablewrap">
 <table>
-  <thead><tr><th>Library</th>${COMPONENT_ORDER.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
+  <caption>Measured but not yet verified. These numbers must not be cited.</caption>
+  <thead><tr><th scope="col">Library</th>${COMPONENT_ORDER.map((c) => `<th scope="col">${c}</th>`).join("")}</tr></thead>
   <tbody>${drafts.map(rowFor).join("\n")}</tbody>
 </table>
 </div>`
@@ -294,7 +298,7 @@ finding until each failure has been confirmed by hand.</p>
   <li><strong>Maintainers are told before anything is published</strong>, with fourteen days and the adapter source, so they can tell us we measured them wrongly.</li>
 </ul>
 
-<div class="note"><strong>What this cannot tell you</strong><p>${CEILING}</p></div>
+<div class="note"><p class="note__t">What this cannot tell you</p><p>${CEILING}</p></div>
 
 <h2>Badges</h2>
 <p>Every published result has a <a href="https://shields.io/badges/endpoint-badge">shields.io endpoint</a>:</p>
@@ -304,22 +308,18 @@ finding until each failure has been confirmed by hand.</p>
 
   await writeFile(
     join(outDir, "results.html"),
-    layout("Results | Handrail", indexBody),
+    layout("Results | Handrail", indexBody, { description: "Accessibility conformance results for every measured component library, with the specification clause behind each check." }),
     "utf8",
   );
 
-  const specTitles = Object.fromEntries(
-    Object.entries(specs).map(([id, spec]) => [id, spec.title]),
-  );
   await writeFile(
     join(outDir, "index.html"),
     layout("Handrail: does your component library work by keyboard?", landing({
       targets,
       results: byTarget,
       componentOrder: COMPONENT_ORDER,
-      specTitles,
       ceiling: CEILING,
-    })),
+    }), { description: "Handrail measures React component libraries against the W3C ARIA Authoring Practices Guide and publishes every result with the clause behind it." }),
     "utf8",
   );
 
