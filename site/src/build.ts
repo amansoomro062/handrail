@@ -37,11 +37,13 @@ interface Target {
   role: string;
   status: string;
   notes?: string;
+  /** Components measured but not confirmed by hand, keyed by component id. */
+  unverified?: Record<string, string>;
 }
 
 const COMPONENT_ORDER = ["dialog", "combobox", "menu", "tabs", "accordion"];
 
-function scoreCell(result: RunResult | undefined, href: string): string {
+function scoreCell(result: RunResult | undefined, href: string, unverified = false): string {
   if (!result) return `<span class="na mono">not run</span>`;
   const s = scoreRun(result);
   if (s.value === null) {
@@ -52,7 +54,8 @@ function scoreCell(result: RunResult | undefined, href: string): string {
     s.blockersFailed > 0
       ? `${s.blockersFailed} blocker${s.blockersFailed === 1 ? "" : "s"}`
       : `${s.counts.pass}/${s.counts.pass + s.counts.fail}`;
-  return `<a href="${href}"><span class="cell ${cls}"><b>${displayScore(s.value)}</b><small>${sub}</small></span></a>`;
+  const label = unverified ? "unverified" : sub;
+  return `<a href="${href}"><span class="cell ${unverified ? "na" : cls}"><b>${displayScore(s.value)}</b><small>${label}</small></span></a>`;
 }
 
 function detailPage(target: Target, result: RunResult): string {
@@ -177,7 +180,7 @@ async function main(): Promise<void> {
     const results = byTarget.get(t.id);
     const cells = COMPONENT_ORDER.map((component) => {
       const r = results?.get(component);
-      return `<td>${scoreCell(r, `${t.id}/${component}.html`)}</td>`;
+      return `<td>${scoreCell(r, `${t.id}/${component}.html`, Boolean(t.unverified?.[component]))}</td>`;
     }).join("");
     const label = t.role === "control" ? ` <span class="pill pill--control">control</span>` : "";
     const name = t.homepage
@@ -197,6 +200,15 @@ async function main(): Promise<void> {
 
     for (const [component, result] of results) {
       let html = detailPage(target, result);
+      const unverifiedReason = target.unverified?.[component];
+      if (unverifiedReason) {
+        html = html.replace(
+          '<div class="meta-grid">',
+          `<div class="note note--warn"><strong>Not verified, do not cite</strong><p>${escapeHtml(
+            unverifiedReason,
+          )}</p></div><div class="meta-grid">`,
+        );
+      }
       if (target.status === "draft") {
         html = html.replace(
           '<div class="meta-grid">',
@@ -212,7 +224,8 @@ async function main(): Promise<void> {
         "utf8",
       );
       // Drafts get no badge. A badge is a claim, and we are not making one yet.
-      if (target.status !== "draft") {
+      const unverified = target.unverified?.[component];
+      if (target.status !== "draft" && !unverified) {
         await writeFile(
           join(outDir, "api", "badge", targetId, `${component}.json`),
           `${JSON.stringify(renderBadge(result), null, 2)}\n`,

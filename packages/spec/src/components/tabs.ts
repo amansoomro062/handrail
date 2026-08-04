@@ -378,8 +378,17 @@ const assertions: Assertion[] = [
           "the second panel is absent or hidden after 2000ms",
         );
       }
-      const firstStillExposed =
-        (await ctx.harness.exists("hr-panel-1")) && (await ctx.a11y.isExposed("hr-panel-1"));
+      // The old panel is torn down a beat after the new one appears, so this
+      // waits for it to go rather than reading the instant the switch lands.
+      // Caught by --repeat 30 against Chakra, which was flipping here.
+      const deadline = Date.now() + 2000;
+      let firstStillExposed = true;
+      while (Date.now() < deadline) {
+        firstStillExposed =
+          (await ctx.harness.exists("hr-panel-1")) && (await ctx.a11y.isExposed("hr-panel-1"));
+        if (!firstStillExposed) break;
+        await ctx.page.waitForTimeout(25);
+      }
       return firstStillExposed
         ? fail(
             "The previously selected panel is still exposed alongside the new one.",

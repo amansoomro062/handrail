@@ -126,6 +126,12 @@ pnpm check:versions
 
 That verifies the catalog, `node_modules`, `targets.json` and any existing results all name the same versions, including catching a **stale result**, a plausible-looking score describing a version nobody can install any more. See [`docs/VERSIONING.md`](docs/VERSIONING.md).
 
+Run the tests, which enforce the project's own rules rather than only documenting them:
+
+```bash
+pnpm test
+```
+
 Build the public index from whatever results are on disk:
 
 ```bash

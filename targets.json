@@ -43,7 +43,10 @@
       "homepage": "https://ui.shadcn.com/",
       "role": "subject",
       "status": "published",
-      "notes": "Generated with shadcn@4.16.1 on 2026-08-04 rather than installed, so it is identified by CLI version and generation date. Dialog, menu, tabs and accordion are Radix; the combobox is Base UI."
+      "notes": "Generated with shadcn@4.16.1 on 2026-08-04 rather than installed, so it is identified by CLI version and generation date. Dialog, menu, tabs and accordion are Radix; the combobox is Base UI.",
+      "unverified": {
+        "combobox": "Base UI treats the combobox input as a search field: selecting an option commits to the component's value (confirmed: it becomes \"Banana\") but never writes it into the input. That may be a legitimate variant of the pattern rather than a defect, and this spec is written for the APG editable combobox where the input carries the value. Not published until the pattern match is settled."
+      }
     },
     {
       "id": "mui",
@@ -83,7 +86,12 @@
       "homepage": "https://ant.design/",
       "role": "subject",
       "status": "draft",
-      "notes": "NOT PUBLISHABLE. First-run scores were dominated by adapter bugs of ours: combobox moved 27% -> 94% and accordion 42% -> 85% after correcting a visibility check and a v5 class name. Remaining failures are unverified, see docs/DECISIONS.md 016 for exactly which are confirmed and which are still open."
+      "notes": "NOT PUBLISHABLE. First-run scores were dominated by adapter bugs of ours: combobox moved 27% -> 94% and accordion 42% -> 85% after correcting a visibility check and a v5 class name. Remaining failures are unverified, see docs/DECISIONS.md 016 for exactly which are confirmed and which are still open.",
+      "unverified": {
+        "combobox": "Only one option is in the DOM at a time under virtualisation. That is legitimate when the library carries aria-setsize and aria-posinset, which this spec does not yet check, so the failure is most likely ours.",
+        "menu": "Six failures, none confirmed against the DOM.",
+        "dialog": "Focus passes through <body> for one Tab before returning. Real, but less serious than reaching background content, and the severity should probably distinguish the two."
+      }
     },
     {
       "id": "headlessui",
