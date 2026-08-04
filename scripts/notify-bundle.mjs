@@ -210,8 +210,9 @@ function report(target, results) {
   out.push(`# Accessibility conformance results for ${target.name}`);
   out.push("");
   out.push(
-    "You are receiving this before anyone else, including before it is published. " +
-      "Nothing below is public, and none of it will be for at least fourteen days.",
+    "You are hearing this before we publish anything. No score for " +
+      `${target.name} is on our index, and none will be for at least fourteen days, ` +
+      "whatever this report says.",
   );
   out.push("");
   out.push(
@@ -388,7 +389,7 @@ function reportHtml(target, results) {
 
   o.push(`<p class="eyebrow">Private, unpublished</p>`);
   o.push(`<h1>Accessibility conformance results for ${esc(target.name)}</h1>`);
-  o.push(`<p class="lede">You are receiving this before anyone else. Nothing here is public, and none of it will be for at least fourteen days.</p>`);
+  o.push(`<p class="lede">You are hearing this before we publish anything. No score for ${esc(target.name)} is on our index, and none will be for at least fourteen days, whatever this report says.</p>`);
   o.push(`<p>Handrail runs component libraries against the W3C ARIA Authoring Practices Guide and publishes the results. Every check cites the clause it measures, every score names an exact version, and every result is run repeatedly and discarded if the answer changes.</p>`);
 
   o.push("<h2>The short version</h2>");
@@ -527,7 +528,7 @@ is one of the libraries measured.
 ${
   failing === 0
     ? `${target.name} passes every check. There is nothing to fix, and I am writing only because you should hear about a public score from us rather than come across it, and because you may still disagree with how we measured it.`
-    : `We found ${failing} issue${failing === 1 ? "" : "s"}${concentration(results)}.${causeClause(target, results)} Nothing is public yet, and nothing will be for fourteen days.`
+    : `We found ${failing} issue${failing === 1 ? "" : "s"}${concentration(results)}.${causeClause(target, results)} No score is on our index yet, and none will be for fourteen days.`
 }
 
 The attached report has every check, the specification clause behind it, and the
