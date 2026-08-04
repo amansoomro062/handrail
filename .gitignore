@@ -5,7 +5,9 @@ build/
 *.log
 
 # Runner output
-results/
+# results/ is deliberately committed. It is the data the index is built from, so
+# a clone can build the site without a ten minute measurement, and each commit
+# becomes a dated snapshot that makes score history diffable.
 test-results/
 playwright-report/
 traces/
