@@ -135,6 +135,13 @@ ul.clean li { padding-left: 1.4rem; position: relative; margin-bottom: 0.5rem; }
 ul.clean li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 7px; height: 7px; background: var(--safety); }
 `;
 
+const NAV = `<nav class="top">
+  <a class="brand" href="/">Handrail</a>
+  <a href="/results.html">Results</a>
+  <a href="https://github.com/amansoomro062/handrail/blob/main/docs/ADAPTERS.md">Add a library</a>
+  <a href="https://github.com/amansoomro062/handrail">GitHub</a>
+</nav>`;
+
 export function layout(title: string, body: string, crumb?: string): string {
   return `<!doctype html>
 <html lang="en">
@@ -142,10 +149,11 @@ export function layout(title: string, body: string, crumb?: string): string {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<style>${CSS}</style>
+<style>${CSS}${LANDING_CSS}</style>
 </head>
 <body>
 <div class="wrap">
+${NAV}
 ${crumb ? `<div class="crumb">${crumb}</div>` : ""}
 ${body}
 <footer>
@@ -165,3 +173,42 @@ export function escapeHtml(value: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
+
+/** Landing-page styles, appended to CSS so both pages share one stylesheet. */
+export const LANDING_CSS = `
+.hero { padding: clamp(3rem, 10vw, 6.5rem) 0 3rem; border-bottom: 3px solid var(--safety); margin-bottom: 1rem; }
+.hero h1 { font-size: clamp(2.4rem, 6.5vw, 4.2rem); line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 1.2rem; }
+.hero .lede { font-size: clamp(1.1rem, 2.2vw, 1.35rem); max-width: 54ch; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 2rem; }
+
+.button {
+  display: inline-block; font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+  letter-spacing: 0.01em; padding: 0.62rem 1.15rem; border: 2px solid var(--ink);
+  background: var(--ink); color: var(--paper); text-decoration: none; border-radius: 2px;
+}
+.button:hover { background: var(--safety); border-color: var(--safety); color: #1A1D1A; }
+.button--quiet { background: transparent; color: var(--ink); }
+.button--quiet:hover { background: var(--safety); border-color: var(--safety); color: #1A1D1A; }
+
+.footnote { font-size: 0.92rem; color: var(--ink-soft); }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 1.5rem 0; }
+.step { background: var(--surface); padding: 1.1rem 1.15rem; }
+.step p { margin-bottom: 0; font-size: 0.97rem; }
+.step__n {
+  font-family: var(--sans); font-weight: 700; font-size: 0.95rem;
+  letter-spacing: -0.01em; margin-bottom: 0.5rem !important; color: var(--ink);
+}
+.step__n::before {
+  content: ""; display: block; width: 26px; height: 4px;
+  background: var(--safety); margin-bottom: 0.6rem;
+}
+
+nav.top {
+  display: flex; align-items: baseline; gap: 1.2rem; padding: 1.2rem 0 0;
+  font-family: var(--sans); font-size: 0.85rem;
+}
+nav.top a { text-decoration: none; color: var(--ink-soft); font-weight: 600; }
+nav.top a:hover { color: var(--ink); }
+nav.top .brand { font-weight: 700; color: var(--ink); font-size: 1rem; margin-right: auto; letter-spacing: -0.01em; }
+`;

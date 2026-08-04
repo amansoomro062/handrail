@@ -19,6 +19,7 @@ import { fileURLToPath } from "node:url";
 import { displayScore, isPublishable, renderBadge, scoreRun, type RunResult } from "@handrail/report";
 import { getSpec, specs } from "@handrail/spec";
 import { escapeHtml, layout } from "./theme.js";
+import { landing } from "./landing.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const resultsDir = join(root, "results");
@@ -130,14 +131,14 @@ ${assertions}
 <pre class="mono" style="background:var(--surface);border:1px solid var(--rule);padding:1rem;overflow-x:auto"><code>pnpm --filter @handrail/adapter-${escapeHtml(target.id)} run dev
 pnpm handrail run --target ${escapeHtml(target.id)} --component ${escapeHtml(result.component)} \\
   --base-url http://localhost:5180 --repeat 3</code></pre>
-<p><a href="../api/results/${escapeHtml(target.id)}.${escapeHtml(result.component)}.json">Raw result JSON</a> &middot; <a href="../index.html">Back to the index</a></p>
+<p><a href="../api/results/${escapeHtml(target.id)}.${escapeHtml(result.component)}.json">Raw result JSON</a> &middot; <a href="../results.html">Back to the results</a></p>
 
 <div class="note"><strong>What this cannot tell you</strong><p>${CEILING}</p></div>
 `;
   return layout(
     `${target.name}: ${spec.title} | Handrail`,
     body,
-    `<a href="../index.html">Handrail</a> / ${escapeHtml(target.name)} / ${escapeHtml(result.component)}`,
+    `<a href="../results.html">Results</a> / ${escapeHtml(target.name)} / ${escapeHtml(result.component)}`,
   );
 }
 
@@ -301,7 +302,26 @@ finding until each failure has been confirmed by hand.</p>
 <p><a href="api/index.json">Machine-readable index</a> of every result.</p>
 `;
 
-  await writeFile(join(outDir, "index.html"), layout("Handrail", indexBody), "utf8");
+  await writeFile(
+    join(outDir, "results.html"),
+    layout("Results | Handrail", indexBody),
+    "utf8",
+  );
+
+  const specTitles = Object.fromEntries(
+    Object.entries(specs).map(([id, spec]) => [id, spec.title]),
+  );
+  await writeFile(
+    join(outDir, "index.html"),
+    layout("Handrail: does your component library work by keyboard?", landing({
+      targets,
+      results: byTarget,
+      componentOrder: COMPONENT_ORDER,
+      specTitles,
+      ceiling: CEILING,
+    })),
+    "utf8",
+  );
 
   const apiIndex = {
     generated: new Date().toISOString().slice(0, 10),
