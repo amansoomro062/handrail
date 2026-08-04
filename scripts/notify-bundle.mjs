@@ -51,12 +51,19 @@ function page(title, body) {
 .rep h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
 .rep h2 { margin-top: 2.6rem; }
 .finding { border: 1px solid var(--rule); border-left: 5px solid var(--fail); background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
-.finding h3 { font-size: 1.05rem; margin: 0 0 0.7rem; line-height: 1.35; }
+/* Findings are h3 alone and h4 once a cause heading sits above them. */
+.finding h3, .finding h4 { font-size: 1.05rem; margin: 0 0 0.7rem; line-height: 1.35; }
 .finding dl { display: grid; grid-template-columns: 8.5rem 1fr; gap: 0.3rem 0.9rem; margin: 0; font-size: 0.93rem; }
 .finding dt { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); padding-top: 0.18rem; }
 .finding dd { margin: 0; color: var(--ink-2); }
 .finding code { background: var(--surface-2); padding: 0.08em 0.35em; border-radius: 2px; }
 @media (max-width: 620px) { .finding dl { grid-template-columns: 1fr; gap: 0.1rem; } .finding dt { padding-top: 0.5rem; } }
+/* The site styles bare <section> as a full page band, so set the whole box
+   here rather than inherit 4.5rem of padding meant for something else. */
+.cause { margin: 2rem 0 2.4rem; padding: 0 0 0 1.1rem; border-left: 2px solid var(--rule); }
+.cause h3 { margin: 0 0 0.2rem; font-size: 1.15rem; }
+.cause__count { font-family: var(--sans); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-3); margin: 0 0 0.6rem; }
+.cause > p { margin-bottom: 1rem; }
 .banner { border: 1px solid var(--rule); border-left: 5px solid var(--safety); background: var(--surface); border-radius: var(--radius); padding: 1.1rem 1.2rem; margin: 1.5rem 0; }
 .banner p:last-child { margin-bottom: 0; }
 details { border: 1px solid var(--rule); border-radius: var(--radius); margin-bottom: 0.6rem; background: var(--surface); }
@@ -126,6 +133,71 @@ function adapterSource(targetId) {
     .map((f) => ({ name: f, code: readFileSync(join(dir, f), "utf8") }));
 }
 
+/**
+ * Splits findings into the causes declared for the target, plus whatever is
+ * left over.
+ *
+ * The groupings are authored in targets.json rather than inferred. Causation is
+ * a claim about someone else's code, and guessing at it would put a second kind
+ * of false accusation into a report that already asks to be trusted. A stale
+ * grouping is reported here rather than quietly dropped, because a cause that
+ * no longer matches the results means the report and the run disagree.
+ */
+const warned = new Set(); // Three renderers group the same findings; warn once.
+
+function groupByCause(target, failing) {
+  const byId = new Map(failing.map((a) => [a.id, a]));
+  const claimed = new Set();
+  const groups = [];
+
+  for (const cause of target.causes ?? []) {
+    const present = cause.assertions.filter((id) => byId.has(id));
+    for (const id of cause.assertions.filter((x) => !byId.has(x))) {
+      const key = `${target.id}:${id}`;
+      if (warned.has(key)) continue;
+      warned.add(key);
+      console.warn(`  ${target.id}: cause "${cause.summary}" lists ${id}, which is not failing`);
+    }
+    // One finding is not a group. Leave it in the list rather than give it a
+    // heading that says the same thing twice.
+    if (present.length < 2) continue;
+    for (const id of present) claimed.add(id);
+    groups.push({ cause, findings: present.map((id) => byId.get(id)) });
+  }
+
+  const loose = failing.filter((a) => !claimed.has(a.id));
+
+  // A grouping bug that dropped a finding would quietly withhold a defect from
+  // the one person who can fix it. Cheaper to stop than to send.
+  const kept = groups.reduce((n, g) => n + g.findings.length, 0) + loose.length;
+  if (kept !== failing.length) {
+    throw new Error(
+      `${target.id}: grouping produced ${kept} findings from ${failing.length}. Refusing to write a report that omits one.`,
+    );
+  }
+
+  return { groups, loose };
+}
+
+/**
+ * "12 findings. 5 of them come from 2 underlying causes, grouped below."
+ *
+ * Says what the grouping actually achieves rather than quoting a total cause
+ * count. Twelve findings across nine causes is technically fewer causes than
+ * findings and tells a maintainer almost nothing; which five collapse into
+ * which two is the useful part.
+ */
+function causeSummary(groups, loose) {
+  if (groups.length === 0) return null;
+  const inGroups = groups.reduce((n, g) => n + g.findings.length, 0);
+  const total = inGroups + loose.length;
+  const n = groups.length;
+  return (
+    `${total} findings. ${inGroups} of them come from ${n} underlying ` +
+    `${n === 1 ? "cause" : "causes"}, grouped below.`
+  );
+}
+
 function report(target, results) {
   const failing = results.flatMap((r) =>
     r.assertions.filter((a) => a.status === "fail").map((a) => ({ ...a, component: r.component })),
@@ -180,10 +252,21 @@ function report(target, results) {
     );
     out.push("");
   } else {
+    const { groups, loose } = groupByCause(target, failing);
+    const grouped = groups.length > 0;
+
     out.push(`## The ${failing.length} finding${failing.length === 1 ? "" : "s"}`);
     out.push("");
-    for (const a of failing) {
-      out.push(`### ${a.detail ?? a.title}`);
+    const summary = causeSummary(groups, loose);
+    if (summary) {
+      out.push(summary);
+      out.push("");
+    }
+
+    // One heading level deeper once causes are carrying a heading of their own.
+    const h = grouped ? "####" : "###";
+    const finding = (a) => {
+      out.push(`${h} ${a.detail ?? a.title}`);
       out.push("");
       out.push(`- **Check:** \`${a.id}\`, "${a.title}"`);
       out.push(`- **Component:** ${a.component}`);
@@ -196,6 +279,23 @@ function report(target, results) {
       if (a.refs?.wcag) refs.push(a.refs.wcagUrl ? `[WCAG ${a.refs.wcag}](${a.refs.wcagUrl})` : `WCAG ${a.refs.wcag}`);
       if (refs.length) out.push(`- **Measured against:** ${refs.join(" · ")}`);
       out.push("");
+    };
+
+    for (const g of groups) {
+      out.push(`### ${g.cause.summary}`);
+      out.push("");
+      out.push(`_${g.findings.length} findings, one cause._ ${g.cause.detail}`);
+      out.push("");
+      for (const a of g.findings) finding(a);
+    }
+    if (loose.length > 0) {
+      if (grouped) {
+        out.push(`### ${loose.length === 1 ? "One finding on its own" : "The rest, each on its own"}`);
+        out.push("");
+        out.push("Not related to the above, or to each other.");
+        out.push("");
+      }
+      for (const a of loose) finding(a);
     }
   }
 
@@ -270,7 +370,8 @@ function concentration(results) {
     .sort((a, b) => b.n - a.n);
   if (counts.length === 0) return "";
   const total = counts.reduce((s, c) => s + c.n, 0);
-  if (counts.length === 1) return `, all in ${counts[0].component}`;
+  // "1 issue, all in accordion" reads oddly. There is nothing to gather.
+  if (counts.length === 1) return total === 1 ? `, in ${counts[0].component}` : `, all in ${counts[0].component}`;
   if (counts[0].n / total >= 0.5) return `, ${counts[0].n} of them in ${counts[0].component}`;
   return `, across ${counts.length} components`;
 }
@@ -310,13 +411,22 @@ function reportHtml(target, results) {
   if (failing.length === 0) {
     o.push(`<div class="banner"><p>We found nothing to report. ${esc(target.name)} passes every check we run. We are telling you anyway, because you should hear about a public score from us rather than find it, and because you may still think we measured something wrongly.</p></div>`);
   } else {
+    const { groups, loose } = groupByCause(target, failing);
+    const grouped = groups.length > 0;
+
     o.push(`<h2>The ${failing.length} finding${failing.length === 1 ? "" : "s"}</h2>`);
-    for (const a of failing) {
+    const summary = causeSummary(groups, loose);
+    if (summary) o.push(`<p class="lede">${esc(summary)}</p>`);
+
+    // One heading level deeper once causes are carrying a heading of their own,
+    // so the document never skips a level.
+    const hn = grouped ? 4 : 3;
+    const finding = (a) => {
       const refs = [];
       if (a.refs?.apg) refs.push(`<a href="${esc(a.refs.apg)}">APG pattern</a>`);
       if (a.refs?.wcag) refs.push(a.refs.wcagUrl ? `<a href="${esc(a.refs.wcagUrl)}">WCAG ${esc(a.refs.wcag)}</a>` : `WCAG ${esc(a.refs.wcag)}`);
       o.push('<div class="finding">');
-      o.push(`<h3>${esc(a.detail ?? a.title)}</h3><dl>`);
+      o.push(`<h${hn}>${esc(a.detail ?? a.title)}</h${hn}><dl>`);
       // The code chip carries its own padding, so a comma after it reads as a
       // stray space. Break the line rather than punctuate across it.
       o.push(`<dt>Check</dt><dd><code>${esc(a.id)}</code><br>"${esc(a.title)}"</dd>`);
@@ -327,6 +437,24 @@ function reportHtml(target, results) {
       o.push(`<dt>We measured</dt><dd>${esc(a.actual ?? "n/a")}</dd>`);
       if (refs.length) o.push(`<dt>Measured against</dt><dd>${refs.join(" &middot; ")}</dd>`);
       o.push("</dl></div>");
+    };
+
+    for (const g of groups) {
+      o.push('<section class="cause">');
+      o.push(`<h3>${esc(g.cause.summary)}</h3>`);
+      o.push(`<p class="cause__count">${g.findings.length} findings, one cause</p>`);
+      o.push(`<p>${esc(g.cause.detail)}</p>`);
+      for (const a of g.findings) finding(a);
+      o.push("</section>");
+    }
+    if (loose.length > 0) {
+      if (grouped) {
+        o.push('<section class="cause">');
+        o.push(`<h3>${loose.length === 1 ? "One finding on its own" : "The rest, each on its own"}</h3>`);
+        o.push("<p>Not related to the above, or to each other.</p>");
+      }
+      for (const a of loose) finding(a);
+      if (grouped) o.push("</section>");
     }
   }
 
@@ -366,6 +494,26 @@ pnpm handrail run --target ${esc(target.id)} --component &lt;component&gt; \\
   return page(`${target.name}: accessibility conformance results`, o.join("\n"));
 }
 
+/**
+ * ", which come from three causes rather than twelve separate problems".
+ *
+ * A count on its own overstates the work. This is the first number a maintainer
+ * reads, and it should not make the job look bigger than it is.
+ */
+function causeClause(target, results) {
+  const failing = results.flatMap((r) =>
+    r.assertions.filter((a) => a.status === "fail").map((a) => ({ ...a, component: r.component })),
+  );
+  const { groups } = groupByCause(target, failing);
+  if (groups.length === 0) return "";
+  const inGroups = groups.reduce((n, g) => n + g.findings.length, 0);
+  const n = groups.length;
+  // Its own sentence, and not another "of them": the clause before this one
+  // already used that phrase to mean something else.
+  const cause = n === 1 ? "a single underlying cause" : `${n} underlying causes`;
+  return ` ${inGroups} share ${cause}, and the report groups them that way.`;
+}
+
 function covering(target, results) {
   const failing = results.reduce((n, r) => n + r.assertions.filter((a) => a.status === "fail").length, 0);
   return `Subject: Accessibility conformance results for ${target.name}, before we publish them
@@ -379,7 +527,7 @@ is one of the libraries measured.
 ${
   failing === 0
     ? `${target.name} passes every check. There is nothing to fix, and I am writing only because you should hear about a public score from us rather than come across it, and because you may still disagree with how we measured it.`
-    : `We found ${failing} issue${failing === 1 ? "" : "s"}${concentration(results)}. Nothing is public yet, and nothing will be for fourteen days.`
+    : `We found ${failing} issue${failing === 1 ? "" : "s"}${concentration(results)}.${causeClause(target, results)} Nothing is public yet, and nothing will be for fourteen days.`
 }
 
 The attached report has every check, the specification clause behind it, and the

@@ -41,6 +41,39 @@ The date is what releases the results. The site generator and
 `pnpm restore:docs` both refuse to publish a library until `notifiedOn` is set
 and fourteen days have passed, so nothing needs remembering after step 2.
 
+## Grouping findings by cause
+
+Several findings often come from one decision. MUI's menu trigger is missing
+three attributes because their documentation asks the developer to add all
+three, not because there are three defects. Listed flat, that reads as three
+times the work.
+
+Groups are declared per target in `targets.json`:
+
+```json
+"causes": [
+  {
+    "summary": "The trigger is not marked up as a menu button",
+    "detail": "Longer explanation, addressed to the maintainer.",
+    "assertions": ["menu.trigger-has-haspopup", "menu.trigger-collapsed-by-default"]
+  }
+]
+```
+
+They are written by hand and never inferred. Causation is a claim about someone
+else's code, and a guessed one would put a second kind of false accusation into
+a report that is already asking to be trusted. Group only what the measured
+values support: two failures in the same component are not necessarily the same
+cause, and the run output usually says which.
+
+The generator protects the rest:
+
+- A cause listing a check that is not failing prints a warning. It means the
+  grouping and the run disagree, so re-check it before sending.
+- A cause with fewer than two failing checks left is not rendered as a group.
+- If grouping ever produced fewer findings than the run did, the script throws
+  rather than write a report that omits one.
+
 ## Writing to a maintainer
 
 The covering message is a draft, not a script. Some things worth keeping
