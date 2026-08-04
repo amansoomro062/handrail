@@ -20,6 +20,7 @@ import { displayScore, isPublishable, renderBadge, scoreRun, type RunResult } fr
 import { getSpec, specs } from "@handrail/spec";
 import { escapeHtml, layout } from "./theme.js";
 import { landing } from "./landing.js";
+import { docPage, decisionsPage } from "./pages.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const resultsDir = join(root, "results");
@@ -44,8 +45,15 @@ function releasable(target: Target): { ok: boolean; reason: string } {
   if (!target.notifiedOn) {
     return { ok: false, reason: "maintainer has not been notified" };
   }
-  const days = (Date.now() - Date.parse(target.notifiedOn)) / 86_400_000;
-  if (days < NOTICE_DAYS) {
+  const notified = Date.parse(target.notifiedOn);
+  // A date we cannot read must fail closed. Every numeric comparison against
+  // NaN is false, so an unreadable date would otherwise fall past the window
+  // check and publish the library.
+  if (Number.isNaN(notified)) {
+    return { ok: false, reason: `notifiedOn "${target.notifiedOn}" is not a date` };
+  }
+  const days = (Date.now() - notified) / 86_400_000;
+  if (!(days >= NOTICE_DAYS)) {
     return {
       ok: false,
       reason: `notified ${Math.floor(days)} of ${NOTICE_DAYS} days ago`,
@@ -390,6 +398,94 @@ ${withheldSection}
     }), { description: "Handrail measures React component libraries against the W3C ARIA Authoring Practices Guide and publishes every result with the clause behind it." }),
     "utf8",
   );
+
+  // The written pages, all generated from docs/ so the site and the repository
+  // cannot disagree about how any of this works.
+  const doc = (name: string): Promise<string> => readFile(join(root, "docs", name), "utf8");
+  const assertionCount = Object.values(specs).reduce((n, s) => n + s.assertions.length, 0);
+  const measured = targets.filter((t) => t.status !== "planned").length;
+
+  const written: Array<[string, string, string, string]> = [
+    [
+      "method.html",
+      "Method | Handrail",
+      "How the measurement works, why the runner never knows which library it is testing, and what the numbers can and cannot tell you.",
+      docPage({
+        eyebrow: "Method",
+        title: "The runner does not know which library it is testing",
+        lede:
+          "Every library provides about fifty lines that mount its components into a fixed harness. The tests speak HTTP to that harness and nothing else, so a library cannot be favoured by the code that measures it.",
+        markdown: await doc("ARCHITECTURE.md"),
+        sourcePath: "docs/ARCHITECTURE.md",
+        intro: `<div class="note"><p class="note__t">What this cannot tell you</p><p>${CEILING}</p></div>`,
+      }),
+    ],
+    [
+      "scoring.html",
+      "Scoring | Handrail",
+      "The scoring model, every weighting, and the things deliberately left out of it.",
+      docPage({
+        eyebrow: "Scoring",
+        title: "The scoring model exists to be argued with",
+        lede:
+          "Every input to every score is published. If you dislike the weightings, you can recompute the entire index with your own and show us we are wrong.",
+        markdown: await doc("SCORING.md"),
+        sourcePath: "docs/SCORING.md",
+      }),
+    ],
+    [
+      "contribute.html",
+      "Add a library | Handrail",
+      "An adapter is about fifty lines and needs no knowledge of the test engine. This is how to write one.",
+      docPage({
+        eyebrow: "Contribute",
+        title: "Add a library",
+        lede:
+          "An adapter is the only library-specific code in the project. It is about fifty lines, it requires no knowledge of the test engine, and it is the best place to start.",
+        markdown: await doc("ADAPTERS.md"),
+        sourcePath: "docs/ADAPTERS.md",
+      }),
+    ],
+    [
+      "protocol.html",
+      "Harness protocol | Handrail",
+      "The contract between an adapter and the runner: HTTP and HTML, with no reference to any framework.",
+      docPage({
+        eyebrow: "Reference",
+        title: "The harness protocol",
+        lede:
+          "The contract between an adapter and the runner. Deliberately minimal, transport level, and free of any reference to a framework.",
+        markdown: await doc("HARNESS-PROTOCOL.md"),
+        sourcePath: "docs/HARNESS-PROTOCOL.md",
+      }),
+    ],
+    [
+      "disclosure.html",
+      "Disclosure | Handrail",
+      "How maintainers are notified before publication, and how conflicts of interest are handled when we contribute to the libraries we measure.",
+      docPage({
+        eyebrow: "Policy",
+        title: "Disclosure and conflicts of interest",
+        lede:
+          "We score libraries we also contribute to. That is a real conflict, and the answer is to state it rather than pretend it away.",
+        markdown: await doc("DISCLOSURE.md"),
+        sourcePath: "docs/DISCLOSURE.md",
+      }),
+    ],
+    [
+      "decisions.html",
+      "Decision log | Handrail",
+      "Every judgement behind the measurement, dated, including the ones that were wrong and what they nearly published.",
+      decisionsPage(await doc("DECISIONS.md"), {
+        libraries: measured,
+        assertions: assertionCount,
+      }),
+    ],
+  ];
+
+  for (const [file, title, description, body] of written) {
+    await writeFile(join(outDir, file), layout(title, body, { description }), "utf8");
+  }
 
   const apiIndex = {
     generated: new Date().toISOString().slice(0, 10),
