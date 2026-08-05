@@ -1,5 +1,10 @@
 # Railing
 
+[![CI](https://github.com/amansoomro062/railing/actions/workflows/ci.yml/badge.svg)](https://github.com/amansoomro062/railing/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/%40railing-dev%2Frunner?label=%40railing-dev%2Frunner)](https://www.npmjs.com/package/@railing-dev/runner)
+[![license](https://img.shields.io/github/license/amansoomro062/railing)](LICENSE)
+[![site](https://img.shields.io/badge/index-railing.dev-121c22)](https://railing.dev)
+
 **Railing runs every major UI component library against the W3C's own accessibility specification, continuously, and publishes the results.**
 
 Pick a component library today and you are choosing on vibes. Nobody can tell you whether its combobox is actually operable by keyboard, whether its dialog traps focus correctly, or whether the version you upgraded to last week quietly broke either of those things.
@@ -169,6 +174,20 @@ The highest-value contribution is **an adapter for a library we do not cover yet
 The second highest is **auditing an existing adapter**. An unfair result caused by a badly written adapter is the single biggest risk to this project's credibility, so adapters get reviewed harder than test code does.
 
 Please read [`CONTRIBUTING.md`](CONTRIBUTING.md), in particular the rule that **we notify maintainers before we publish anything about their library.**
+
+## Score badges
+
+Every released component score is also a [shields.io endpoint](https://shields.io/badges/endpoint-badge),
+so a library can wear its measurement in its own README:
+
+```markdown
+![Railing: dialog](https://img.shields.io/endpoint?url=https%3A%2F%2Frailing.dev%2Fapi%2Fbadge%2F<target>%2F<component>.json)
+```
+
+Badges exist only for released scores: the same publication gate that governs
+the site governs the API, so a badge URL for an unreleased library simply does
+not resolve. The badge updates when the score does, and the JSON behind it
+names the exact library version measured.
 
 ## A note on fairness
 
