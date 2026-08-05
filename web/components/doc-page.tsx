@@ -44,12 +44,12 @@ export function resolveLink(href: string): string {
   return `${REPO}/${kind}/main/${repoPath}${suffix}`;
 }
 
-function Contents({ markdown }: { markdown: string }) {
+function Contents({ markdown, id }: { markdown: string; id: string }) {
   const items = [...markdown.matchAll(/^##\s+(.+)$/gm)].map((m) => (m[1] as string).trim());
   if (items.length < 3) return null;
   return (
-    <nav className="toc" aria-labelledby="toc-h">
-      <p className="toc__h" id="toc-h">
+    <nav className="toc" aria-labelledby={id}>
+      <p className="toc__h" id={id}>
         On this page
       </p>
       <ol>
@@ -74,23 +74,33 @@ export interface DocPageProps {
 
 export function DocPage({ eyebrow, title, lede, markdown, sourcePath, children }: DocPageProps) {
   const html = renderMarkdown(markdown, { dropTitle: true, resolveLink });
+  /* The contents render twice, inline and as a rail; CSS shows exactly one,
+     and display:none removes the hidden nav from the accessibility tree. The
+     ids differ because the visible one must still be unique in the document. */
   return (
-    <>
-      <div className="pagehead">
-        <p className="eyebrow eyebrow--ink">{eyebrow}</p>
-        <h1>{title}</h1>
-        <p className="lede">{lede}</p>
-      </div>
-      {children}
-      <Contents markdown={markdown} />
-      <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
-      <p className="srcnote">
-        This page is generated from{" "}
-        <a href={`${REPO}/blob/main/${sourcePath}`} rel="noopener">
-          <code>{escapeHtml(sourcePath)}</code>
-        </a>{" "}
-        in the repository. If the two ever disagree, the repository is right.
-      </p>
-    </>
+    <div className="docwrap">
+      <article className="docmain">
+        <div className="pagehead">
+          <p className="eyebrow eyebrow--ink">{eyebrow}</p>
+          <h1>{title}</h1>
+          <p className="lede">{lede}</p>
+        </div>
+        {children}
+        <div className="toc-inline">
+          <Contents markdown={markdown} id="toc-h-inline" />
+        </div>
+        <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+        <p className="srcnote">
+          This page is generated from{" "}
+          <a href={`${REPO}/blob/main/${sourcePath}`} rel="noopener">
+            <code>{escapeHtml(sourcePath)}</code>
+          </a>{" "}
+          in the repository. If the two ever disagree, the repository is right.
+        </p>
+      </article>
+      <aside className="docaside">
+        <Contents markdown={markdown} id="toc-h-aside" />
+      </aside>
+    </div>
   );
 }

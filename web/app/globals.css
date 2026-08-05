@@ -518,6 +518,9 @@ a {
 }
 .section--tight {
   padding-top: 0;
+  /* A coda to the section above, not a sibling: closes most of the gap the
+     stacked section paddings would otherwise leave. */
+  margin-top: -48px;
 }
 .stmt {
   margin-bottom: 44px;
@@ -525,10 +528,14 @@ a {
 /* ch resolves against the element's own font-size, so this belongs on the
    heading and not on a wrapper using the 17px body size. */
 .stmt h2 {
-  max-width: 20ch;
+  /* Wide enough that each clause holds one line on desktop; on narrow
+     viewports the spans wrap and balance keeps the rag even. */
+  max-width: 40ch;
 }
 .stmt h2 span {
   display: block;
+  /* Even out the rag: without this the second clause leaves a one-word line. */
+  text-wrap: balance;
 }
 
 .cards {
@@ -811,15 +818,17 @@ a {
 .prose > :first-child {
   margin-top: 0;
 }
+/* The reset zeroes heading margins, so both sides are restored here. More
+   above than below, or a heading reads as attached to the wrong section. */
 .prose h2 {
-  margin-top: 2.8rem;
+  margin: 2.8rem 0 1rem;
   font-size: clamp(24px, 2.4vw, 34px);
 }
 .prose h3 {
-  margin-top: 1.9rem;
+  margin: 1.9rem 0 0.65rem;
 }
 .prose h4 {
-  margin-top: 1.4rem;
+  margin: 1.4rem 0 0.5rem;
 }
 .prose p,
 .prose ul,
@@ -923,6 +932,41 @@ thead th {
   max-width: 62ch;
 }
 
+/* ------------------------------------------------------------------ *
+ * Doc layout: one centred reading column; past 1200px the contents
+ * move out to a sticky rail so wide viewports are not half empty.
+ * ------------------------------------------------------------------ */
+
+.docwrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.docaside {
+  display: none;
+}
+@media (min-width: 1200px) {
+  .docwrap {
+    grid-template-columns: minmax(0, 74ch) 260px;
+    gap: 72px;
+    justify-content: center;
+  }
+  .docaside {
+    display: block;
+  }
+  .docaside .toc {
+    position: sticky;
+    top: 96px;
+    margin: 120px 0 0; /* aligns the rail with the top of the page title */
+    max-width: none;
+  }
+  .docaside .toc ol {
+    columns: 1;
+  }
+  .toc-inline {
+    display: none;
+  }
+}
+
 .toc {
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -957,7 +1001,9 @@ thead th {
   background: var(--surface);
   border-radius: 18px;
   padding: 20px 22px;
-  margin: 26px 0;
+  /* auto centres it in full-width sections; inside a doc column it is the
+     column's width already, so this is a no-op there. */
+  margin: 26px auto;
   max-width: 74ch;
 }
 .note__t {

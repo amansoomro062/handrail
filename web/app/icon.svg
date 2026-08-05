@@ -1,9 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#121c22"/>
-  <g stroke="#e9ecef" stroke-width="6" stroke-linecap="round" fill="none">
-    <path d="M14 20h36"/>
-    <path d="M18 20v26"/>
-    <path d="M32 20v26"/>
-    <path d="M46 20v26"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 26">
+  <style>
+    .dot { fill: #121c22; }
+    .dot--near { opacity: 0.55; }
+    .dot--far { opacity: 0.3; }
+    @media (prefers-color-scheme: dark) {
+      .dot { fill: #e9ecef; }
+      .dot--near { opacity: 0.8; }
+      .dot--far { opacity: 0.5; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="dome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC24D"/>
+      <stop offset="1" stop-color="#D65630"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <circle class="dot dot--far" cx="5" cy="6" r="2.5"/>
+    <circle class="dot dot--far" cx="14" cy="6" r="2.5"/>
+    <circle class="dot dot--far" cx="23" cy="6" r="2.5"/>
+    <circle class="dot dot--near" cx="5" cy="14" r="2.5"/>
+    <circle class="dot dot--near" cx="23" cy="14" r="2.5"/>
+    <circle class="dot dot--far" cx="5" cy="22" r="2.5"/>
+    <circle class="dot dot--far" cx="14" cy="22" r="2.5"/>
+    <circle class="dot dot--far" cx="23" cy="22" r="2.5"/>
   </g>
+  <circle cx="14" cy="14" r="3.5" fill="url(#dome)"/>
 </svg>
