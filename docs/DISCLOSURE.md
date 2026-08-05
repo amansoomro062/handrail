@@ -78,6 +78,16 @@ default or leave them to the developer is a genuine design argument, and we are
 not the referee. Where a maintainer makes that case, their reasoning is
 published beside the score and readers can decide.
 
+## Why measure at all
+
+The ceiling note on every results page ("a high score does not mean the
+component is accessible") sometimes prompts this question, so, briefly: a low
+score is a set of cited, reproducible defects, not an opinion; a high score
+frees expert review and disabled users to spend their time on what automation
+cannot judge; and a fix that lands in a library reaches every application
+downstream of it. The longer answer is on the
+[method page](ARCHITECTURE.md#why-a-floor-is-worth-measuring).
+
 ## Current disclosures
 
 _None yet. This section lists every library where a Railing contributor has
