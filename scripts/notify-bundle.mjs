@@ -410,7 +410,7 @@ function report(target, results) {
   out.push("- You have **fourteen days** before anything about this library is published.");
   out.push("- If you reply, your response is published beside the score, in full and unedited.");
   out.push("- **If you ship a fix in that window, we publish the fixed score.** A finding that gets fixed before publication is the best outcome this project has, not a story we lost.");
-  out.push("- If you would like longer, ask. The deadline is ours, not a rule.");
+  out.push("- If fourteen days is not enough for your release process, ask for more and you will get it.");
   out.push("");
 
   const sources = adapterSource(target.id);
@@ -563,7 +563,7 @@ pnpm railing run --target ${esc(target.id)} --component &lt;component&gt; \\
   o.push("<li>You have <strong>fourteen days</strong> before anything about this library is published.</li>");
   o.push("<li>If you reply, your response is published beside the score, in full and unedited.</li>");
   o.push("<li><strong>If you ship a fix in that window, we publish the fixed score.</strong> A finding that gets fixed before publication is the best outcome this project has, not a story we lost.</li>");
-  o.push("<li>If you would like longer, ask. The deadline is ours, not a rule.</li></ul>");
+  o.push("<li>If fourteen days is not enough for your release process, ask for more and you will get it.</li></ul>");
 
   const sources = adapterSource(target.id);
   if (sources.length) {
