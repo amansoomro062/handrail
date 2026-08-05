@@ -518,6 +518,9 @@ a {
 }
 .section--tight {
   padding-top: 0;
+  /* A coda to the section above, not a sibling: closes most of the gap the
+     stacked section paddings would otherwise leave. */
+  margin-top: -48px;
 }
 .stmt {
   margin-bottom: 44px;
@@ -998,7 +1001,9 @@ thead th {
   background: var(--surface);
   border-radius: 18px;
   padding: 20px 22px;
-  margin: 26px 0;
+  /* auto centres it in full-width sections; inside a doc column it is the
+     column's width already, so this is a no-op there. */
+  margin: 26px auto;
   max-width: 74ch;
 }
 .note__t {
