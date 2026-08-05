@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Screen reader spot checks: what VoiceOver actually announces, captured from a real run",
-  "exports": { ".": "./src/index.ts" },
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "cli": "tsx src/cli.ts",
     "test": "tsx --test test/*.test.ts",
