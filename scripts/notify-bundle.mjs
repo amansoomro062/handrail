@@ -67,7 +67,9 @@ ${CSS}
 body { padding: 0; }
 .rep { max-width: 900px; margin: 0 auto; padding: 40px var(--gutter) 90px; }
 .rep h1 { font-size: clamp(30px, 4.4vw, 52px); }
-.rep h2 { margin-top: 3rem; font-size: clamp(22px, 2.4vw, 32px); }
+/* Both sides restored: the global reset zeroes heading margins, and a heading
+   with no bottom margin reads as glued to its first line. */
+.rep h2 { margin: 3rem 0 0.9rem; font-size: clamp(22px, 2.4vw, 32px); }
 .rep > p { max-width: 68ch; color: var(--ink-2); margin-bottom: 1rem; }
 .rep .lede { color: var(--ink-2); font-size: 19px; max-width: 60ch; margin: 16px 0 28px; }
 .rep ul.clean { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 10px; }
@@ -121,7 +123,7 @@ details {
 }
 summary { cursor: pointer; padding: 12px 16px; font-family: var(--mono); font-size: 13px; }
 details pre { margin: 0; border-radius: 0 0 15px 15px; }
-</style></style>
+</style>
 </head>
 <body>
 <main class="rep">
