@@ -31,7 +31,7 @@
       "role": "subject",
       "status": "published",
       "notes": "Reference adapter implementation. Read this one first when writing a new adapter. Ships no combobox primitive, which is recorded as n/a rather than zero.",
-      "notifiedOn": null
+      "notifiedOn": "2026-08-05"
     },
     {
       "id": "shadcn",
