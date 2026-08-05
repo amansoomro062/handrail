@@ -1,6 +1,6 @@
 # Disclosure and conflicts of interest
 
-Handrail scores libraries its contributors also contribute to. That is a real
+Railing scores libraries its contributors also contribute to. That is a real
 conflict, and the answer is to state it rather than to pretend it away.
 
 ## What we do before publishing anything
@@ -28,7 +28,7 @@ the fix is tractable, we offer to write the patch.
 This creates an obvious question about independence, and these are the rules
 that answer it.
 
-- **Contributions are disclosed.** If a Handrail contributor has opened issues,
+- **Contributions are disclosed.** If a Railing contributor has opened issues,
   submitted pull requests, or holds commit rights in a measured library, that is
   stated on the library's page here, with links.
 - **A score is never adjusted by anyone with a stake in it.** Scores are not
@@ -41,7 +41,7 @@ that answer it.
 - **A rejected patch changes nothing.** If a maintainer declines a fix, the
   finding is published exactly as it would have been. Disagreement about a
   patch is not evidence about a component.
-- **We do not measure our own work into a score.** If a Handrail contributor
+- **We do not measure our own work into a score.** If a Railing contributor
   authors the code that implements a component we test, that component is marked
   and excluded from the library's score until someone unconnected re-measures it.
 
@@ -80,5 +80,5 @@ published beside the score and readers can decide.
 
 ## Current disclosures
 
-_None yet. This section lists every library where a Handrail contributor has
+_None yet. This section lists every library where a Railing contributor has
 opened an issue, submitted a patch, or holds commit rights._

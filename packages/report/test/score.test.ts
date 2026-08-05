@@ -7,7 +7,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import type { Severity } from "@handrail/spec";
+import type { Severity } from "@railing/spec";
 import { score, isPublishable, renderBadge, formatScore, scoreRun } from "../src/index.js";
 import type { AssertionResult, RunResult } from "../src/index.js";
 

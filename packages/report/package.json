@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/report",
+  "name": "@railing/report",
   "version": "0.1.0",
   "description": "Result schema, scoring, and rendering. Deliberately separate from the runner so anyone can re-score published results with their own weightings.",
   "license": "MIT",
@@ -16,21 +16,21 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@handrail/spec": "workspace:*"
+    "@railing/spec": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",
     "tsx": "catalog:"
   },
   "author": "Amanullah Soomro",
-  "homepage": "https://handrail.tech",
+  "homepage": "https://railing.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amansoomro062/handrail.git",
+    "url": "git+https://github.com/amansoomro062/railing.git",
     "directory": "packages/report"
   },
   "bugs": {
-    "url": "https://github.com/amansoomro062/handrail/issues"
+    "url": "https://github.com/amansoomro062/railing/issues"
   },
   "keywords": [
     "accessibility",

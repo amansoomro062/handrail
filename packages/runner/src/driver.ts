@@ -19,7 +19,7 @@ import {
   type HarnessHandle,
   type HarnessMeta,
   type KeyboardTools,
-} from "@handrail/spec";
+} from "@railing/spec";
 
 export class HarnessError extends Error {
   constructor(message: string) {

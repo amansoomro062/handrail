@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/adapter-chakra",
+  "name": "@railing/adapter-chakra",
   "version": "0.1.0",
   "description": "Chakra UI adapter.",
   "license": "MIT",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@chakra-ui/react": "catalog:subjects",
     "@emotion/react": "catalog:subjects",
-    "@handrail/harness-kit": "workspace:*",
+    "@railing/harness-kit": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

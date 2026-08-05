@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/web",
+  "name": "@railing/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,9 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@handrail/markdown": "workspace:*",
-    "@handrail/report": "workspace:*",
-    "@handrail/spec": "workspace:*",
+    "@railing/markdown": "workspace:*",
+    "@railing/report": "workspace:*",
+    "@railing/spec": "workspace:*",
     "next": "^16.3.0",
     "react": "catalog:",
     "react-dom": "catalog:"

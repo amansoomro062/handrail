@@ -1,4 +1,4 @@
-# Handrail: end-to-end plan
+# Railing: end-to-end plan
 
 Written 3 August 2026. Assumes evenings and weekends, roughly 8–12 hours a week, one person, with contributors arriving only after launch.
 
@@ -28,7 +28,7 @@ Prove the architecture works end to end on the narrowest possible slice: one com
 - [x] Broken fixture (`adapters/_fixture-broken`) with a catalogued defect list
 - [x] `--expect` calibration mode, reporting false positives and false negatives separately
 
-**Exit criteria, met.** `handrail run --target radix --component dialog` scores 13/13, and the broken fixture produces exactly the 8 catalogued failures with no false positives.
+**Exit criteria, met.** `railing run --target radix --component dialog` scores 13/13, and the broken fixture produces exactly the 8 catalogued failures with no false positives.
 
 Two findings worth carrying forward:
 
@@ -139,13 +139,13 @@ Run each new spec against React Spectrum first, as in Phase 1, before pointing i
 ## Phase 3: Publication infrastructure
 **Weeks 9–10 · 28 September – 11 October · ~25 hours**
 
-- [x] Static site, built larger than planned: a designed product site at [handrail.tech](https://handrail.tech), Next.js static export, with the method, scoring, decision log and disclosure pages generated from `docs/`
+- [x] Static site, built larger than planned: a designed product site at [railing.dev](https://railing.dev), Next.js static export, with the method, scoring, decision log and disclosure pages generated from `docs/`
 - [x] Per-library, per-component pages with a per-assertion anchor, each failure carrying the APG clause, the WCAG criterion, a single-assertion reproduction command (`--only`) and a downloadable Playwright trace
 - [x] Raw JSON published alongside, so anyone can re-score with their own weightings
 - [x] Badge endpoint (shields.io JSON schema)
 - [x] Version history data: every run archived by date in `results/history/`, so the regression tracker has something to draw. The view itself waits for a second data point
 - [x] Scheduled CI: weekly cron re-measure (`measure.yml`)
-- [x] Not planned, added: the publication gate enforced in pages, API and deploy, tested to fail closed; an accessibility audit run over the site and the maintainer reports in both colour schemes; the packages made publishable and the `@handrail` npm scope reserved
+- [x] Not planned, added: the publication gate enforced in pages, API and deploy, tested to fail closed; an accessibility audit run over the site and the maintainer reports in both colour schemes; the packages made publishable and the `@railing` npm scope reserved
 
 **Exit criteria:** a stranger can reach a specific failing assertion in three clicks and reproduce it locally without asking us anything. Met: index, component page, assertion anchor; the anchor carries the `--only` command and the trace.
 

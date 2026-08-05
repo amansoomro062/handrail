@@ -29,8 +29,8 @@ const CSS = readFileSync(join(root, "web", "app", "globals.css"), "utf8")
   // The font is served from the site; a report read off disk has no such path.
   .replace(/@font-face \{[\s\S]*?\n\}\n/, "");
 
-const SITE = "https://handrail.tech";
-const REPO = "https://github.com/amansoomro062/handrail";
+const SITE = "https://railing.dev";
+const REPO = "https://github.com/amansoomro062/railing";
 
 const esc = (s) =>
   String(s ?? "")
@@ -268,7 +268,7 @@ function report(target, results) {
   );
   out.push("");
   out.push(
-    "Handrail runs component libraries against the W3C ARIA Authoring Practices Guide and " +
+    "Railing runs component libraries against the W3C ARIA Authoring Practices Guide and " +
       "publishes the results. Every check cites the clause it measures, every score names an " +
       "exact version, and every result is run repeatedly and discarded if the answer changes.",
   );
@@ -331,7 +331,7 @@ function report(target, results) {
       if (a.refs?.apg) refs.push(`[APG pattern](${a.refs.apg})`);
       if (a.refs?.wcag) refs.push(a.refs.wcagUrl ? `[WCAG ${a.refs.wcag}](${a.refs.wcagUrl})` : `WCAG ${a.refs.wcag}`);
       if (refs.length) out.push(`- **Measured against:** ${refs.join(" · ")}`);
-      out.push(`- **Reproduce:** \`pnpm handrail run --target ${target.id} --component ${a.component} --only ${a.id} --base-url http://localhost:${port}\``);
+      out.push(`- **Reproduce:** \`pnpm railing run --target ${target.id} --component ${a.component} --only ${a.id} --base-url http://localhost:${port}\``);
       out.push("");
     };
 
@@ -372,8 +372,8 @@ function report(target, results) {
   out.push("Reproduce any of it from a clone of the repository:");
   out.push("");
   out.push("```bash");
-  out.push(`pnpm --filter @handrail/adapter-${target.id} run dev`);
-  out.push(`pnpm handrail run --target ${target.id} --component <component> \\`);
+  out.push(`pnpm --filter @railing/adapter-${target.id} run dev`);
+  out.push(`pnpm railing run --target ${target.id} --component <component> \\`);
   out.push(`  --base-url http://localhost:${port} --repeat 3`);
   out.push("```");
   out.push("");
@@ -457,7 +457,7 @@ function reportHtml(target, results) {
   o.push(`<p class="eyebrow eyebrow--ink">Private, unpublished</p>`);
   o.push(`<h1>Accessibility conformance results for ${esc(target.name)}</h1>`);
   o.push(`<p class="lede">You are hearing this before we publish anything. No score for ${esc(target.name)} is on our index, and none will be for at least fourteen days, whatever this report says.</p>`);
-  o.push(`<p>Handrail runs component libraries against the W3C ARIA Authoring Practices Guide and publishes the results. Every check cites the clause it measures, every score names an exact version, and every result is run repeatedly and discarded if the answer changes.</p>`);
+  o.push(`<p>Railing runs component libraries against the W3C ARIA Authoring Practices Guide and publishes the results. Every check cites the clause it measures, every score names an exact version, and every result is run repeatedly and discarded if the answer changes.</p>`);
 
   o.push("<h2>The short version</h2>");
   o.push('<div class="tablewrap"><table><caption class="visually-hidden">One row per component.</caption><thead><tr><th scope="col">Component</th><th scope="col">Score</th><th scope="col">Failing checks</th></tr></thead><tbody>');
@@ -504,7 +504,7 @@ function reportHtml(target, results) {
       o.push(`<dt>Expected</dt><dd>${esc(a.expected ?? "n/a")}</dd>`);
       o.push(`<dt>We measured</dt><dd>${esc(a.actual ?? "n/a")}</dd>`);
       if (refs.length) o.push(`<dt>Measured against</dt><dd>${refs.join(" &middot; ")}</dd>`);
-      o.push(`<dt>Reproduce</dt><dd><code>pnpm handrail run --target ${esc(target.id)} --component ${esc(a.component)} --only ${esc(a.id)} --base-url http://localhost:${port}</code></dd>`);
+      o.push(`<dt>Reproduce</dt><dd><code>pnpm railing run --target ${esc(target.id)} --component ${esc(a.component)} --only ${esc(a.id)} --base-url http://localhost:${port}</code></dd>`);
       o.push("</dl></div>");
     };
 
@@ -536,8 +536,8 @@ function reportHtml(target, results) {
   }
   o.push("</ul>");
   o.push("<p>Reproduce any of it from a clone of the repository:</p>");
-  o.push(`<pre><code>pnpm --filter @handrail/adapter-${esc(target.id)} run dev
-pnpm handrail run --target ${esc(target.id)} --component &lt;component&gt; \\
+  o.push(`<pre><code>pnpm --filter @railing/adapter-${esc(target.id)} run dev
+pnpm railing run --target ${esc(target.id)} --component &lt;component&gt; \\
   --base-url http://localhost:${port} --repeat 3</code></pre>`);
 
   o.push("<h2>Where we might be wrong</h2>");
@@ -600,7 +600,7 @@ function covering(target, results) {
 
 Hello,
 
-I run Handrail, an open source project that tests UI component libraries against
+I run Railing, an open source project that tests UI component libraries against
 the W3C ARIA Authoring Practices Guide and publishes the results. ${target.name}
 is one of the libraries measured.
 

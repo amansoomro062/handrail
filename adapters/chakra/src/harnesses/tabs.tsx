@@ -1,5 +1,5 @@
 import { Tabs } from "@chakra-ui/react";
-import { TEXT } from "@handrail/harness-kit";
+import { TEXT } from "@railing/harness-kit";
 
 export function TabsHarness() {
   return (

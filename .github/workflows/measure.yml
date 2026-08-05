@@ -23,16 +23,16 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @handrail/runner exec playwright install --with-deps chromium
+      - run: pnpm --filter @railing/runner exec playwright install --with-deps chromium
 
       - name: Measure every library
         run: |
           set -euo pipefail
 
           for a in radix react-spectrum mui headlessui chakra antd shadcn; do
-            pnpm --filter "@handrail/adapter-$a" run dev &
+            pnpm --filter "@railing/adapter-$a" run dev &
           done
-          pnpm --filter @handrail/fixture-broken run dev &
+          pnpm --filter @railing/fixture-broken run dev &
           trap 'kill $(jobs -p) 2>/dev/null || true' EXIT
 
           for port in 5180 5181 5182 5183 5184 5185 5186 5199; do
@@ -42,7 +42,7 @@ jobs:
           # Calibration first. If the runner cannot tell a broken dialog from a
           # good one today, nothing measured after it is worth publishing.
           for spec in dialog combobox menu tabs accordion; do
-            pnpm handrail run --target _fixture-broken --component "$spec" \
+            pnpm railing run --target _fixture-broken --component "$spec" \
               --base-url http://localhost:5199 \
               --expect adapters/_fixture-broken/expected.json
           done
@@ -53,7 +53,7 @@ jobs:
             [headlessui]=5183 [chakra]=5184 [antd]=5185 [shadcn]=5186 )
           for target in "${!ports[@]}"; do
             for spec in dialog combobox menu tabs accordion; do
-              pnpm handrail run --target "$target" --component "$spec" \
+              pnpm railing run --target "$target" --component "$spec" \
                 --base-url "http://localhost:${ports[$target]}" --repeat 3
             done
           done

@@ -1,5 +1,5 @@
 import { Accordion } from "@chakra-ui/react";
-import { TEXT } from "@handrail/harness-kit";
+import { TEXT } from "@railing/harness-kit";
 
 /** `collapsible` so an open section can be closed again, otherwise the first
  *  expansion is permanent, which is a configuration choice rather than the

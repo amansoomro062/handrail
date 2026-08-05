@@ -1,5 +1,5 @@
 import { Combobox, createListCollection } from "@chakra-ui/react";
-import { TEXT } from "@handrail/harness-kit";
+import { TEXT } from "@railing/harness-kit";
 
 const collection = createListCollection({
   items: [TEXT.comboboxOption1, TEXT.comboboxOption2, TEXT.comboboxOption3],

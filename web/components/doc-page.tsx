@@ -7,7 +7,7 @@
  * can check it.
  */
 
-import { renderMarkdown, slug, escapeHtml } from "@handrail/markdown";
+import { renderMarkdown, slug, escapeHtml } from "@railing/markdown";
 import { REPO } from "@/components/chrome";
 
 /** Repo-relative doc paths that have a page of their own here. */
@@ -29,7 +29,7 @@ const PAGES: Record<string, string> = {
  * next/link prefixes basePath for us. This markup is injected as raw HTML, so
  * nothing does it here and an absolute path would 404 on GitHub Pages.
  */
-const BASE = process.env.HANDRAIL_BASE_PATH ?? "";
+const BASE = process.env.RAILING_BASE_PATH ?? "";
 
 export function resolveLink(href: string): string {
   if (/^(https?:|#|mailto:)/.test(href)) return href;

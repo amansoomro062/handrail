@@ -7,7 +7,7 @@
 
 import Link from "next/link";
 
-export const REPO = "https://github.com/amansoomro062/handrail";
+export const REPO = "https://github.com/amansoomro062/railing";
 
 /**
  * Tactile paving seen from above, with the centre dome raised.
@@ -49,9 +49,9 @@ const NAV = [
 export function Nav() {
   return (
     <nav className="nav" aria-label="Primary">
-      <Link className="mark" href="/" aria-label="Handrail, home">
+      <Link className="mark" href="/" aria-label="Railing, home">
         <Logo id="mark-nav" />
-        <span>Handrail</span>
+        <span>Railing</span>
       </Link>
       <ul>
         {NAV.map((item) => (
@@ -115,9 +115,9 @@ export function Footer() {
 
       <div className="foot__top">
         <div className="foot__brand">
-          <Link className="mark" href="/" aria-label="Handrail, home">
+          <Link className="mark" href="/" aria-label="Railing, home">
             <Logo id="mark-foot" />
-            <span>Handrail</span>
+            <span>Railing</span>
           </Link>
           <p>
             Accessibility conformance testing for React component libraries, measured against the

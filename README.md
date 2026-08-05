@@ -1,14 +1,14 @@
-# Handrail
+# Railing
 
-**Handrail runs every major UI component library against the W3C's own accessibility specification, continuously, and publishes the results.**
+**Railing runs every major UI component library against the W3C's own accessibility specification, continuously, and publishes the results.**
 
 Pick a component library today and you are choosing on vibes. Nobody can tell you whether its combobox is actually operable by keyboard, whether its dialog traps focus correctly, or whether the version you upgraded to last week quietly broke either of those things.
 
-Handrail answers that question with evidence, in public, on every release.
+Railing answers that question with evidence, in public, on every release.
 
-**[handrail.tech](https://handrail.tech)** &nbsp;·&nbsp; [How it works](https://handrail.tech/method) &nbsp;·&nbsp; [Scoring](https://handrail.tech/scoring) &nbsp;·&nbsp; [Decision log](https://handrail.tech/decisions) &nbsp;·&nbsp; [Add a library](https://handrail.tech/contribute)
+**[railing.dev](https://railing.dev)** &nbsp;·&nbsp; [How it works](https://railing.dev/method) &nbsp;·&nbsp; [Scoring](https://railing.dev/scoring) &nbsp;·&nbsp; [Decision log](https://railing.dev/decisions) &nbsp;·&nbsp; [Add a library](https://railing.dev/contribute)
 
-> A handrail is installed for the people who cannot manage the stairs without one. Everybody carrying shopping, everybody in a hurry, everybody who has ever missed a step, ends up holding it too. Accessibility work is rarely only for the people it was built for.
+> A railing is installed for the people who cannot manage the stairs without one. Everybody carrying shopping, everybody in a hurry, everybody who has ever missed a step, ends up holding it too. Accessibility work is rarely only for the people it was built for.
 
 ---
 
@@ -20,7 +20,7 @@ One broken combobox in a popular library is a broken combobox in tens of thousan
 
 ## What makes this different from an audit blog post
 
-|                    | One-off audits         | Handrail                                  |
+|                    | One-off audits         | Railing                                  |
 | ------------------ | ---------------------- | ----------------------------------------- |
 | Cadence            | Once, then stale       | Every release, forever                    |
 | Comparability      | One library at a time  | Same assertions across every library      |
@@ -82,7 +82,7 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design and [`doc
 
 Nothing is published until each maintainer has had their findings privately, with the
 adapter used to produce them and fourteen days to reply. That is
-[the disclosure policy](https://handrail.tech/disclosure), and it is enforced in code.
+[the disclosure policy](https://railing.dev/disclosure), and it is enforced in code.
 
 | Milestone                                              | State       |
 | ------------------------------------------------------ | ----------- |
@@ -96,7 +96,7 @@ adapter used to produce them and fourteen days to reply. That is
 | Radix reference adapter                                 | 4 green, combobox n/a |
 | Five subject adapters                                   | measured, results withheld |
 | Broken fixture, false positives/negatives measured     | Calibrated on both  |
-| Public site, badges, CI                                 | Live at [handrail.tech](https://handrail.tech) |
+| Public site, badges, CI                                 | Live at [railing.dev](https://railing.dev) |
 
 Read [`docs/PLAN.md`](docs/PLAN.md) for the route from here to launch.
 
@@ -109,13 +109,13 @@ Requires Node 20.11+ (`.nvmrc` pins 22) and pnpm 10.
 ```bash
 nvm use
 pnpm install
-pnpm --filter @handrail/runner exec playwright install chromium
+pnpm --filter @railing/runner exec playwright install chromium
 
 # Terminal 1: serve the Radix adapter
-pnpm --filter @handrail/adapter-radix run dev
+pnpm --filter @railing/adapter-radix run dev
 
 # Terminal 2: run the Dialog spec against it
-pnpm handrail run --target radix --component dialog --base-url http://localhost:5180
+pnpm railing run --target radix --component dialog --base-url http://localhost:5180
 ```
 
 Results are written to `results/` as JSON, with a human-readable summary on stdout.
@@ -172,7 +172,7 @@ Please read [`CONTRIBUTING.md`](CONTRIBUTING.md), in particular the rule that **
 
 ## A note on fairness
 
-Handrail is not a naming-and-shaming project. Every maintainer gets the full results and a right of reply before publication, and their response is published alongside the score. A library that fixes an issue before we publish is a success of this project, not a story we lost.
+Railing is not a naming-and-shaming project. Every maintainer gets the full results and a right of reply before publication, and their response is published alongside the score. A library that fixes an issue before we publish is a success of this project, not a story we lost.
 
 ## License
 

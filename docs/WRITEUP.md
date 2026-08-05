@@ -31,7 +31,7 @@ accessibility audit of their own. Fix it once upstream and it is fixed
 everywhere at once, including for the users of products whose teams have never
 heard of the ARIA Authoring Practices Guide.
 
-So Handrail measures seven React component libraries, continuously, against
+So Railing measures seven React component libraries, continuously, against
 the W3C's own specification, and publishes every result with the clause behind
 it.
 
@@ -122,7 +122,7 @@ beats thirty done shallowly.
 
 An adapter is about fifty lines and requires no knowledge of the test engine.
 If you would rather measure yourself than be measured, that is the door:
-[handrail.tech/contribute](https://handrail.tech/contribute).
+[railing.dev/contribute](https://railing.dev/contribute).
 
 If you maintain one of the seven libraries already measured, you have had this
 in your inbox for a fortnight, along with the adapter we used and the right to

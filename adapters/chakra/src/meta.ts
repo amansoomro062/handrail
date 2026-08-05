@@ -1,6 +1,6 @@
-import { PROTOCOL_VERSION, type HarnessMeta } from "@handrail/harness-kit";
+import { PROTOCOL_VERSION, type HarnessMeta } from "@railing/harness-kit";
 
-declare const __HANDRAIL_LIBRARY_VERSIONS__: Record<string, string>;
+declare const __RAILING_LIBRARY_VERSIONS__: Record<string, string>;
 
 export const LIBRARY_ID = "chakra";
 export const ADAPTER_VERSION = "0.1.0";
@@ -9,7 +9,7 @@ export function metaFor(component: string): HarnessMeta {
   return {
     protocolVersion: PROTOCOL_VERSION,
     library: LIBRARY_ID,
-    libraryVersions: __HANDRAIL_LIBRARY_VERSIONS__,
+    libraryVersions: __RAILING_LIBRARY_VERSIONS__,
     adapterVersion: ADAPTER_VERSION,
     component,
     notes:

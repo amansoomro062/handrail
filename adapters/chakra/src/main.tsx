@@ -1,5 +1,5 @@
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
-import { announceReady, mountHarness } from "@handrail/harness-kit/react";
+import { announceReady, mountHarness } from "@railing/harness-kit/react";
 import { metaFor } from "./meta.js";
 import { DialogHarness } from "./harnesses/dialog.js";
 import { MenuHarness } from "./harnesses/menu.js";

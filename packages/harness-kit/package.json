@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/harness-kit",
+  "name": "@railing/harness-kit",
   "version": "0.1.0",
   "description": "Shared adapter scaffolding. Adapters depend on this so a protocol change is a version bump, not a scavenger hunt through every adapter.",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@handrail/spec": "workspace:*"
+    "@railing/spec": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -38,14 +38,14 @@
     "typescript": "catalog:"
   },
   "author": "Amanullah Soomro",
-  "homepage": "https://handrail.tech",
+  "homepage": "https://railing.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amansoomro062/handrail.git",
+    "url": "git+https://github.com/amansoomro062/railing.git",
     "directory": "packages/harness-kit"
   },
   "bugs": {
-    "url": "https://github.com/amansoomro062/handrail/issues"
+    "url": "https://github.com/amansoomro062/railing/issues"
   },
   "keywords": [
     "accessibility",

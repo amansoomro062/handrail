@@ -184,7 +184,7 @@ One honest loose end: one library's tabs reported unstable once and did not repr
 ## 014, An intermittent result is not publishable, and instability must be measurable
 *3 August 2026*
 
-**Decision.** `handrail run --repeat <n>` runs a spec n times and fails if any assertion's status varies. No result is published without it passing.
+**Decision.** `railing run --repeat <n>` runs a spec n times and fails if any assertion's status varies. No result is published without it passing.
 
 **Reasoning.** One library's dialog scored 100% twice and 94% three times in a row. The failing assertion was `dialog.has-accessible-name`, and it was neither right nor wrong, it was a coin flip. Its title subcomponent registers its id into the dialog's `aria-labelledby` a tick after the dialog becomes visible, so reading the name immediately caught it roughly half the time.
 

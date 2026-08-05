@@ -3,9 +3,9 @@
 The reference adapter. Copy this one when adding a library.
 
 ```bash
-pnpm --filter @handrail/adapter-radix run dev
+pnpm --filter @railing/adapter-radix run dev
 # then, in another terminal
-pnpm handrail run --target radix --component dialog --base-url http://localhost:5180
+pnpm railing run --target radix --component dialog --base-url http://localhost:5180
 ```
 
 Port 5180. Each adapter gets its own port so several can run at once.

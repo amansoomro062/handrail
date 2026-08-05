@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { TEXT } from "@handrail/harness-kit";
+import { TEXT } from "@railing/harness-kit";
 
 /**
  * Radix UI modal dialog, mounted exactly as the Radix documentation describes.

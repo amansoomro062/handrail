@@ -1,5 +1,5 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
-import { TEXT } from "@handrail/harness-kit";
+import { TEXT } from "@railing/harness-kit";
 
 /**
  * Headless UI accordion, built from three Disclosures.

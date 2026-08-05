@@ -1,7 +1,7 @@
 /**
  * The harness protocol: the contract between adapters and the runner.
  *
- * Adapters import these constants (re-exported from `@handrail/harness-kit`) so
+ * Adapters import these constants (re-exported from `@railing/harness-kit`) so
  * that a protocol change is a version bump rather than a scavenger hunt through
  * seven repositories.
  *
@@ -11,10 +11,10 @@
 export const PROTOCOL_VERSION = 1;
 
 /** Set on <body> once the component has mounted and is interactive. */
-export const READY_ATTRIBUTE = "data-handrail-ready";
+export const READY_ATTRIBUTE = "data-railing-ready";
 
 /** Global the adapter exposes so the runner can record what it tested. */
-export const META_GLOBAL = "__HANDRAIL__";
+export const META_GLOBAL = "__RAILING__";
 
 /** Attribute used to locate harness elements. */
 export const TEST_ID_ATTRIBUTE = "data-testid";
@@ -24,7 +24,7 @@ export const TEST_ID_ATTRIBUTE = "data-testid";
  * must use them exactly.
  */
 export const TEXT = {
-  dialogTitle: "Handrail test dialog",
+  dialogTitle: "Railing test dialog",
   dialogTrigger: "Open dialog",
   close: "Close",
   outsideContent: "Content outside the dialog",
@@ -65,7 +65,7 @@ export const TEXT = {
   accordionPanel3: "Review section content",
 } as const;
 
-/** Metadata an adapter must expose on `window.__HANDRAIL__`. */
+/** Metadata an adapter must expose on `window.__RAILING__`. */
 export interface HarnessMeta {
   protocolVersion: number;
   /** Target id, matching an entry in targets.json (e.g. "radix"). */

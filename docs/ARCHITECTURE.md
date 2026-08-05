@@ -34,7 +34,7 @@ The runner receives a base URL and a component name. It navigates to `/harness/d
 
 ## Packages
 
-### `@handrail/spec`
+### `@railing/spec`
 
 Canonical component contracts. Each spec is a `ComponentSpec` containing metadata and an array of `Assertion`s.
 
@@ -54,25 +54,25 @@ The metadata is serialisable, so it can be rendered into the site and the report
 
 Every assertion **must** cite an APG clause or a WCAG success criterion. An assertion that cannot cite one is our opinion, and our opinions are not publishable as conformance results.
 
-### `@handrail/harness-kit`
+### `@railing/harness-kit`
 
 The shared contract, imported by adapters. Exports the protocol constants (test IDs, ready signal, metadata shape) and a `mountHarness` helper for React adapters.
 
 Adapters depend on this so that a protocol change is a version bump rather than a scavenger hunt through seven repositories.
 
-### `@handrail/runner`
+### `@railing/runner`
 
 Playwright-based execution engine.
 
 - `driver.ts`, primitives: keyboard traversal, focus tracking, accessibility-tree queries via the Chrome DevTools Protocol
 - `execute.ts`, runs a spec against a base URL, produces a `RunResult`
-- `cli.ts`, the `handrail run` command
+- `cli.ts`, the `railing run` command
 
 The accessibility tree comes from CDP `Accessibility.getFullAXTree`, not from the DOM. This matters: it gives us the *computed* role, name and state as the browser exposes them to assistive technology, including whether a node is ignored or hidden. A DOM-level check cannot answer "is the background actually hidden from a screen reader"; the accessibility tree can.
 
 The cost is that v1 is Chromium-only. That is an accepted, documented limitation.
 
-### `@handrail/report`
+### `@railing/report`
 
 Scoring, JSON output, Markdown summaries, and the shields.io badge endpoint. Kept separate from the runner so that anyone can re-score raw results with different weightings, which is the whole point of publishing them.
 
@@ -82,8 +82,8 @@ Fully specified in [`HARNESS-PROTOCOL.md`](HARNESS-PROTOCOL.md). In summary, an 
 
 1. Serve `/harness/<component>` over HTTP
 2. Render the required elements, each carrying a fixed `data-testid`
-3. Expose `window.__HANDRAIL__` with library name, version and adapter version
-4. Set `data-handrail-ready="true"` on `<body>` once mounted
+3. Expose `window.__RAILING__` with library name, version and adapter version
+4. Set `data-railing-ready="true"` on `<body>` once mounted
 
 That is the entire contract. Note what it does *not* mention: React, bundlers, build tools, or any JavaScript at all. **The protocol is HTTP and HTML.** A Vue adapter, a Svelte adapter, a Web Components adapter or a hand-written static HTML page are all equally valid, and the runner cannot distinguish between them.
 

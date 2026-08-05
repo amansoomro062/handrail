@@ -16,7 +16,7 @@ function harnessRoutes(): Plugin {
     next();
   };
   return {
-    name: "handrail-harness-routes",
+    name: "railing-harness-routes",
     // Called before Vite's internal middlewares, so the rewrite lands first.
     configureServer: (server) => {
       server.middlewares.use(rewrite);

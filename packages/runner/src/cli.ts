@@ -2,8 +2,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { isAbsolute, join, resolve } from "node:path";
 import { chromium } from "playwright";
-import { getSpec } from "@handrail/spec";
-import { isPublishable, renderTerminal, scoreRun } from "@handrail/report";
+import { getSpec } from "@railing/spec";
+import { isPublishable, renderTerminal, scoreRun } from "@railing/report";
 import { runSpec } from "./execute.js";
 
 interface Args {
@@ -108,12 +108,12 @@ function parseArgs(argv: string[]): Args {
     console.error(
       [
         "",
-        "  handrail run --target <id> --component <id> --base-url <url>",
+        "  railing run --target <id> --component <id> --base-url <url>",
         "",
         `  Missing: ${missing.map((m) => `--${m}`).join(", ")}`,
         "",
         "  Example:",
-        "    pnpm handrail run --target radix --component dialog \\",
+        "    pnpm railing run --target radix --component dialog \\",
         "      --base-url http://localhost:5180",
         "",
         "  Options:",

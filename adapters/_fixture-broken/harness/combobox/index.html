@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Handrail, deliberately broken combobox</title>
+    <title>Railing, deliberately broken combobox</title>
   </head>
   <body>
     <!--
@@ -41,7 +41,7 @@
         });
       }
 
-      window.__HANDRAIL__ = {
+      window.__RAILING__ = {
         protocolVersion: 1,
         library: "_fixture-broken",
         libraryVersions: { "_fixture-broken": "0.1.0" },
@@ -51,7 +51,7 @@
       };
 
       requestAnimationFrame(() =>
-        requestAnimationFrame(() => document.body.setAttribute("data-handrail-ready", "true")),
+        requestAnimationFrame(() => document.body.setAttribute("data-railing-ready", "true")),
       );
     </script>
   </body>

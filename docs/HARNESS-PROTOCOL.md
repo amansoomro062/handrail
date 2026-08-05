@@ -23,7 +23,7 @@ Any server will do. The runner is given a base URL and appends the path. A Vite 
 Set the attribute once the component has mounted and is interactive:
 
 ```html
-<body data-handrail-ready="true">
+<body data-railing-ready="true">
 ```
 
 The runner waits for this before it touches anything. Setting it too early is the most common cause of flaky results, set it after mount and after any first paint your library defers.
@@ -31,7 +31,7 @@ The runner waits for this before it touches anything. Setting it too early is th
 ## 3. Expose metadata
 
 ```js
-window.__HANDRAIL__ = {
+window.__RAILING__ = {
   protocolVersion: 1,
   library: "radix",
   libraryVersions: { "@radix-ui/react-dialog": "1.1.4" },
@@ -55,7 +55,7 @@ Where the spec fixes a string, use it exactly. Assertions about accessible names
 
 | Slot          | Required text          |
 | ------------- | ---------------------- |
-| Dialog title  | `Handrail test dialog` |
+| Dialog title  | `Railing test dialog` |
 | Trigger label | `Open dialog`          |
 | Close label   | `Close`                |
 
@@ -73,7 +73,7 @@ APG pattern: <https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/>
 | `hr-trigger`         | The control that opens the dialog. Label: `Open dialog`                 |
 | `hr-outside-content` | A focusable `<button>` outside the dialog, labelled `Content outside the dialog`. Used for inertness checks |
 | `hr-dialog`          | The dialog container element                                            |
-| `hr-title`           | The dialog's visible title. Text: `Handrail test dialog`                |
+| `hr-title`           | The dialog's visible title. Text: `Railing test dialog`                |
 | `hr-field-1`         | A focusable `<input type="text">` inside the dialog                     |
 | `hr-field-2`         | A second focusable `<input type="text">` inside the dialog              |
 | `hr-close`           | A `<button>` inside the dialog that closes it. Label: `Close`           |
@@ -140,7 +140,7 @@ An editable combobox with a listbox popup.
 
 Most libraries do not let you place an attribute on the element carrying the semantics. React Spectrum's `ComboBox` forwards `data-testid` to a wrapper rather than to the `input[role="combobox"]` inside it, and popups are portalled in only when opened.
 
-`stampTestIds` from `@handrail/harness-kit` attaches ids by structural selector, and keeps doing so via a `MutationObserver` as the DOM changes:
+`stampTestIds` from `@railing/harness-kit` attaches ids by structural selector, and keeps doing so via a `MutationObserver` as the DOM changes:
 
 ```ts
 stampTestIds({

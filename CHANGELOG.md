@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Handrail. The format follows
+All notable changes to Railing. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
 [SemVer](https://semver.org/) once packages are published.
 
@@ -11,7 +11,7 @@ recorded in `results/history/`; this file records changes to the instrument.
 
 ### Added
 
-- `@handrail/announce`: screen reader spot checks driving real VoiceOver via
+- `@railing/announce`: screen reader spot checks driving real VoiceOver via
   Guidepup, capturing what was actually spoken. Observations, never score
   inputs; see `docs/SCREENREADERS.md` and decision 021.
 - Specifications for dialog, combobox, menu, tabs and accordion: 64 assertions,
@@ -32,7 +32,7 @@ recorded in `results/history/`; this file records changes to the instrument.
   command per finding, and fourteen days before anything is published.
 - The publication gate, enforced in the pages, the API emission and the
   deploy, tested to fail closed on unparseable dates.
-- The public site at [handrail.tech](https://handrail.tech): method, scoring,
+- The public site at [railing.dev](https://railing.dev): method, scoring,
   decision log, disclosure policy and contribution guide, generated from the
   documents in `docs/` so the site and the repository cannot disagree.
 - An accessibility audit that holds the site and the maintainer reports to the
@@ -50,4 +50,4 @@ recorded in `results/history/`; this file records changes to the instrument.
   too early, and a containment check that judged shadcn's own close button to
   be outside its dialog.
 
-[Unreleased]: https://github.com/amansoomro062/handrail/commits/main
+[Unreleased]: https://github.com/amansoomro062/railing/commits/main

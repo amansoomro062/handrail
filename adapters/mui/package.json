@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/adapter-mui",
+  "name": "@railing/adapter-mui",
   "version": "0.1.0",
   "description": "MUI adapter.",
   "license": "MIT",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@emotion/react": "catalog:subjects",
     "@emotion/styled": "catalog:subjects",
-    "@handrail/harness-kit": "workspace:*",
+    "@railing/harness-kit": "workspace:*",
     "@mui/lab": "catalog:subjects",
     "@mui/material": "catalog:subjects",
     "react": "catalog:",

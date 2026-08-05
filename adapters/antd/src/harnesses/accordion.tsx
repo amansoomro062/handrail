@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Collapse } from "antd";
-import { stampTestIds, TEXT } from "@handrail/harness-kit";
+import { stampTestIds, TEXT } from "@railing/harness-kit";
 
 /** Ant Design's accordion is Collapse. All panels start collapsed. */
 export function AccordionHarness() {

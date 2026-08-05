@@ -38,7 +38,7 @@ jobs:
       # binaries, so `pnpm exec playwright` at the workspace root finds nothing
       # on a clean machine, and on a developer's machine it may find an
       # unrelated global install at a different version.
-      - run: pnpm --filter @handrail/runner exec playwright install --with-deps chromium
+      - run: pnpm --filter @railing/runner exec playwright install --with-deps chromium
 
       # Serving and testing live in one step on purpose. A server backgrounded
       # in one step and used in the next depends on the process surviving
@@ -50,13 +50,13 @@ jobs:
       - name: Calibrate every spec against the broken fixture
         run: |
           set -euo pipefail
-          pnpm --filter @handrail/fixture-broken run dev &
+          pnpm --filter @railing/fixture-broken run dev &
           server=$!
           trap 'kill $server 2>/dev/null || true' EXIT
           npx --yes wait-on http://localhost:5199/harness/dialog --timeout 60000
 
           for spec in dialog combobox menu tabs accordion; do
-            pnpm handrail run --target _fixture-broken --component "$spec" \
+            pnpm railing run --target _fixture-broken --component "$spec" \
               --base-url http://localhost:5199 \
               --expect adapters/_fixture-broken/expected.json
           done

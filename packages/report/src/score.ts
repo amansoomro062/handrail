@@ -1,4 +1,4 @@
-import { SEVERITY_WEIGHT, type AssertionStatus } from "@handrail/spec";
+import { SEVERITY_WEIGHT, type AssertionStatus } from "@railing/spec";
 import type { AssertionResult, RunResult, Score } from "./types.js";
 
 /**

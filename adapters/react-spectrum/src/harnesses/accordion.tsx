@@ -7,7 +7,7 @@ import {
   DisclosureTitle,
   Provider,
 } from "@adobe/react-spectrum";
-import { stampTestIds, TEXT } from "@handrail/harness-kit";
+import { stampTestIds, TEXT } from "@railing/harness-kit";
 
 /**
  * Adobe React Spectrum accordion: calibration control for this pattern.

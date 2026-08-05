@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/adapter-radix",
+  "name": "@railing/adapter-radix",
   "version": "0.1.0",
   "description": "Reference adapter. Read this one first when writing a new adapter.",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@handrail/harness-kit": "workspace:*",
+    "@railing/harness-kit": "workspace:*",
     "@radix-ui/react-accordion": "catalog:subjects",
     "@radix-ui/react-dialog": "catalog:subjects",
     "@radix-ui/react-dropdown-menu": "catalog:subjects",

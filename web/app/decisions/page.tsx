@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { renderMarkdown } from "@handrail/markdown";
+import { renderMarkdown } from "@railing/markdown";
 import { loadDoc, loadSite } from "@/lib/data";
 import { parseDecisions } from "@/lib/decisions";
 import { resolveLink } from "@/components/doc-page";
 import { REPO } from "@/components/chrome";
-import { specs } from "@handrail/spec";
+import { specs } from "@railing/spec";
 
 export const metadata: Metadata = {
   title: "Decision log",

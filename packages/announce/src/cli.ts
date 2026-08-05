@@ -19,7 +19,7 @@ import { isAbsolute, join, resolve } from "node:path";
 import { execSync } from "node:child_process";
 import { chromium } from "playwright";
 import { voiceOver } from "@guidepup/guidepup";
-import { META_GLOBAL, READY_ATTRIBUTE } from "@handrail/spec";
+import { META_GLOBAL, READY_ATTRIBUTE } from "@railing/spec";
 import { announceSpecs } from "./specs.js";
 import { runSteps, type Instrument } from "./driver.js";
 import { ANNOUNCE_SCHEMA_VERSION, type AnnounceResult } from "./types.js";
@@ -45,7 +45,7 @@ function parseArgs(argv: string[]): { target: string; component: string; baseUrl
     console.error(
       [
         "",
-        "  handrail announce --target <id> --component <id> --base-url <url>",
+        "  railing announce --target <id> --component <id> --base-url <url>",
         "",
         `  Missing: ${missing.map((m) => `--${m}`).join(", ")}`,
         "",

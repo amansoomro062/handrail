@@ -3,8 +3,8 @@
 **This adapter exists to measure the harness, not the library.**
 
 ```bash
-pnpm --filter @handrail/adapter-react-spectrum run dev
-pnpm handrail run --target react-spectrum --component dialog --base-url http://localhost:5181
+pnpm --filter @railing/adapter-react-spectrum run dev
+pnpm railing run --target react-spectrum --component dialog --base-url http://localhost:5181
 ```
 
 Port 5181.

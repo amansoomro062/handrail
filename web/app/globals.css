@@ -177,7 +177,7 @@ a {
 /* ------------------------------------------------------------------ *
  * The field
  * Amber and rust over deep ink: the colours of safety infrastructure,
- * handrails and tactile paving, rather than a decorative wash.
+ * railings and tactile paving, rather than a decorative wash.
  * ------------------------------------------------------------------ */
 
 .field {
@@ -203,7 +203,7 @@ a {
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
 }
-/* Tread: the grip on a real handrail. */
+/* Tread: the grip on a real railing. */
 .field::after {
   content: "";
   position: absolute;

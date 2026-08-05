@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/announce",
+  "name": "@railing/announce",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@guidepup/guidepup": "catalog:",
-    "@handrail/spec": "workspace:*",
+    "@railing/spec": "workspace:*",
     "playwright": "catalog:"
   },
   "devDependencies": {

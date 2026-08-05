@@ -1,5 +1,5 @@
 {
-  "name": "@handrail/spec",
+  "name": "@railing/spec",
   "version": "0.1.0",
   "description": "Canonical component contracts and accessibility assertions, derived from the W3C ARIA Authoring Practices Guide.",
   "license": "MIT",
@@ -23,14 +23,14 @@
     "tsx": "catalog:"
   },
   "author": "Amanullah Soomro",
-  "homepage": "https://handrail.tech",
+  "homepage": "https://railing.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amansoomro062/handrail.git",
+    "url": "git+https://github.com/amansoomro062/railing.git",
     "directory": "packages/spec"
   },
   "bugs": {
-    "url": "https://github.com/amansoomro062/handrail/issues"
+    "url": "https://github.com/amansoomro062/railing/issues"
   },
   "keywords": [
     "accessibility",

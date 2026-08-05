@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { stampTestIds, TEXT } from "@handrail/harness-kit";
+import { stampTestIds, TEXT } from "@railing/harness-kit";
 
 /** Headless UI dialog, mounted as its documentation describes. */
 export function DialogHarness() {

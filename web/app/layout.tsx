@@ -4,11 +4,11 @@ import { Nav, Footer } from "@/components/chrome";
 
 export const metadata: Metadata = {
   title: {
-    default: "Handrail: accessibility conformance for component libraries",
-    template: "%s | Handrail",
+    default: "Railing: accessibility conformance for component libraries",
+    template: "%s | Railing",
   },
   description:
-    "Handrail measures React component libraries against the W3C ARIA Authoring Practices Guide. " +
+    "Railing measures React component libraries against the W3C ARIA Authoring Practices Guide. " +
     "Every check cites a clause, every score names an exact version, and maintainers see their " +
     "findings before anyone else.",
 };

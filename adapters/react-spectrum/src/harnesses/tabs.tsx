@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { defaultTheme, Item, Provider, TabList, TabPanels, Tabs } from "@adobe/react-spectrum";
-import { stampTestIds, TEXT } from "@handrail/harness-kit";
+import { stampTestIds, TEXT } from "@railing/harness-kit";
 
 /**
  * Adobe React Spectrum tabs: calibration control for this pattern.

@@ -25,7 +25,7 @@ test("matching is case-insensitive and whitespace-tolerant", () => {
 test("needles may land across separate phrases", () => {
   // VoiceOver splits announcements differently between versions. Where the
   // split falls is not the library's doing.
-  assert.equal(matchCheck(["Handrail test dialog", "web dialog"], ["Handrail test dialog", "dialog"]).ok, true);
+  assert.equal(matchCheck(["Railing test dialog", "web dialog"], ["Railing test dialog", "dialog"]).ok, true);
 });
 
 test("a missing needle fails the check", () => {

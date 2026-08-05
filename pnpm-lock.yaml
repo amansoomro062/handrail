@@ -111,7 +111,7 @@ importers:
 
   adapters/antd:
     dependencies:
-      '@handrail/harness-kit':
+      '@railing/harness-kit':
         specifier: workspace:*
         version: link:../../packages/harness-kit
       antd:
@@ -148,7 +148,7 @@ importers:
       '@emotion/react':
         specifier: catalog:subjects
         version: 11.14.0(@types/react@18.3.31)(react@18.3.1)
-      '@handrail/harness-kit':
+      '@railing/harness-kit':
         specifier: workspace:*
         version: link:../../packages/harness-kit
       react:
@@ -176,7 +176,7 @@ importers:
 
   adapters/headlessui:
     dependencies:
-      '@handrail/harness-kit':
+      '@railing/harness-kit':
         specifier: workspace:*
         version: link:../../packages/harness-kit
       '@headlessui/react':
@@ -213,7 +213,7 @@ importers:
       '@emotion/styled':
         specifier: catalog:subjects
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1)
-      '@handrail/harness-kit':
+      '@railing/harness-kit':
         specifier: workspace:*
         version: link:../../packages/harness-kit
       '@mui/lab':
@@ -247,7 +247,7 @@ importers:
 
   adapters/radix:
     dependencies:
-      '@handrail/harness-kit':
+      '@railing/harness-kit':
         specifier: workspace:*
         version: link:../../packages/harness-kit
       '@radix-ui/react-accordion':
@@ -290,7 +290,7 @@ importers:
       '@adobe/react-spectrum':
         specifier: catalog:subjects
         version: 3.47.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@handrail/harness-kit':
+      '@railing/harness-kit':
         specifier: workspace:*
         version: link:../../packages/harness-kit
       react:
@@ -321,7 +321,7 @@ importers:
       '@base-ui/react':
         specifier: catalog:subjects
         version: 1.6.0(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@handrail/harness-kit':
+      '@railing/harness-kit':
         specifier: workspace:*
         version: link:../../packages/harness-kit
       class-variance-authority:
@@ -367,7 +367,7 @@ importers:
       '@guidepup/guidepup':
         specifier: 'catalog:'
         version: 0.31.0
-      '@handrail/spec':
+      '@railing/spec':
         specifier: workspace:*
         version: link:../spec
       playwright:
@@ -386,7 +386,7 @@ importers:
 
   packages/harness-kit:
     dependencies:
-      '@handrail/spec':
+      '@railing/spec':
         specifier: workspace:*
         version: link:../spec
     devDependencies:
@@ -420,7 +420,7 @@ importers:
 
   packages/report:
     dependencies:
-      '@handrail/spec':
+      '@railing/spec':
         specifier: workspace:*
         version: link:../spec
     devDependencies:
@@ -433,10 +433,10 @@ importers:
 
   packages/runner:
     dependencies:
-      '@handrail/report':
+      '@railing/report':
         specifier: workspace:*
         version: link:../report
-      '@handrail/spec':
+      '@railing/spec':
         specifier: workspace:*
         version: link:../spec
       playwright:
@@ -468,13 +468,13 @@ importers:
 
   web:
     dependencies:
-      '@handrail/markdown':
+      '@railing/markdown':
         specifier: workspace:*
         version: link:../packages/markdown
-      '@handrail/report':
+      '@railing/report':
         specifier: workspace:*
         version: link:../packages/report
-      '@handrail/spec':
+      '@railing/spec':
         specifier: workspace:*
         version: link:../packages/spec
       next:

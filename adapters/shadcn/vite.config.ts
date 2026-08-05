@@ -30,7 +30,7 @@ function librariesUnderTest(): Record<string, string> {
   const manifest = JSON.parse(readFileSync(join(here, "package.json"), "utf8"));
   const versions: Record<string, string> = {};
   for (const name of Object.keys(manifest.dependencies ?? {})) {
-    if (name.startsWith("@handrail/") || EXCLUDED.has(name)) continue;
+    if (name.startsWith("@railing/") || EXCLUDED.has(name)) continue;
     versions[name] = resolvedVersion(name);
   }
   return versions;
@@ -42,7 +42,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: { alias: { "@": resolve(here, "src") } },
   define: {
-    __HANDRAIL_LIBRARY_VERSIONS__: JSON.stringify(LIBRARY_VERSIONS),
+    __RAILING_LIBRARY_VERSIONS__: JSON.stringify(LIBRARY_VERSIONS),
   },
   server: { port: 5186, strictPort: true },
   preview: { port: 5186, strictPort: true },

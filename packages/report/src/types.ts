@@ -1,4 +1,4 @@
-import type { AssertionStatus, Refs, Severity } from "@handrail/spec";
+import type { AssertionStatus, Refs, Severity } from "@railing/spec";
 
 /**
  * The published result schema.

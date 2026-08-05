@@ -1,4 +1,4 @@
-# Contributing to Handrail
+# Contributing to Railing
 
 ## The one rule
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Handrail, deliberately broken fixture</title>
+    <title>Railing, deliberately broken fixture</title>
   </head>
   <body>
     <!--
@@ -19,7 +19,7 @@
 
     <!-- DEFECT: role="dialog" with no accessible name. -->
     <div data-testid="hr-dialog" role="dialog" hidden>
-      <h2 data-testid="hr-title">Handrail test dialog</h2>
+      <h2 data-testid="hr-title">Railing test dialog</h2>
       <input data-testid="hr-field-1" type="text" aria-label="Field one" />
       <input data-testid="hr-field-2" type="text" aria-label="Field two" />
       <!-- DEFECT: icon-only close button with no accessible name. -->
@@ -39,7 +39,7 @@
         dialog.hidden = true;
       });
 
-      window.__HANDRAIL__ = {
+      window.__RAILING__ = {
         protocolVersion: 1,
         library: "_fixture-broken",
         libraryVersions: { "_fixture-broken": "0.1.0" },
@@ -49,7 +49,7 @@
       };
 
       requestAnimationFrame(() =>
-        requestAnimationFrame(() => document.body.setAttribute("data-handrail-ready", "true")),
+        requestAnimationFrame(() => document.body.setAttribute("data-railing-ready", "true")),
       );
     </script>
   </body>

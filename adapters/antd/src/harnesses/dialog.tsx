@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Modal } from "antd";
-import { stampTestIds, TEXT } from "@handrail/harness-kit";
+import { stampTestIds, TEXT } from "@railing/harness-kit";
 
 /** Ant Design's dialog is Modal. Default configuration, no hand-written ARIA. */
 export function DialogHarness() {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { loadSite, CEILING } from "@/lib/data";
 import { parseDecisions } from "@/lib/decisions";
 import { loadDoc } from "@/lib/data";
-import { getSpec, specs } from "@handrail/spec";
+import { getSpec, specs } from "@railing/spec";
 
 /**
  * The landing page.
