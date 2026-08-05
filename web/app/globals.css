@@ -815,15 +815,17 @@ a {
 .prose > :first-child {
   margin-top: 0;
 }
+/* The reset zeroes heading margins, so both sides are restored here. More
+   above than below, or a heading reads as attached to the wrong section. */
 .prose h2 {
-  margin-top: 2.8rem;
+  margin: 2.8rem 0 1rem;
   font-size: clamp(24px, 2.4vw, 34px);
 }
 .prose h3 {
-  margin-top: 1.9rem;
+  margin: 1.9rem 0 0.65rem;
 }
 .prose h4 {
-  margin-top: 1.4rem;
+  margin: 1.4rem 0 0.5rem;
 }
 .prose p,
 .prose ul,
