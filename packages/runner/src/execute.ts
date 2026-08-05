@@ -1,10 +1,10 @@
 import type { Page } from "playwright";
-import type { ComponentSpec, RunContext } from "@railing/spec";
+import type { ComponentSpec, RunContext } from "@railing-dev/spec";
 import {
   RESULT_SCHEMA_VERSION,
   type AssertionResult,
   type RunResult,
-} from "@railing/report";
+} from "@railing-dev/report";
 import { Cdp } from "./cdp.js";
 import { createA11yTools, createHarness, createKeyboardTools, HarnessError } from "./driver.js";
 

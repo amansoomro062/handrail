@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Dropdown } from "antd";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 /** Ant Design's menu is Dropdown driven by a `menu` prop. */
 export function MenuHarness() {

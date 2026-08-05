@@ -1,5 +1,5 @@
 {
-  "name": "@railing/adapter-antd",
+  "name": "@railing-dev/adapter-antd",
   "version": "0.1.0",
   "description": "Ant Design adapter.",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@railing/harness-kit": "workspace:*",
+    "@railing-dev/harness-kit": "workspace:*",
     "antd": "catalog:subjects",
     "react": "catalog:",
     "react-dom": "catalog:"

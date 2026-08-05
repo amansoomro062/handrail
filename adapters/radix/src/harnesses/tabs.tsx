@@ -1,5 +1,5 @@
 import * as Tabs from "@radix-ui/react-tabs";
-import { TEXT } from "@railing/harness-kit";
+import { TEXT } from "@railing-dev/harness-kit";
 
 /**
  * Radix UI tabs, mounted exactly as the Radix documentation describes.

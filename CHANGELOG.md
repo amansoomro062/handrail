@@ -12,12 +12,12 @@ recorded in `results/history/`; this file records changes to the instrument.
 ### Changed
 
 - Project renamed from Handrail to Railing (5 Aug 2026); site domain is now
-  railing.dev and packages are scoped `@railing/*`. No packages had been
+  railing.dev and packages are scoped `@railing-dev/*`. No packages had been
   published under the old scope, so nothing external breaks.
 
 ### Added
 
-- `@railing/announce`: screen reader spot checks driving real VoiceOver via
+- `@railing-dev/announce`: screen reader spot checks driving real VoiceOver via
   Guidepup, capturing what was actually spoken. Observations, never score
   inputs; see `docs/SCREENREADERS.md` and decision 021.
 - Specifications for dialog, combobox, menu, tabs and accordion: 64 assertions,

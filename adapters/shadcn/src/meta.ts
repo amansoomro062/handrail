@@ -1,4 +1,4 @@
-import { PROTOCOL_VERSION, type HarnessMeta } from "@railing/harness-kit";
+import { PROTOCOL_VERSION, type HarnessMeta } from "@railing-dev/harness-kit";
 
 declare const __RAILING_LIBRARY_VERSIONS__: Record<string, string>;
 

@@ -11,7 +11,7 @@
  */
 
 import type { CDPSession, Page } from "playwright";
-import type { AxNode } from "@railing/spec";
+import type { AxNode } from "@railing-dev/spec";
 
 /**
  * Playwright does not publicly export the CDP protocol types, so the typed

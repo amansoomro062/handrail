@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { ComboBox, defaultTheme, Item, Provider } from "@adobe/react-spectrum";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 /**
  * Adobe React Spectrum combobox: the calibration control for this pattern.

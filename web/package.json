@@ -1,5 +1,5 @@
 {
-  "name": "@railing/web",
+  "name": "@railing-dev/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,9 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@railing/markdown": "workspace:*",
-    "@railing/report": "workspace:*",
-    "@railing/spec": "workspace:*",
+    "@railing-dev/markdown": "workspace:*",
+    "@railing-dev/report": "workspace:*",
+    "@railing-dev/spec": "workspace:*",
     "next": "^16.3.0",
     "react": "catalog:",
     "react-dom": "catalog:"

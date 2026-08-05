@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 /**
  * MUI menu, mounted with default configuration.

@@ -34,7 +34,7 @@ The runner receives a base URL and a component name. It navigates to `/harness/d
 
 ## Packages
 
-### `@railing/spec`
+### `@railing-dev/spec`
 
 Canonical component contracts. Each spec is a `ComponentSpec` containing metadata and an array of `Assertion`s.
 
@@ -54,13 +54,13 @@ The metadata is serialisable, so it can be rendered into the site and the report
 
 Every assertion **must** cite an APG clause or a WCAG success criterion. An assertion that cannot cite one is our opinion, and our opinions are not publishable as conformance results.
 
-### `@railing/harness-kit`
+### `@railing-dev/harness-kit`
 
 The shared contract, imported by adapters. Exports the protocol constants (test IDs, ready signal, metadata shape) and a `mountHarness` helper for React adapters.
 
 Adapters depend on this so that a protocol change is a version bump rather than a scavenger hunt through seven repositories.
 
-### `@railing/runner`
+### `@railing-dev/runner`
 
 Playwright-based execution engine.
 
@@ -72,7 +72,7 @@ The accessibility tree comes from CDP `Accessibility.getFullAXTree`, not from th
 
 The cost is that v1 is Chromium-only. That is an accepted, documented limitation.
 
-### `@railing/report`
+### `@railing-dev/report`
 
 Scoring, JSON output, Markdown summaries, and the shields.io badge endpoint. Kept separate from the runner so that anyone can re-score raw results with different weightings, which is the whole point of publishing them.
 

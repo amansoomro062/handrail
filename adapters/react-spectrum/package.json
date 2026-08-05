@@ -1,5 +1,5 @@
 {
-  "name": "@railing/adapter-react-spectrum",
+  "name": "@railing-dev/adapter-react-spectrum",
   "version": "0.1.0",
   "description": "Calibration control. Widely regarded as the accessibility gold standard, a failure here is presumed to be our bug until proven otherwise.",
   "license": "MIT",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@adobe/react-spectrum": "catalog:subjects",
-    "@railing/harness-kit": "workspace:*",
+    "@railing-dev/harness-kit": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
   },

@@ -1,4 +1,4 @@
-# @railing/runner
+# @railing-dev/runner
 
 The test runner. Executes a component specification against any harness over HTTP.
 
@@ -8,7 +8,7 @@ results. Every check cites the clause it measures, every score names an exact
 version, and maintainers see their findings before anyone else.
 
 ```bash
-npx @railing/runner run --target radix --component dialog \\
+npx @railing-dev/runner run --target radix --component dialog \\
   --base-url http://localhost:5180 --repeat 3
 ```
 

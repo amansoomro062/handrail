@@ -1,4 +1,4 @@
-import { announceReady, mountHarness } from "@railing/harness-kit/react";
+import { announceReady, mountHarness } from "@railing-dev/harness-kit/react";
 import { metaFor } from "./meta.js";
 import { DialogHarness } from "./harnesses/dialog.js";
 import { MenuHarness } from "./harnesses/menu.js";

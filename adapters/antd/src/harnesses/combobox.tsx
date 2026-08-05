@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { AutoComplete } from "antd";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 /**
  * Ant Design has no single combobox component. AutoComplete is the closest

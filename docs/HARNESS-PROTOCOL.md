@@ -140,7 +140,7 @@ An editable combobox with a listbox popup.
 
 Most libraries do not let you place an attribute on the element carrying the semantics. React Spectrum's `ComboBox` forwards `data-testid` to a wrapper rather than to the `input[role="combobox"]` inside it, and popups are portalled in only when opened.
 
-`stampTestIds` from `@railing/harness-kit` attaches ids by structural selector, and keeps doing so via a `MutationObserver` as the DOM changes:
+`stampTestIds` from `@railing-dev/harness-kit` attaches ids by structural selector, and keeps doing so via a `MutationObserver` as the DOM changes:
 
 ```ts
 stampTestIds({

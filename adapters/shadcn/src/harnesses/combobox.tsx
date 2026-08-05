@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/components/ui/combobox";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 const OPTIONS = [TEXT.comboboxOption1, TEXT.comboboxOption2, TEXT.comboboxOption3];
 

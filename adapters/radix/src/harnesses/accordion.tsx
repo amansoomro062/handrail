@@ -1,5 +1,5 @@
 import * as Accordion from "@radix-ui/react-accordion";
-import { TEXT } from "@railing/harness-kit";
+import { TEXT } from "@railing-dev/harness-kit";
 
 /**
  * Radix UI accordion, mounted exactly as the Radix documentation describes.

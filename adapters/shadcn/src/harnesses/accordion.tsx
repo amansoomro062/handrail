@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { TEXT } from "@railing/harness-kit";
+import { TEXT } from "@railing-dev/harness-kit";
 
 /** shadcn/ui accordion, as generated. Built on Radix. `collapsible` so an open
  *  section can close again, matching how the other adapters are configured. */

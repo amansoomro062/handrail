@@ -23,16 +23,16 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @railing/runner exec playwright install --with-deps chromium
+      - run: pnpm --filter @railing-dev/runner exec playwright install --with-deps chromium
 
       - name: Measure every library
         run: |
           set -euo pipefail
 
           for a in radix react-spectrum mui headlessui chakra antd shadcn; do
-            pnpm --filter "@railing/adapter-$a" run dev &
+            pnpm --filter "@railing-dev/adapter-$a" run dev &
           done
-          pnpm --filter @railing/fixture-broken run dev &
+          pnpm --filter @railing-dev/fixture-broken run dev &
           trap 'kill $(jobs -p) 2>/dev/null || true' EXIT
 
           for port in 5180 5181 5182 5183 5184 5185 5186 5199; do

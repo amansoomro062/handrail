@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions, Field, Label } from "@headlessui/react";
-import { TEXT } from "@railing/harness-kit";
+import { TEXT } from "@railing-dev/harness-kit";
 
 const OPTIONS = [TEXT.comboboxOption1, TEXT.comboboxOption2, TEXT.comboboxOption3];
 

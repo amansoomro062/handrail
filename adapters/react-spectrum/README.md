@@ -3,7 +3,7 @@
 **This adapter exists to measure the harness, not the library.**
 
 ```bash
-pnpm --filter @railing/adapter-react-spectrum run dev
+pnpm --filter @railing-dev/adapter-react-spectrum run dev
 pnpm railing run --target react-spectrum --component dialog --base-url http://localhost:5181
 ```
 

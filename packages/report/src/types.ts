@@ -1,4 +1,4 @@
-import type { AssertionStatus, Refs, Severity } from "@railing/spec";
+import type { AssertionStatus, Refs, Severity } from "@railing-dev/spec";
 
 /**
  * The published result schema.

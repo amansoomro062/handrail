@@ -11,14 +11,14 @@ A small web app that mounts one library's components into the fixed harness desc
 ## Steps
 
 1. Copy `adapters/radix` to `adapters/<your-library>`
-2. Update `package.json`, name it `@railing/adapter-<id>`, swap the library dependency, pick an unused port
+2. Update `package.json`, name it `@railing-dev/adapter-<id>`, swap the library dependency, pick an unused port
 3. Rewrite `src/harnesses/dialog.tsx` using your library's components
 4. Update `src/meta.ts` with the library id and resolved versions
 5. Add your target to `targets.json` at the repository root with `"status": "draft"`
 6. Run it and check the result looks sane
 
 ```bash
-pnpm --filter @railing/adapter-<id> run dev
+pnpm --filter @railing-dev/adapter-<id> run dev
 pnpm railing run --target <id> --component dialog --base-url http://localhost:<port>
 ```
 

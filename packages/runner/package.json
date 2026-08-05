@@ -1,5 +1,5 @@
 {
-  "name": "@railing/runner",
+  "name": "@railing-dev/runner",
   "version": "0.1.0",
   "description": "Library-agnostic execution engine. Navigates to a harness URL and executes a component spec against whatever it finds.",
   "license": "MIT",
@@ -19,8 +19,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@railing/report": "workspace:*",
-    "@railing/spec": "workspace:*",
+    "@railing-dev/report": "workspace:*",
+    "@railing-dev/spec": "workspace:*",
     "playwright": "catalog:"
   },
   "devDependencies": {

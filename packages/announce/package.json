@@ -1,5 +1,5 @@
 {
-  "name": "@railing/announce",
+  "name": "@railing-dev/announce",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@guidepup/guidepup": "catalog:",
-    "@railing/spec": "workspace:*",
+    "@railing-dev/spec": "workspace:*",
     "playwright": "catalog:"
   },
   "devDependencies": {

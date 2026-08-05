@@ -16,7 +16,7 @@ export default {
      explicit .js extensions, which is correct for node's ESM resolver and
      meaningless to a bundler. Both settings below are needed: one to compile
      them at all, one to map the extension back to the file that exists. */
-  transpilePackages: ["@railing/spec", "@railing/report", "@railing/markdown"],
+  transpilePackages: ["@railing-dev/spec", "@railing-dev/report", "@railing-dev/markdown"],
   webpack: (config) => {
     // Turbopack has no equivalent of this, which is why the build runs on
     // webpack: it is the only resolver that will follow a ".js" specifier to

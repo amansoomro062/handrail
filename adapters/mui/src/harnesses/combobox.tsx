@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Autocomplete, TextField } from "@mui/material";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 /** MUI Autocomplete, its combobox implementation. Default configuration. */
 export function ComboboxHarness() {

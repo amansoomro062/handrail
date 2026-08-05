@@ -9,7 +9,7 @@ import {
   Heading,
   Provider,
 } from "@adobe/react-spectrum";
-import { TEXT } from "@railing/harness-kit";
+import { TEXT } from "@railing-dev/harness-kit";
 
 /**
  * Adobe React Spectrum modal dialog: the calibration control.

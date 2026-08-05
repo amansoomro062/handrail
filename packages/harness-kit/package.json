@@ -1,5 +1,5 @@
 {
-  "name": "@railing/harness-kit",
+  "name": "@railing-dev/harness-kit",
   "version": "0.1.0",
   "description": "Shared adapter scaffolding. Adapters depend on this so a protocol change is a version bump, not a scavenger hunt through every adapter.",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@railing/spec": "workspace:*"
+    "@railing-dev/spec": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18",

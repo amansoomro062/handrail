@@ -46,8 +46,8 @@ jobs:
       - run: pnpm check:versions
       # The gate is a test. If a notification date is wrong, the deploy stops
       # here rather than publishing a score nobody has been told about.
-      - run: pnpm --filter @railing/web run test
-      - run: pnpm --filter @railing/web run build
+      - run: pnpm --filter @railing-dev/web run test
+      - run: pnpm --filter @railing-dev/web run build
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

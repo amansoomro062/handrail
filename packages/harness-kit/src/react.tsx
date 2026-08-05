@@ -1,6 +1,6 @@
 import { StrictMode, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import type { HarnessMeta } from "@railing/spec";
+import type { HarnessMeta } from "@railing-dev/spec";
 import { announceReady } from "./index.js";
 
 // Re-exported so a React adapter needs only one import path.

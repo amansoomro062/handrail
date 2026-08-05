@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Tabs } from "antd";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 export function TabsHarness() {
   useEffect(

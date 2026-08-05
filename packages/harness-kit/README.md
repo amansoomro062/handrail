@@ -1,4 +1,4 @@
-# @railing/harness-kit
+# @railing-dev/harness-kit
 
 Helpers for mounting a component library into the Railing harness.
 

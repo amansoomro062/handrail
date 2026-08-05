@@ -5,7 +5,7 @@ structure assistive technology consumes. It does not hear what a screen
 reader actually says. The tree can be correct and the spoken experience still
 wrong, and that gap is the largest honest limitation of an automated index.
 
-`@railing/announce` narrows it. It drives real VoiceOver over a real headed
+`@railing-dev/announce` narrows it. It drives real VoiceOver over a real headed
 browser with [Guidepup](https://www.guidepup.dev/), performs the same
 interactions a user would, and captures the spoken phrase log. What it
 records is what was said, on a named macOS version, by a named VoiceOver,
@@ -34,7 +34,7 @@ library is published before its maintainer has been notified.
 macOS only. The browser runs headed, VoiceOver starts, speaks, and stops.
 
 ```bash
-pnpm --filter @railing/adapter-react-spectrum run dev   # terminal 1
+pnpm --filter @railing-dev/adapter-react-spectrum run dev   # terminal 1
 pnpm announce --target react-spectrum --component dialog --base-url http://localhost:5181
 ```
 

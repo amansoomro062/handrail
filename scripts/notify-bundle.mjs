@@ -372,7 +372,7 @@ function report(target, results) {
   out.push("Reproduce any of it from a clone of the repository:");
   out.push("");
   out.push("```bash");
-  out.push(`pnpm --filter @railing/adapter-${target.id} run dev`);
+  out.push(`pnpm --filter @railing-dev/adapter-${target.id} run dev`);
   out.push(`pnpm railing run --target ${target.id} --component <component> \\`);
   out.push(`  --base-url http://localhost:${port} --repeat 3`);
   out.push("```");
@@ -536,7 +536,7 @@ function reportHtml(target, results) {
   }
   o.push("</ul>");
   o.push("<p>Reproduce any of it from a clone of the repository:</p>");
-  o.push(`<pre><code>pnpm --filter @railing/adapter-${esc(target.id)} run dev
+  o.push(`<pre><code>pnpm --filter @railing-dev/adapter-${esc(target.id)} run dev
 pnpm railing run --target ${esc(target.id)} --component &lt;component&gt; \\
   --base-url http://localhost:${port} --repeat 3</code></pre>`);
 

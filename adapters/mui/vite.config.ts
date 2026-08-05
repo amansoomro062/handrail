@@ -29,7 +29,7 @@ function librariesUnderTest(): Record<string, string> {
   const manifest = JSON.parse(readFileSync(join(here, "package.json"), "utf8"));
   const versions: Record<string, string> = {};
   for (const name of Object.keys(manifest.dependencies ?? {})) {
-    if (name.startsWith("@railing/") || EXCLUDED.has(name)) continue;
+    if (name.startsWith("@railing-dev/") || EXCLUDED.has(name)) continue;
     versions[name] = resolvedVersion(name);
   }
   return versions;

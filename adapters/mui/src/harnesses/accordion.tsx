@@ -1,5 +1,5 @@
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import { TEXT } from "@railing/harness-kit";
+import { TEXT } from "@railing-dev/harness-kit";
 
 /**
  * MUI accordion, mounted with default configuration and all sections collapsed.

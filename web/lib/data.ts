@@ -15,7 +15,7 @@ import { readFile, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { isPublishable, scoreRun, type RunResult } from "@railing/report";
+import { isPublishable, scoreRun, type RunResult } from "@railing-dev/report";
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 

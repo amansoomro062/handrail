@@ -10,7 +10,7 @@
  * survived contact with a second machine.
  */
 
-import { TEXT } from "@railing/spec";
+import { TEXT } from "@railing-dev/spec";
 import type { AnnounceSpec } from "./types.js";
 
 export const dialogAnnounceSpec: AnnounceSpec = {

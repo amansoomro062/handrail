@@ -7,7 +7,7 @@
  * can check it.
  */
 
-import { renderMarkdown, slug, escapeHtml } from "@railing/markdown";
+import { renderMarkdown, slug, escapeHtml } from "@railing-dev/markdown";
 import { REPO } from "@/components/chrome";
 
 /** Repo-relative doc paths that have a page of their own here. */

@@ -1,4 +1,4 @@
-# @railing/report
+# @railing-dev/report
 
 Scoring and badge rendering for Railing results.
 

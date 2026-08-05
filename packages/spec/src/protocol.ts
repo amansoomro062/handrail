@@ -1,7 +1,7 @@
 /**
  * The harness protocol: the contract between adapters and the runner.
  *
- * Adapters import these constants (re-exported from `@railing/harness-kit`) so
+ * Adapters import these constants (re-exported from `@railing-dev/harness-kit`) so
  * that a protocol change is a version bump rather than a scavenger hunt through
  * seven repositories.
  *

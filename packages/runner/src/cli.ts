@@ -2,8 +2,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { isAbsolute, join, resolve } from "node:path";
 import { chromium } from "playwright";
-import { getSpec } from "@railing/spec";
-import { isPublishable, renderTerminal, scoreRun } from "@railing/report";
+import { getSpec } from "@railing-dev/spec";
+import { isPublishable, renderTerminal, scoreRun } from "@railing-dev/report";
 import { runSpec } from "./execute.js";
 
 interface Args {

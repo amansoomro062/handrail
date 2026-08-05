@@ -109,10 +109,10 @@ Requires Node 20.11+ (`.nvmrc` pins 22) and pnpm 10.
 ```bash
 nvm use
 pnpm install
-pnpm --filter @railing/runner exec playwright install chromium
+pnpm --filter @railing-dev/runner exec playwright install chromium
 
 # Terminal 1: serve the Radix adapter
-pnpm --filter @railing/adapter-radix run dev
+pnpm --filter @railing-dev/adapter-radix run dev
 
 # Terminal 2: run the Dialog spec against it
 pnpm railing run --target radix --component dialog --base-url http://localhost:5180

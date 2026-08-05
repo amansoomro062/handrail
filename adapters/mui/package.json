@@ -1,5 +1,5 @@
 {
-  "name": "@railing/adapter-mui",
+  "name": "@railing-dev/adapter-mui",
   "version": "0.1.0",
   "description": "MUI adapter.",
   "license": "MIT",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@emotion/react": "catalog:subjects",
     "@emotion/styled": "catalog:subjects",
-    "@railing/harness-kit": "workspace:*",
+    "@railing-dev/harness-kit": "workspace:*",
     "@mui/lab": "catalog:subjects",
     "@mui/material": "catalog:subjects",
     "react": "catalog:",

@@ -5,7 +5,7 @@ A naive dialog that gets almost everything wrong, on purpose.
 **Never publish results for this target.** It exists to test the runner, not a library.
 
 ```bash
-pnpm --filter @railing/fixture-broken run dev
+pnpm --filter @railing-dev/fixture-broken run dev
 pnpm railing run --target _fixture-broken --component dialog \
   --base-url http://localhost:5199 \
   --expect adapters/_fixture-broken/expected.json

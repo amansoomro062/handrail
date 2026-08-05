@@ -11,9 +11,9 @@ export {
   harnessPath,
   testIdSelector,
   type HarnessMeta,
-} from "@railing/spec";
+} from "@railing-dev/spec";
 
-import { META_GLOBAL, READY_ATTRIBUTE, TEST_ID_ATTRIBUTE, type HarnessMeta } from "@railing/spec";
+import { META_GLOBAL, READY_ATTRIBUTE, TEST_ID_ATTRIBUTE, type HarnessMeta } from "@railing-dev/spec";
 
 /**
  * A DOM target to stamp: a selector, the nth match of one, or the match whose

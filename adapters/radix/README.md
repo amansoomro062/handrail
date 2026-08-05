@@ -3,7 +3,7 @@
 The reference adapter. Copy this one when adding a library.
 
 ```bash
-pnpm --filter @railing/adapter-radix run dev
+pnpm --filter @railing-dev/adapter-radix run dev
 # then, in another terminal
 pnpm railing run --target radix --component dialog --base-url http://localhost:5180
 ```

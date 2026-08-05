@@ -1,4 +1,4 @@
-# @railing/spec
+# @railing-dev/spec
 
 The component specifications: what correct behaviour is, expressed as assertions that each cite a clause of the APG or a WCAG success criterion.
 

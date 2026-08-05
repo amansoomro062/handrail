@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { stampTestIds, TEXT } from "@railing/harness-kit";
+import { stampTestIds, TEXT } from "@railing-dev/harness-kit";
 
 /** shadcn/ui dialog, exactly as the CLI generated it. Built on Radix. */
 export function DialogHarness() {

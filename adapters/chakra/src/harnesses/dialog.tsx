@@ -1,5 +1,5 @@
 import { Dialog } from "@chakra-ui/react";
-import { TEXT } from "@railing/harness-kit";
+import { TEXT } from "@railing-dev/harness-kit";
 
 export function DialogHarness() {
   return (
