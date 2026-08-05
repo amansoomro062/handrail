@@ -9,6 +9,12 @@ recorded in `results/history/`; this file records changes to the instrument.
 
 ## [Unreleased]
 
+### Changed
+
+- Project renamed from Handrail to Railing (5 Aug 2026); site domain is now
+  railing.dev and packages are scoped `@railing/*`. No packages had been
+  published under the old scope, so nothing external breaks.
+
 ### Added
 
 - `@railing/announce`: screen reader spot checks driving real VoiceOver via
