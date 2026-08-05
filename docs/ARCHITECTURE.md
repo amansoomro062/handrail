@@ -99,6 +99,16 @@ Three controls:
 2. **A broken fixture.** `adapters/_fixture-broken` has deliberate, catalogued defects. The runner must detect exactly those and no others, this makes the false-positive rate a measured number rather than an assumption.
 3. **Maintainer review.** Adapter source is sent to maintainers before publication, specifically so they can tell us we mounted their component wrong.
 
+## Why a floor is worth measuring
+
+Every results page states that a high score does not certify accessibility. A fair question follows: why measure at all?
+
+Because the asymmetry does the work. A high score is provisional; a low score is not. Every failure cites the APG clause it violates, pins the version, and ships a reproduction, and no human judgement is needed to decide whether a keyboard trap is acceptable. The passes are a floor. The failures are defects.
+
+Because floors scale and judgement does not. Expert review and testing with disabled users are the parts that matter most, and they are scarce. A machine that re-checks the mechanical layer on every release is what lets that scarce attention go to labels, reading order and real use, instead of re-verifying focus behaviour by hand every version. And a fix that lands in a library reaches every application built on it.
+
+A type checker cannot tell you software is good, only that a class of defect is absent. It is valuable for exactly that reason. So is this.
+
 ## Result shape
 
 ```jsonc
