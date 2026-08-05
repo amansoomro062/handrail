@@ -5,10 +5,13 @@ build/
 *.log
 
 # Runner output
-# results/ stays untracked until every maintainer has been notified. Committing
+# /results stays untracked until every maintainer has been notified. Committing
 # them puts named findings in a public repository, which is publication whatever
 # the website is showing. See docs/DECISIONS.md 004 and 020.
-results/
+# Anchored to the repo root on purpose: the unanchored pattern also swallowed
+# web/app/results, the gate-aware PAGES, which contain no findings and are
+# what stops the live /results link resolving to a 404.
+/results/
 test-results/
 playwright-report/
 traces/
