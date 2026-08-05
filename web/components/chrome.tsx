@@ -10,28 +10,31 @@ import Link from "next/link";
 export const REPO = "https://github.com/amansoomro062/railing";
 
 /**
- * A railing: top rail, three posts, matching the favicon glyph.
+ * Tactile paving seen from above, with the centre dome raised.
  *
- * The amber middle post is the one your hand would find first; it is also
- * what stops three strokes reading as a generic list icon.
+ * The larger centre is what stops a 3x3 grid reading as a generic app
+ * launcher, and it is the dome you would actually feel underfoot.
  */
 export function Logo({ id }: { id: string }) {
   return (
     <svg className="logo" viewBox="0 0 28 26" aria-hidden="true" focusable="false">
       <defs>
-        {/* userSpaceOnUse because a vertical line has a zero-width bounding
-            box, and objectBoundingBox gradients do not render on those. */}
-        <linearGradient id={id} gradientUnits="userSpaceOnUse" x1="14" y1="5.5" x2="14" y2="22">
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stopColor="#FFC24D" />
           <stop offset="1" stopColor="#D65630" />
         </linearGradient>
       </defs>
-      <g stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none">
-        <path d="M4 5.5h20" />
-        <path d="M6 5.5V22" />
-        <path d="M22 5.5V22" />
+      <g fill="currentColor">
+        <circle cx="5" cy="6" r="2.5" opacity=".3" />
+        <circle cx="14" cy="6" r="2.5" opacity=".3" />
+        <circle cx="23" cy="6" r="2.5" opacity=".3" />
+        <circle cx="5" cy="14" r="2.5" opacity=".55" />
+        <circle cx="23" cy="14" r="2.5" opacity=".55" />
+        <circle cx="5" cy="22" r="2.5" opacity=".3" />
+        <circle cx="14" cy="22" r="2.5" opacity=".3" />
+        <circle cx="23" cy="22" r="2.5" opacity=".3" />
       </g>
-      <path d="M14 5.5V22" stroke={`url(#${id})`} strokeWidth="3" strokeLinecap="round" fill="none" />
+      <circle cx="14" cy="14" r="3.5" fill={`url(#${id})`} />
     </svg>
   );
 }
